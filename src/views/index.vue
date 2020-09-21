@@ -12,10 +12,11 @@
             <img src="../assets/image/nav_logo.png" alt />
           </div>
           <div id="nav-data">
-            <div class="nav-item">找办公室</div>
-            <div class="nav-item">委托找房</div>
-            <div class="nav-item">投放房源</div>
-            <div class="nav-item">企业礼包</div>
+            <router-link to="./lookup" class="nav-item">找办公室</router-link>
+            <router-link to="./entrust" class="nav-item">委托找房</router-link>
+            <router-link to="./throwIn" class="nav-item">投放房源</router-link>
+            <router-link to="./gift" class="nav-item">企业礼包</router-link>
+            <router-link to="./mapLookup" class="nav-item">地图找房</router-link>
           </div>
         </div>
       </div>
@@ -24,13 +25,13 @@
           <div class="search-div">
             <h3>选择区域</h3>
             <ul id="region-ul">
-              <li v-for="item in 8" :key="item">不限</li>
+              <li v-for="(item,index) in 8" :key="index">不限</li>
             </ul>
           </div>
           <div class="search-div2">
             <h3>选择面积</h3>
             <ul id="area-ul">
-              <li v-for="item in 6" :key="item">0-100㎡</li>
+              <li v-for="(item,index) in 6" :key="index">0-100㎡</li>
             </ul>
           </div>
           <div id="looking-btn">马上找房</div>
@@ -93,7 +94,7 @@
     <div id="recommend-area">
       <div id="recommend-area-title">不容错过的办公室</div>
       <div id="recommend-area-content">
-        <div class="recommend-city" v-for="(item) in 11" :key="item">
+        <div class="recommend-city" v-for="(item,index) in 11" :key="index">
           <div class="recommend-city-img">
             <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600447514753&di=bbae8a582384c863b42a387e671fdb9d&imgtype=0&src=http%3A%2F%2Fwatermark.lovepik.com%2Fphoto%2F50072%2F5457.jpg_wh1200.jpg" alt="">
           </div>

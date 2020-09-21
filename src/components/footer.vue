@@ -24,9 +24,9 @@
         <div class="content3-top-text">热门写字楼出租</div>
         <div class="content3-top-text">热门商务中心出租</div>
         <br>
-        <div class="content3-text" v-for="item in 6" :key="item">上海兼职</div>
+        <div class="content3-text" v-for="(item,index) in 6" :key="index">上海兼职</div>
         <br>
-        <div class="content3-text" v-for="item in 6" :key="item">上海兼职</div>
+        <div class="content3-text" v-for="(item,index) in 6" :key="index">上海兼职</div>
     </div>
     <div id="content4">
         <h3>客服服务</h3>
