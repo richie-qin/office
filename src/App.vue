@@ -96,23 +96,29 @@ div {
     #phone-icon{
       width: 48px;
       height: 48px;
-      background: url("./assets/image/phone.png");
+      background-color: #eee;
+      background-image: url("./assets/image/phone.png");
       background-size: 100% 100%;
       background-repeat: no-repeat;
+      border-radius: 5px;
       cursor: pointer;
       &:hover{
-        background: url("./assets/image/act-phone.png");
+        background-color: #eee;
+        background-image: url("./assets/image/act-phone.png");
       }
     }
     #wx-icon{
       width: 48px;
       height: 48px;
-      background: url("./assets/image/wx.png");
+      background-color: #eee;
+      background-image: url("./assets/image/wx.png");
       background-size: 100% 100%;
       background-repeat: no-repeat;
+      border-radius: 5px;
       cursor: pointer;
       &:hover{
-        background: url("./assets/image/act-wx.png");
+        background-color: #eee;
+        background-image: url("./assets/image/act-wx.png");
       }
     }
   }
