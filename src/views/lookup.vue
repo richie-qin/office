@@ -17,13 +17,115 @@
       </div>
     </div>
     <div id="search-box">
-      <div class="search-item" v-for="item in 7" :key="item">
-        <div class="search-item-type">城市：</div>
+      <div class="search-item">
+        <div class="search-item-type">区域：</div>
         <div class="search-item-data">
-          <div class="search-item-data-i">北京</div>
-          <div class="search-item-data-i">上海</div>
-          <div class="search-item-data-i">南京</div>
-          <div class="search-item-data-i">福建</div>
+          <div class="search-item-data-i">全部</div>
+          <div class="search-item-data-i">浦东</div>
+          <div class="search-item-data-i">闽兴</div>
+          <div class="search-item-data-i">宝山</div>
+          <div class="search-item-data-i">宝山</div>
+          <div class="search-item-data-i">宝山</div>
+          <div class="search-item-data-i">宝山</div>
+          <div class="search-item-data-i">宝山</div>
+        </div>
+      </div>
+      <div class="search-item">
+        <div class="search-item-type">售价：</div>
+        <div class="search-item-data">
+          <div class="search-item-data-i">100万以下</div>
+          <div class="search-item-data-i">100-150万</div>
+          <div class="search-item-data-i">150-200万</div>
+          <div class="search-item-data-i">200-250万</div>
+          <div class="search-item-data-i">250-300万</div>
+          <div class="search-item-data-i">300万以上</div>
+          <div class="search-item-data-i">100万以下</div>
+          <div class="search-item-data-i">100-150万</div>
+          <div class="search-item-data-i">150-200万</div>
+          <div class="search-item-data-i">200-250万</div>
+          <div class="search-item-data-i">250-300万</div>
+          <div class="search-item-data-i">300万以上</div>
+          <div class="search-item-data-i">100万以下</div>
+          <div class="search-item-data-i">100-150万</div>
+          <div class="search-item-data-i">150-200万</div>
+          <div class="search-item-data-i">200-250万</div>
+          <div class="search-item-data-i">250-300万</div>
+          <div class="search-item-data-i">300万以上</div>
+          <div class="search-item-input-box">
+            <input
+              type="text"
+              maxlength="5"
+              autocomplete="off"
+              v-model="money1"
+            />
+            <span>-</span>
+            <input
+              type="text"
+              maxlength="5"
+              autocomplete="off"
+              v-model="money2"
+            />
+            万
+            <button>确定</button>
+          </div>
+        </div>
+      </div>
+      <div class="search-item">
+        <div class="search-item-type">面积：</div>
+        <div class="search-item-data">
+          <div class="search-item-data-i">50㎡以下</div>
+          <div class="search-item-data-i">50-100㎡</div>
+          <div class="search-item-data-i">100-150㎡</div>
+          <div class="search-item-data-i">150-200㎡</div>
+          <div class="search-item-data-i">200-250㎡</div>
+          <div class="search-item-data-i">250-300㎡</div>
+          <div class="search-item-data-i">300㎡以上</div>
+          <div class="search-item-data-i">50㎡以下</div>
+          <div class="search-item-data-i">50-100㎡</div>
+          <div class="search-item-data-i">100-150㎡</div>
+          <div class="search-item-data-i">150-200㎡</div>
+          <div class="search-item-data-i">200-250㎡</div>
+          <div class="search-item-data-i">250-300㎡</div>
+          <div class="search-item-data-i">300㎡以上</div>
+          <div class="search-item-input-box">
+            <input
+              type="text"
+              maxlength="5"
+              autocomplete="off"
+              v-model="money1"
+            />
+            <span>-</span>
+            <input
+              type="text"
+              maxlength="5"
+              autocomplete="off"
+              v-model="money2"
+            />
+            ㎡
+            <button>确定</button>
+          </div>
+        </div>
+      </div>
+      <div class="search-item">
+        <div class="search-item-type">房型：</div>
+        <div class="search-item-data">
+          <div class="search-item-data-i">一室</div>
+          <div class="search-item-data-i">二室</div>
+          <div class="search-item-data-i">三室</div>
+          <div class="search-item-data-i">四室</div>
+          <div class="search-item-data-i">五室</div>
+          <div class="search-item-data-i">五室以上</div>
+        </div>
+      </div>
+      <div class="search-item">
+        <div class="search-item-type">其他：</div>
+        <div class="search-item-data">
+            <el-checkbox-group v-model="checkList">
+                <el-checkbox label="近地铁"></el-checkbox>
+                <el-checkbox label="近学校"></el-checkbox>
+                <el-checkbox label="有电梯"></el-checkbox>
+                <el-checkbox label="安选验真" ></el-checkbox>
+            </el-checkbox-group>
         </div>
       </div>
     </div>
@@ -40,7 +142,12 @@
           <house v-for="item in 8" :key="item"></house>
         </div>
         <div id="data-pagination">
-          <el-pagination background layout="prev, pager, next" :page-size="8" :total="25"></el-pagination>
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :page-size="8"
+            :total="25"
+          ></el-pagination>
         </div>
       </div>
       <div id="content-right-box">
@@ -64,6 +171,11 @@
             </div>
           </div>
         </div>
+        <div id="poster-entrust">
+          <h3>委托找房</h3>
+          <div id="poster-entrust-text1">10分钟快速响应</div>
+          <div id="poster-entrust-btn">立即委托</div>
+        </div>
       </div>
     </div>
   </div>
@@ -75,16 +187,19 @@ export default {
   components: { blackNav, house },
   data() {
     return {
-      input4: ""
+      input4: "",
+      money1: "",
+      money2: "",
+      checkList: []
     };
   },
   created() {
     this.$store.commit("actNav", 2);
   },
-  methods: {}
+  methods: {},
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 #lookup {
   width: 100%;
   background: #fff;
@@ -136,16 +251,26 @@ export default {
   .search-item {
     display: flex;
     align-items: center;
-    height: 28px;
-    border-bottom: dashed 1px #ddd;
+    // height: 28px;
+    line-height: 35px;
+    border-bottom: dashed 1px #aaa;
+    &:last-child{
+        border-bottom: none;
+    }
     .search-item-type {
       font-size: 14px;
       color: #999;
+      flex: none;
     }
     .search-item-data {
       display: flex;
       align-items: center;
       padding-left: 20px;
+      flex-wrap: wrap;
+        /deep/ .el-checkbox-group{
+            display: flex;
+            align-items: center;
+        }
       .search-item-data-i {
         font-size: 13px;
         color: #333;
@@ -153,6 +278,39 @@ export default {
         margin-right: 15px;
         &:hover {
           color: #cc2929;
+        }
+      }
+      .search-item-input-box {
+        font-size: 12px;
+        span {
+          color: #888;
+          margin: 0 5px;
+        }
+        input {
+          display: inline-block;
+          border: 1px solid #cccccc;
+          border-radius: 3px;
+          height: 16px;
+          line-height: 16px;
+          padding: 0 3px;
+          text-align: center;
+          margin: -4px 0px 0px 0px;
+          margin-top: 0px;
+          width: 25px;
+          font-size: 12px;
+          outline: none;
+          text-align: center;
+        }
+        button {
+          width: 40px;
+          height: 22px;
+          margin-left: 3px;
+          color: #333333;
+          cursor: pointer;
+          border: 1px solid #cccccc;
+          background-color: #f6f6f6;
+          font-size: 12px;
+          margin-left: 15px;
         }
       }
     }
@@ -228,9 +386,9 @@ export default {
       }
     }
     #poster-hot-house {
-            padding: 0 0 10px 0;
-    margin: 0 0 30px 0;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding: 0 0 10px 0;
+      margin: 0 0 30px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       h3 {
         margin: 0 0 15px 0;
         font-style: normal;
@@ -250,10 +408,10 @@ export default {
           border-radius: 4px;
         }
         div {
-            margin-left: 10px;
+          margin-left: 10px;
           p {
             &:nth-child(1) {
-                font-size: 14px;
+              font-size: 14px;
               height: 20px;
               line-height: 20px;
               margin: 0 0 1px 0;
@@ -276,6 +434,37 @@ export default {
             }
           }
         }
+      }
+    }
+    #poster-entrust {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      padding-bottom: 30px;
+      h3 {
+        margin: 0 0 15px 0;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.71;
+        color: #000;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      #poster-entrust-text1 {
+        margin-top: -23px;
+        margin-bottom: 5px;
+        padding: 10px 0;
+        color: #b2b2b2;
+        font-size: 12px;
+      }
+      #poster-entrust-btn {
+        width: 260px;
+        height: 48px;
+        line-height: 48px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+        background: #17a1e6;
+        border-radius: 4px;
       }
     }
   }
