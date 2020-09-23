@@ -7,7 +7,7 @@
       />
     </div>
     <div id="house-center-box">
-      <h3>浦东-陆家嘴 世界广场 1074㎡</h3>
+      <h3 @click="toDetails">浦东-陆家嘴 世界广场 1074㎡</h3>
       <div class="house-info">
         <i class="el-icon-info"></i>
         <span>世界之窗 1074㎡ 约196-300人 精装</span>
@@ -32,7 +32,7 @@
         <b>21.23</b>万元/月
       </div>
       <div id="house-m2">6.5元/m²/天</div>
-      <div id="house-info-btn">查看详情</div>
+      <div id="house-info-btn" @click="toDetails">查看详情</div>
     </div>
   </div>
 </template>
@@ -42,7 +42,11 @@ export default {
     return {};
   },
   created() {},
-  methods: {}
+  methods: {
+    toDetails(){
+      this.$router.push("./houseDetails")
+    }
+  }
 };
 </script>
 <style lang='less' scoped>
@@ -146,14 +150,16 @@ export default {
   #house-right-box{
     text-align: right;
     #house-m1{
+      color: #cc2929;
+      font-size: 12px;
       b{
         color: #cc2929;
         font-size: 28px;
       }
     }
     #house-m2{
-      color: #cc2929;
-        font-size: 12px;
+      font-size: 12px;
+    color: #353535;
         margin: 12px 0;
     }
     

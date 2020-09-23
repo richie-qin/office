@@ -29,6 +29,14 @@ const routes = [
     }
   },
   {
+    path: '/houseDetails',
+    name: 'houseDetails',
+    component: () => import('../views/houseDetails.vue'),
+    meta:{
+      title: '详情'
+    }
+  },
+  {
     path: '/throwIn',
     name: 'throwIn',
     component: () => import('../views/throwIn.vue'),
