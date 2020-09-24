@@ -39,11 +39,12 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #fff;
   #search-nav-left {
     display: flex;
     align-items: center;
     img {
-      height: 28px;
+      height: 35px;
       width: auto;
       margin-right: 5px;
     }

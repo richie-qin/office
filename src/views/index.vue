@@ -154,7 +154,8 @@ export default {
   z-index: 10;
   #header-content {
     height: 100%;
-    width: 1200px;
+    width: 90%;
+    min-width: 1200px;
     margin: 0 auto;
     display: flex;
     align-items: center;

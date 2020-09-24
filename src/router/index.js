@@ -33,7 +33,15 @@ const routes = [
     name: 'houseDetails',
     component: () => import('../views/houseDetails.vue'),
     meta:{
-      title: '详情'
+      title: '房子详情'
+    }
+  },
+  {
+    path: '/edificeDetails',
+    name: 'edificeDetails',
+    component: () => import('../views/edificeDetails.vue'),
+    meta:{
+      title: '大厦详情'
     }
   },
   {

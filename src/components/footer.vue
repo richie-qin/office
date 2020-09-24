@@ -60,7 +60,7 @@ export default {
 }
 #content1{
     #content1-img{
-        height: 20px;
+        height: 30px;
         width: auto;
         margin-bottom: 20px;
     }

@@ -5,9 +5,7 @@
     <search-nav></search-nav>
     <div id="title-money">
       <div id="title">南苏55（720全景VR看房）</div>
-      <div id="money">
-        <b>4~7.3</b>元/m²/天
-      </div>
+      <div id="money"><b>4~7.3</b>元/m²/天</div>
     </div>
     <div id="addr">
       <i class="el-icon-location-outline"></i>
@@ -19,20 +17,109 @@
     </div>
     <div id="img-box">
       <div id="img-left">
-        <baidu-map
-          class="bm-view"
-          :center="{lng: 121.4095, lat: 31.1796}"
-          :zoom="15"
-          :scroll-wheel-zoom="true"
-        >
-          <bm-marker
-            :position="{lng: 121.4095, lat: 31.1796}"
-            :dragging="true"
-            animation="BMAP_ANIMATION_BOUNCE"
-          />
-        </baidu-map>
+        <el-carousel height="420px">
+          <el-carousel-item v-for="item in swipers" :key="item">
+            <img :src="item.src" alt="" />
+          </el-carousel-item>
+        </el-carousel>
       </div>
-      <div id="img-right"></div>
+      <div id="img-right">
+        <div id="img-right-div1">
+          <b>15.6</b>万元/月<span>单价3.8元/㎡/天</span>
+        </div>
+        <div id="img-right-div2">
+          <div class="div2-item">
+            <div class="div2-item-top">1350㎡</div>
+            <div class="div2-item-bot">建筑面积</div>
+          </div>
+          <div class="div2-item">
+            <div class="div2-item-top">130~200人</div>
+            <div class="div2-item-bot">可容纳工位数</div>
+          </div>
+          <div class="div2-item">
+            <div class="div2-item-top">毛胚</div>
+            <div class="div2-item-bot">装修程度</div>
+          </div>
+        </div>
+        <div id="img-right-div3">
+          <div><span>实用率：</span>蚊子蚊子蚊子</div>
+          <div><span>实用率：</span>蚊子蚊子蚊子</div>
+          <div><span>实用率：</span>蚊子蚊子蚊子</div>
+          <div><span>实用率：</span>蚊子蚊子蚊子</div>
+        </div>
+        <div id="img-right-div4">
+          <div style="display: flex;align-items: center;">
+            <img src="../assets/image/act-wx.png" alt="" />
+            <div id="img-right-div4-user">
+              <p id="div-user-title">李嘉诚</p>
+              <p>远中产业园</p>
+              <p>专属服务顾问</p>
+            </div>
+          </div>
+          <div id="user-btn">
+            <el-button type="primary" icon="el-icon-phone-outline"
+              >13333333333</el-button
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="information">
+      <div id="left-info-box">
+        <div id="jbxx">
+          <h3 class="info-title"><i></i>基本信息</h3>
+          <div class="base-info-item" v-for="item in 8" :key="item">
+            <div class="base-info-title">房源编码</div>
+            <div class="base-info-content">3213123123</div>
+          </div>
+        </div>
+        <div id="jzxx">
+          <h3 class="info-title"><i></i>建筑信息</h3>
+          <div id="jzxx-content">
+            <div v-for="item in 3" :key="item">
+              <div class="base-info-item" v-for="item in 3" :key="item">
+                <div class="base-info-title">房源编码</div>
+                <div class="base-info-content">3213123123</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="jgxx">
+          <h3 class="info-title"><i></i>价格信息</h3>
+          <div id="jzxx-content">
+            <div v-for="item in 3" :key="item">
+              <div class="base-info-item" v-for="item in 3" :key="item">
+                <div class="base-info-title">房源编码</div>
+                <div class="base-info-content">3213123123</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="jpxx">
+          <h3 class="info-title"><i></i>接盘信息</h3>
+          <div class="base-info-item" v-for="item in 8" :key="item">
+            <div class="base-info-title">房源编码</div>
+            <div class="base-info-content">3213123123</div>
+          </div>
+        </div>
+      </div>
+      <div id="right-info-box">
+        <div id="ljyy">
+          <h3><i></i>预约看房</h3>
+          <el-input placeholder="请输入内容" v-model="input10" clearable>
+          </el-input>
+          <el-button type="primary">立即预约</el-button>
+          <p>点点租承诺仅将你的联系方式用于找房服务</p>
+        </div>
+        <div id="tjfy">
+          <h3><i></i>推荐房源</h3>
+          <div id="tjfy-content">
+            <div v-for="item in 4" :key="item">
+              <p>某某大厦</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -42,7 +129,14 @@ import searchNav from "../components/searchNav";
 export default {
   components: { blackNav, searchNav },
   data() {
-    return {};
+    return {
+      swipers: [
+        { src: require("../assets/image/swiper1.jpg") },
+        { src: require("../assets/image/swiper2.jpg") },
+        { src: require("../assets/image/swiper3.jpg") }
+      ],
+      input10: ""
+    };
   },
   created() {
     this.$store.commit("actNav", 2);
@@ -54,6 +148,7 @@ export default {
 #houseDetails {
   width: 100%;
   background: #f7f7f7;
+  overflow: hidden;
   #title-money {
     padding: 0 calc(50% - 600px);
 
@@ -108,24 +203,273 @@ export default {
     }
   }
   #img-box {
-    padding: 0 calc(50% - 600px);
     height: 420px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: #fff;
+    margin: 0 calc(50% - 600px);
+    border-radius: 5px;
+    overflow: hidden;
+
     #img-left {
       width: 820px;
       height: 100%;
-      background: red;
       overflow: hidden;
       border-radius: 5px;
+      .el-carousel__item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
     #img-right {
       width: 370px;
       height: 100%;
-      background: sandybrown;
       overflow: hidden;
       border-radius: 5px;
+      padding-left: 20px;
+      padding-right: 30px;
+      #img-right-div1 {
+        height: 88px;
+        margin-top: 6px;
+        border-bottom: solid 1px #ebebeb;
+        line-height: 88px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #cc2929;
+
+        b {
+          font-size: 48px;
+          font-weight: 500;
+        }
+        span {
+          margin-left: 25px;
+        }
+      }
+      #img-right-div2 {
+        border-bottom: solid 1px #ebebeb;
+
+        height: 88px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .div2-item {
+          .div2-item-top {
+            height: 33px;
+            line-height: 33px;
+            font-size: 24px;
+            font-weight: 500;
+            color: #000;
+          }
+        }
+        .div2-item-bot {
+          height: 17px;
+          line-height: 17px;
+          font-size: 12px;
+          color: #666;
+        }
+      }
+      #img-right-div3 {
+        padding: 20px 0;
+        border-bottom: solid 1px #ebebeb;
+
+        div {
+          margin-bottom: 10px;
+          height: 17px;
+          font-size: 12px;
+          color: #b2b2b2;
+          span {
+            font-size: 12px;
+            color: #4a4a4a;
+            height: 17px;
+          }
+        }
+      }
+      #img-right-div4 {
+        padding: 10px 0;
+        border-bottom: solid 1px #ebebeb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        #img-right-div4-user {
+          margin-left: 10px;
+
+          #div-user-title {
+            color: #000000;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 20px;
+          }
+          p {
+            line-height: 17px;
+            font-size: 12px;
+            color: #b2b2b2;
+          }
+        }
+        #user-btn {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  #information {
+    width: 1200px;
+    margin: 30px auto 50px;
+    display: flex;
+    justify-content: space-between;
+
+    #left-info-box {
+      width: 820px;
+      height: auto;
+      padding: 30px 30px 0 30px;
+      background: #fff;
+      .base-info-item {
+        margin: 10px 0;
+        .base-info-title {
+          min-width: 78px;
+          height: 17px;
+          font-size: 12px;
+          color: #b2b2b2;
+          display: inline-block;
+        }
+        .base-info-content {
+          font-size: 12px;
+          color: #4a4a4a;
+          height: 17px;
+          display: inline-block;
+        }
+      }
+      .info-title {
+        height: 19px;
+        line-height: 19px;
+        font-size: 20px;
+        font-weight: 500;
+        color: #000;
+        margin-bottom: 20px;
+        i {
+          width: 3px;
+          background: #17a1e6;
+          height: 19px;
+          margin-right: 5px;
+          display: inline-block;
+          vertical-align: bottom;
+        }
+      }
+      #jbxx {
+        padding-bottom: 30px;
+        border-bottom: solid 1px #ebebeb;
+      }
+      #jzxx {
+        margin-top: 40px;
+        border-bottom: solid 1px #ebebeb;
+        padding-bottom: 30px;
+
+        #jzxx-content {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+      }
+      #jgxx {
+        margin-top: 40px;
+        border-bottom: solid 1px #ebebeb;
+        padding-bottom: 30px;
+        #jzxx-content {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+      }
+      #jpxx {
+        padding: 40px 0 30px;
+      }
+    }
+    #right-info-box {
+      background: #fff;
+      width: 370px;
+      padding: 20px 15px;
+      #ljyy {
+        text-align: center;
+        border-bottom: solid 1px #ebebeb;
+        padding-bottom: 30px;
+        h3 {
+          width: 100%;
+          height: 20px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #000;
+          margin-bottom: 20px;
+          text-align: left;
+          i {
+            width: 3px;
+            background: #17a1e6;
+            height: 19px;
+            margin-right: 5px;
+            display: inline-block;
+            vertical-align: bottom;
+          }
+        }
+        button {
+          margin-top: 30px;
+        }
+        p {
+          margin-top: 5px;
+          color: #bebebe;
+          font-size: 12px;
+        }
+      }
+      #tjfy{
+        text-align: center;
+        border-bottom: solid 1px #ebebeb;
+        padding-bottom: 30px;
+        margin-top: 30px;
+        h3 {
+          width: 100%;
+          height: 20px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #000;
+          margin-bottom: 20px;
+          text-align: left;
+          i {
+            width: 3px;
+            background: #17a1e6;
+            height: 19px;
+            margin-right: 5px;
+            display: inline-block;
+            vertical-align: bottom;
+          }
+        }
+        #tjfy-content{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          div{
+            width: 160px;
+            height: 160px;
+            border:solid 1px #eee;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            p{
+              box-sizing: border-box;
+              position: absolute;
+              bottom: 0;
+              left:0;
+              display: block;
+              width: 160px;
+              height: 25px;
+              line-height: 25px;
+              padding: 0 10px;
+              font-size: 14px;
+              color: #fff;
+              background: rgba(0,0,0,0.5);
+            }
+          }
+        }
+      }
     }
   }
 }
