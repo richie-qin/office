@@ -25,13 +25,13 @@
           <div class="search-div">
             <h3>选择区域</h3>
             <ul id="region-ul">
-              <li v-for="(item,index) in 8" :key="index">不限</li>
+              <li v-for="(item,index) in regionList" :key="index">{{item}}</li>
             </ul>
           </div>
           <div class="search-div2">
             <h3>选择面积</h3>
             <ul id="area-ul">
-              <li v-for="(item,index) in 6" :key="index">0-100㎡</li>
+              <li v-for="(item,index) in areaLList" :key="index">{{item}}</li>
             </ul>
           </div>
           <div id="looking-btn">马上找房</div>
@@ -121,6 +121,8 @@ export default {
         { src: require("../assets/image/swiper2.jpg") },
         { src: require("../assets/image/swiper3.jpg") }
       ],
+      regionList:["全部","蜀山区","滨湖新区","政务区","新站区","瑶海区","庐阳区","包河区","长丰县","肥东县","肥西县","庐江县","高新区","经开区","巢湖市"],
+      areaLList:["面积不限","100㎡以下","100㎡-200㎡","200㎡-300㎡","300㎡-500㎡","500㎡-1000㎡","1000㎡以上"],
       input21: ""
     };
   },
@@ -191,7 +193,7 @@ export default {
   right: -50%;
   #search-box {
     width: 396px;
-    height: 400px;
+    min-height: 400px;
     background-color: #fff;
     box-shadow: 0 30px 40px 0 rgba(0, 0, 0, 0.15);
     border-radius: 10px;

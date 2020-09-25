@@ -168,11 +168,9 @@
   </div>
 </template>
 <script>
-import blackNav from "../components/blackNav";
-import searchNav from "../components/searchNav";
 import house from "../components/house";
 export default {
-  components: { blackNav, house,searchNav },
+  components: { house },
   data() {
     return {
       money1: "",

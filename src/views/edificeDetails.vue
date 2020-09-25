@@ -37,10 +37,7 @@
   </div>
 </template>
 <script>
-import blackNav from "../components/blackNav";
-import searchNav from "../components/searchNav";
 export default {
-  components: { blackNav, searchNav },
   data() {
     return {};
   },

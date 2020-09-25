@@ -11,6 +11,10 @@ Vue.use(BaiduMap, {
 });
 Vue.config.productionTip = false;
 
+import blackNav from "./components/blackNav";
+import searchNav from "./components/searchNav";
+Vue.component("blackNav", blackNav);//全局自定义组件
+Vue.component("searchNav", searchNav);//全局自定义组件
 
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */

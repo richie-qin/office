@@ -5,9 +5,7 @@
   </div>
 </template>
 <script>
-import blackNav from "../components/blackNav"
 export default {
-    components:{blackNav},
   data() {
     return {};
   },
