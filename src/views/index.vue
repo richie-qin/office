@@ -25,13 +25,13 @@
           <div class="search-div">
             <h3>选择区域</h3>
             <ul id="region-ul">
-              <li v-for="(item,index) in regionList" :key="index">{{item}}</li>
+              <li v-for="(item,index) in regionList" :key="index" @click="goLookup(item,1)">{{item.name}}</li>
             </ul>
           </div>
           <div class="search-div2">
             <h3>选择面积</h3>
             <ul id="area-ul">
-              <li v-for="(item,index) in areaLList" :key="index">{{item}}</li>
+              <li v-for="(item,index) in areaList" :key="index" @click="goLookup(item,2)">{{item.name}}</li>
             </ul>
           </div>
           <div id="looking-btn">马上找房</div>
@@ -113,6 +113,7 @@
   </div>
 </template>
 <script>
+// import{getBuilding} from "../api/index"
 export default {
   data() {
     return {
@@ -121,13 +122,26 @@ export default {
         { src: require("../assets/image/swiper2.jpg") },
         { src: require("../assets/image/swiper3.jpg") }
       ],
-      regionList:["全部","蜀山区","滨湖新区","政务区","新站区","瑶海区","庐阳区","包河区","长丰县","肥东县","肥西县","庐江县","高新区","经开区","巢湖市"],
-      areaLList:["面积不限","100㎡以下","100㎡-200㎡","200㎡-300㎡","300㎡-500㎡","500㎡-1000㎡","1000㎡以上"],
+    
       input21: ""
     };
   },
-  created() {},
-  methods: {}
+  computed:{
+    regionList(){
+      return this.$store.state.regionList
+    },
+    areaList(){
+      return this.$store.state.areaList
+    },
+  },
+  created() {
+    
+  },
+  methods: {
+    goLookup(item,index){//index 1:区域搜索 2：面积搜素
+        this.$router.push({name:"lookup",params:{type:index,code:item.code}})
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

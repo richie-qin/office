@@ -1,32 +1,25 @@
 // axios
 import request from './request'
-import qs from "qs"
+// import qs from "qs"
 // import aes from "../util/aes"
 
-//获取学校列表
-export function getSchoolList(data){
+//获取楼宇数据
+export function getBuilding(params){
   return request({
-    url: `/new-cms/app/school/list/${data.type}`,
-    method: 'POST',
-    data:qs.stringify(data),
-    // hideloading:true
+    url: `/rent/building/search/${params.page}/${params.size}`,
+    method: 'get',
+    params
   })
 }
 
-//查看详情
-export function getDetailsData(id){
+//获取楼宇房源
+export function getResource(params){
   return request({
-    url: `/new-cms/app/school/info/${id}`,
+    url: `/rent/resource/search/${params.page}/${params.size}`,
     method: 'get',
+    params
   })
 }
 
-//查看文章
-export function getArticleDetails(id){
-  return request({
-    url: `/new-cms/app/cms/info/${id}`,
-    method: 'get',
-  })
-}
 
 

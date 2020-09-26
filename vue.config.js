@@ -13,7 +13,7 @@ module.exports = {
     proxy: {
       //配置跨域
       '/api': {
-        target: "https://wonders.liuzhou.gov.cn",
+        target: "http://47.94.5.59:9001",
         // ws:true,
         changOrigin: true,
         pathRewrite: {

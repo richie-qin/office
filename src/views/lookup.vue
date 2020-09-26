@@ -7,20 +7,13 @@
       <div class="search-item">
         <div class="search-item-type">区域：</div>
         <div class="search-item-data">
-          <div class="search-item-data-i">全部</div>
-          <div class="search-item-data-i">浦东</div>
-          <div class="search-item-data-i">闽兴</div>
-          <div class="search-item-data-i">宝山</div>
-          <div class="search-item-data-i">宝山</div>
-          <div class="search-item-data-i">宝山</div>
-          <div class="search-item-data-i">宝山</div>
-          <div class="search-item-data-i">宝山</div>
+          <div class="search-item-data-i" v-for="(item,index) in regionList" :key="index">{{item.name}}</div>
         </div>
       </div>
       <div class="search-item">
         <div class="search-item-type">售价：</div>
         <div class="search-item-data">
-          <div class="search-item-data-i">100万以下</div>
+          <div class="search-item-data-i" >100万以下</div>
           <div class="search-item-data-i">100-150万</div>
           <div class="search-item-data-i">150-200万</div>
           <div class="search-item-data-i">200-250万</div>
@@ -60,20 +53,7 @@
       <div class="search-item">
         <div class="search-item-type">面积：</div>
         <div class="search-item-data">
-          <div class="search-item-data-i">50㎡以下</div>
-          <div class="search-item-data-i">50-100㎡</div>
-          <div class="search-item-data-i">100-150㎡</div>
-          <div class="search-item-data-i">150-200㎡</div>
-          <div class="search-item-data-i">200-250㎡</div>
-          <div class="search-item-data-i">250-300㎡</div>
-          <div class="search-item-data-i">300㎡以上</div>
-          <div class="search-item-data-i">50㎡以下</div>
-          <div class="search-item-data-i">50-100㎡</div>
-          <div class="search-item-data-i">100-150㎡</div>
-          <div class="search-item-data-i">150-200㎡</div>
-          <div class="search-item-data-i">200-250㎡</div>
-          <div class="search-item-data-i">250-300㎡</div>
-          <div class="search-item-data-i">300㎡以上</div>
+          <div class="search-item-data-i" v-for="(item,index) in areaList" :key="index">{{item.name}}</div>
           <div class="search-item-input-box">
             <input
               type="text"
@@ -169,17 +149,50 @@
 </template>
 <script>
 import house from "../components/house";
+import{getBuilding} from "../api/index"
+
 export default {
   components: { house },
   data() {
     return {
       money1: "",
       money2: "",
-      checkList: []
+      checkList: [],
+      searchMap:{
+        house_title:'',
+        house_number:'',
+        name:'',
+        receiver:'',
+        address:'',
+        day_rent:'',
+        month_rent:'',
+        rent_status:"全部",
+        square:'',
+        province:'',
+        city:'',
+        county:"全部",
+        start:'',
+        end:'',
+        hot:0,//1:热门
+        recommend:0,//1:推荐
+        newest:0,//1:最新
+      }
     };
+  },
+  computed:{
+    regionList(){
+      return this.$store.state.regionList
+    },
+    areaList(){
+      return this.$store.state.areaList
+    },
   },
   created() {
     this.$store.commit("actNav", 2);
+    console.log("输出类型",this.$route.params.type)
+    getBuilding({page:1,size:10,searchMap:this.searchMap}).then(res=>{
+      console.log(res)
+    })
   },
   methods: {},
 };
@@ -201,6 +214,7 @@ export default {
     // height: 28px;
     line-height: 35px;
     border-bottom: dashed 1px #aaa;
+    padding: 10px 5px;
     &:last-child{
         border-bottom: none;
     }
