@@ -1,6 +1,6 @@
 // axios
 import request from './request'
-// import qs from "qs"
+import qs from "qs"
 // import aes from "../util/aes"
 
 //获取楼宇数据
@@ -17,7 +17,7 @@ export function getResource(data){
   return request({
     url: `/rent/resource/search/${data.page}/${data.size}`,
     method: 'post',
-    data
+    data:qs.stringify({data:data})
   })
 }
 

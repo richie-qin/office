@@ -28,9 +28,7 @@
       </div>
     </div>
     <div id="house-right-box">
-      <div id="house-m1">
-        <b>21.23</b>万元/月
-      </div>
+      <div id="house-m1"><b>21.23</b>万元/月</div>
       <div id="house-m2">6.5元/m²/天</div>
       <div id="house-info-btn" @click="toDetails">查看详情</div>
     </div>
@@ -38,13 +36,14 @@
 </template>
 <script>
 export default {
+  props: ['data'],
   data() {
     return {};
   },
   created() {},
   methods: {
-    toDetails(){
-      this.$router.push("./houseDetails")
+    toDetails() {
+      this.$router.push("./houseDetails");
     }
   }
 };
@@ -62,9 +61,9 @@ export default {
   justify-content: space-between;
   padding: 0 20px;
   border-radius: 10px;
-  &:hover{
+  &:hover {
     background: #eee;
-    #house-info-btn{
+    #house-info-btn {
       transition: all 0.2s;
       opacity: 1;
     }
@@ -89,9 +88,8 @@ export default {
       font-size: 18px;
       font-weight: 600;
       cursor: pointer;
-      &:hover{
-        color:#17a1e6;
-
+      &:hover {
+        color: #17a1e6;
       }
     }
     .house-info {
@@ -104,7 +102,6 @@ export default {
         font-size: 19px;
         color: #b2b2b2;
         display: inline-block;
-
       }
       span {
         color: #353535;
@@ -147,38 +144,37 @@ export default {
       }
     }
   }
-  #house-right-box{
+  #house-right-box {
     text-align: right;
-    #house-m1{
+    #house-m1 {
       color: #cc2929;
       font-size: 12px;
-      b{
+      b {
         color: #cc2929;
         font-size: 28px;
       }
     }
-    #house-m2{
+    #house-m2 {
       font-size: 12px;
-    color: #353535;
-        margin: 12px 0;
+      color: #353535;
+      margin: 12px 0;
     }
-    
   }
 }
-#house-info-btn{
-      opacity: 0;
-          width: 118px;
-          height: 36px;
-          line-height: 36px;
-          text-align: center;
-          color: #FFF;
-          font-size: 14px;
-          background: #17a1e6;
-          border-radius: 4px;
-          transition: all 0.2s;
-          cursor: pointer;
-          &:hover{
-            background: #18aaf2;
-          }
-    }
+#house-info-btn {
+  opacity: 0;
+  width: 118px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  background: #17a1e6;
+  border-radius: 4px;
+  transition: all 0.2s;
+  cursor: pointer;
+  &:hover {
+    background: #18aaf2;
+  }
+}
 </style>

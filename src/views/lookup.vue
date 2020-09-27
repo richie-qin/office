@@ -106,7 +106,7 @@
           <div id="data-num">共4915套房源</div>
         </div>
         <div>
-          <house v-for="item in 8" :key="item"></house>
+          <house v-for="item in dataList" :key="item" :data="item"></house>
         </div>
         <div id="data-pagination">
           <el-pagination
@@ -160,7 +160,8 @@ export default {
       checkList: [],
       searchMap:{
         county:"蜀山",//房源所在县镇
-      }
+      },
+      dataList:[],
     };
   },
   computed:{
@@ -176,6 +177,9 @@ export default {
     console.log("输出类型",this.$route.params.type)
     getBuilding({page:1,size:10,searchMap:this.searchMap}).then(res=>{
       console.log("楼宇数据",res)
+      if(res.code==20000){
+        this.dataList = res.data.rows
+      }
     })
   },
   methods: {},
