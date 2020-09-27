@@ -4,20 +4,20 @@ import request from './request'
 // import aes from "../util/aes"
 
 //获取楼宇数据
-export function getBuilding(params){
+export function getBuilding(data){
   return request({
-    url: `/rent/building/search/${params.page}/${params.size}`,
-    method: 'get',
-    params
+    url: `/rent/building/search/${data.page}/${data.size}`,
+    method: 'post',
+    data
   })
 }
 
 //获取楼宇房源
-export function getResource(params){
+export function getResource(data){
   return request({
-    url: `/rent/resource/search/${params.page}/${params.size}`,
-    method: 'get',
-    params
+    url: `/rent/resource/search/${data.page}/${data.size}`,
+    method: 'post',
+    data
   })
 }
 

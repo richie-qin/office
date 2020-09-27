@@ -159,23 +159,7 @@ export default {
       money2: "",
       checkList: [],
       searchMap:{
-        house_title:'',
-        house_number:'',
-        name:'',
-        receiver:'',
-        address:'',
-        day_rent:'',
-        month_rent:'',
-        rent_status:"全部",
-        square:'',
-        province:'',
-        city:'',
-        county:"全部",
-        start:'',
-        end:'',
-        hot:0,//1:热门
-        recommend:0,//1:推荐
-        newest:0,//1:最新
+        county:"蜀山",//房源所在县镇
       }
     };
   },
@@ -191,7 +175,7 @@ export default {
     this.$store.commit("actNav", 2);
     console.log("输出类型",this.$route.params.type)
     getBuilding({page:1,size:10,searchMap:this.searchMap}).then(res=>{
-      console.log(res)
+      console.log("楼宇数据",res)
     })
   },
   methods: {},
