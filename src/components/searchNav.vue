@@ -8,8 +8,8 @@
         <div>优选好房</div>
       </div>
       <div id="search-nav-right">
-        <el-input placeholder="请输入大厦名称" v-model="input4">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="请输入大厦名称" v-model="input4" :clearable="true">
+          <el-button slot="append" icon="el-icon-search" @click="toSearch"></el-button>
         </el-input>
       </div>
     </div>
@@ -27,7 +27,18 @@ export default {
       }
   },
   created() {},
-  methods: {},
+  methods: {
+    toSearch(){
+      this.$emit('searchKey',this.input4)
+    }
+  },
+  watch:{
+    input4(val){
+      if(val==""){
+        console.log("违抗")
+      }
+    }
+  }
 };
 </script>
 <style lang='less' scoped>
@@ -46,7 +57,7 @@ export default {
     img {
       height: 35px;
       width: auto;
-      margin-right: 5px;
+      margin-right: 15px;
     }
     span {
       font-size: 12px;

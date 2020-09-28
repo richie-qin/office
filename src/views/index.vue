@@ -9,14 +9,19 @@
       <div id="header-con">
         <div id="header-content">
           <div id="nav-logo">
-            <img src="../assets/image/nav_logo.png" alt />
+            <img src="../assets/image/nav_logo2.png" alt />
           </div>
           <div id="nav-data">
+            <router-link to="./" class="nav-item" style="font-weight: bold;">首页</router-link>
             <router-link to="./lookup" class="nav-item">写字楼</router-link>
             <router-link to="./lookup" class="nav-item">优选好房</router-link>
             <router-link to="./entrust" class="nav-item">委托找房</router-link>
             <router-link to="./throwIn" class="nav-item">投放房源</router-link>
             <router-link to="./mapLookup" class="nav-item">地图找房</router-link>
+          </div>
+          <div id="nav-phone">
+            <i class="el-icon-phone"></i>
+            <span>400-138-9996</span>
           </div>
         </div>
       </div>
@@ -160,7 +165,7 @@ export default {
   object-fit: cover;
 }
 #header-con {
-  height: 60px;
+  height: 80px;
   width: 100%;
   margin: auto;
   position: absolute;
@@ -170,7 +175,7 @@ export default {
   z-index: 10;
   #header-content {
     height: 100%;
-    width: 90%;
+    width: 1200px;
     min-width: 1200px;
     margin: 0 auto;
     display: flex;
@@ -178,21 +183,39 @@ export default {
     justify-content: space-between;
     #nav-logo {
       img {
-        width: 80px;
-        height: 28px;
+        width: auto;
+        height: 40px;
       }
     }
     #nav-data {
       display: flex;
       align-items: center;
       .nav-item {
+        padding: 8px 22px;
         color: #fff;
         font-size: 18px;
-        margin-left: 20px;
+        margin: 0 15px;
+        font-weight: 500;
+        border-radius: 20px;
         cursor: pointer;
         &:hover {
-          color: #17a1e6;
+          // color: #17a1e6;
+          background-color: #3F88FB;
         }
+      }
+    }
+    #nav-phone{
+      display: flex;
+      align-items: center;
+      i{
+        margin-right: 8px;
+        font-size: 22px;
+        color: #fff;
+      }
+      span{
+        font-size: 16px;
+        color: #fff;
+        font-weight: bold;
       }
     }
   }

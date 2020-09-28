@@ -8,7 +8,7 @@
     </div>
     <div id="business-box-zhaofang">
       <h3>免费委托找房</h3>
-      <p>一键提交需求，点点租帮您寻找最合适的办公室</p>
+      <p>一键提交需求，巧租帮您寻找最合适的办公室</p>
       <img src="../assets/image/business-require-icon.jpg" alt="" />
       <el-input
         type="textarea"

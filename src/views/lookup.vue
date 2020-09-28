@@ -2,7 +2,7 @@
   <!-- 找房 -->
   <div id="lookup">
     <black-nav></black-nav>
-    <search-nav></search-nav>
+    <search-nav @searchKey="searchKey"></search-nav>
     <div id="search-box">
       <div class="search-item">
         <div class="search-item-type">区域：</div>
@@ -170,6 +170,7 @@ export default {
         county: "全部", //区域搜索
         end: "", //截止面积
         start: "", //开始面积
+        bname:"",//搜索名字
       },
       dataList: [],
       allNum: 0,
@@ -205,7 +206,7 @@ export default {
         if (item.code == this.$route.params.code) {
           this.searchMap.start = item.start;
           this.searchMap.end = item.end;
-          this.regionIndex = index;
+          this.areaIndex = index;
           return;
         }
       });
@@ -213,6 +214,18 @@ export default {
     this.getBuilding();
   },
   methods: {
+    searchKey(key){//搜索
+      console.log("搜索key",key);
+      this.searchMap.bname = key;
+      this.regionIndex = -1;
+      this.areaIndex = -1;
+      this.page = 1;
+      this.county="", //区域搜索
+        this.end= "", //截止面积
+        this.start= "", //开始面积
+      this.getBuilding();
+
+    },
     clickRegion(index) {
       //点击区域
       this.regionIndex = index;

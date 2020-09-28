@@ -8,7 +8,7 @@
         <div id="content1-div4">粤ICP备14032837号</div>
     </div>
     <div id="content2">
-        <h3>关于点点租</h3>
+        <h3>关于巧租</h3>
         <div>关于我们</div>
         <div>团队招聘</div>
         <div>商务合作</div>

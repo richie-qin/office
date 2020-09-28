@@ -2,7 +2,7 @@
   <div id="house-box">
     <div id="house-left-box">
       <img
-        src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3380780980,2310670331&fm=26&gp=0.jpg"
+        :src="showImg(data)"
         alt
       />
     </div>
@@ -49,8 +49,16 @@ export default {
   created() {},
   methods: {
     toDetails() {
-      this.$router.push("./houseDetails");
+      let routeData = this.$router.resolve("./houseDetails");
+      window.open(routeData.href, '_blank');
     },
+    showImg(data){
+      if(data.image.length>0){
+        return data.images[0]
+      }else{
+        return require('../assets/image/none-img.png')
+      }
+    }
   },
 };
 </script>
@@ -83,7 +91,6 @@ export default {
     img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
     }
   }
   #house-center-box {

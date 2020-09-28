@@ -3,18 +3,18 @@
   <div id="houseDetails">
     <black-nav></black-nav>
     <search-nav></search-nav>
-    <div id="title-money">
+    <!-- <div id="title-money">
       <div id="title">南苏55（720全景VR看房）</div>
       <div id="money"><b>4~7.3</b>元/m²/天</div>
-    </div>
-    <div id="addr">
+    </div> -->
+    <!-- <div id="addr">
       <i class="el-icon-location-outline"></i>
       <span>浦东-陆家嘴 · 距离「2号线-东昌路站」约115米</span>
     </div>
     <div id="news">
       <i class="el-icon-time"></i>
       <span>2天前更新 · 近30天内共有13人关注</span>
-    </div>
+    </div> -->
     <div id="img-box">
       <div id="img-left">
         <el-carousel height="420px">
@@ -109,7 +109,7 @@
           <el-input placeholder="请输入内容" v-model="input10" clearable>
           </el-input>
           <el-button type="primary">立即预约</el-button>
-          <p>点点租承诺仅将你的联系方式用于找房服务</p>
+          <p>巧租承诺仅将你的联系方式用于找房服务</p>
         </div>
         <div id="tjfy">
           <h3><i></i>推荐房源</h3>
@@ -200,15 +200,18 @@ export default {
     }
   }
   #img-box {
-    height: 420px;
+    // height: 420px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: #fff;
-    margin: 0 calc(50% - 600px);
+    // margin: 0 calc(50% - 600px);
+    width: 100%;
+    padding:  25px calc(50% - 600px);
     border-radius: 5px;
     overflow: hidden;
-
+    background: #3d5a73;
+    color: #fff;
     #img-left {
       width: 820px;
       height: 100%;
@@ -234,7 +237,6 @@ export default {
         line-height: 88px;
         font-size: 12px;
         font-weight: 500;
-        color: #cc2929;
 
         b {
           font-size: 48px;
@@ -257,14 +259,12 @@ export default {
             line-height: 33px;
             font-size: 24px;
             font-weight: 500;
-            color: #000;
           }
         }
         .div2-item-bot {
           height: 17px;
           line-height: 17px;
           font-size: 12px;
-          color: #666;
         }
       }
       #img-right-div3 {
@@ -275,10 +275,8 @@ export default {
           margin-bottom: 10px;
           height: 17px;
           font-size: 12px;
-          color: #b2b2b2;
           span {
             font-size: 12px;
-            color: #4a4a4a;
             height: 17px;
           }
         }
@@ -293,7 +291,6 @@ export default {
           margin-left: 10px;
 
           #div-user-title {
-            color: #000000;
             font-size: 14px;
             font-weight: 600;
             line-height: 20px;
@@ -301,7 +298,6 @@ export default {
           p {
             line-height: 17px;
             font-size: 12px;
-            color: #b2b2b2;
           }
         }
         #user-btn {
