@@ -2,10 +2,10 @@
 <div id="search-nav">
       <div id="search-nav-left">
         <img src="../assets/image/nav_logo2.png" alt />
-        <span>合肥</span>
-        <div>去去去</div>
-        <div>去去去</div>
-        <div>去去去</div>
+        <!-- <span>合肥</span> -->
+        <div>写字楼</div>
+        <div>联合办公</div>
+        <div>优选好房</div>
       </div>
       <div id="search-nav-right">
         <el-input placeholder="请输入大厦名称" v-model="input4">

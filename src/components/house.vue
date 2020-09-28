@@ -7,18 +7,18 @@
       />
     </div>
     <div id="house-center-box">
-      <h3 @click="toDetails">浦东-陆家嘴 世界广场 1074㎡</h3>
-      <div class="house-info">
+      <h3 @click="toDetails">{{ data.county }}-{{ data.bname }}</h3>
+      <div class="house-info" v-show="data.bdesc">
         <i class="el-icon-info"></i>
-        <span>世界之窗 1074㎡ 约196-300人 精装</span>
+        <span>{{ data.bdesc }}</span>
       </div>
-      <div class="house-info">
+      <div class="house-info" v-show="data.address">
         <i class="el-icon-location-outline"></i>
-        <span>浦东-陆家嘴 · 距离「2号线-东昌路站」约115米</span>
+        <span>{{ data.address }}</span>
       </div>
-      <div class="house-info">
+      <div class="house-info" v-show="data.createtime">
         <i class="el-icon-time"></i>
-        <span>2天前更新 · 近30天内共有13人关注</span>
+        <span>发布时间：{{ data.createtime }}</span>
       </div>
       <div id="house-info-type">
         <span>近地铁</span>
@@ -28,15 +28,21 @@
       </div>
     </div>
     <div id="house-right-box">
-      <div id="house-m1"><b>21.23</b>万元/月</div>
-      <div id="house-m2">6.5元/m²/天</div>
+      <div id="house-m1" v-show="data.bproperty > 0">
+        <b>{{ data.bproperty }}</b
+        >元/m²/天
+      </div>
+      <div id="house-m1" v-show="!data.bproperty || data.bproperty <= 0">
+        暂无报价
+      </div>
+      <!-- <div id="house-m2">{{data.bproperty}}元/m²/天</div> -->
       <div id="house-info-btn" @click="toDetails">查看详情</div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  props: ['data'],
+  props: ["data"],
   data() {
     return {};
   },
@@ -44,11 +50,11 @@ export default {
   methods: {
     toDetails() {
       this.$router.push("./houseDetails");
-    }
-  }
+    },
+  },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 #house-box {
   width: 100%;
   height: 225px;
@@ -81,7 +87,7 @@ export default {
     }
   }
   #house-center-box {
-    width: 100%;
+    width: 450px;
     margin-left: 20px;
     h3 {
       color: #000;
@@ -98,6 +104,7 @@ export default {
       align-items: center;
       height: 19px;
       line-height: 19px;
+
       i {
         font-size: 19px;
         color: #b2b2b2;
@@ -108,6 +115,10 @@ export default {
         font-size: 14px;
         margin-left: 5px;
         display: inline-block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
       }
     }
     #house-info-type {

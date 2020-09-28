@@ -7,13 +7,21 @@
       <div class="search-item">
         <div class="search-item-type">区域：</div>
         <div class="search-item-data">
-          <div class="search-item-data-i" v-for="(item,index) in regionList" :key="index">{{item.name}}</div>
+          <div
+            class="search-item-data-i"
+            v-for="(item, index) in regionList"
+            :key="index"
+            @click="clickRegion(index)"
+            :class="{ 'activityData-i': regionIndex == index }"
+          >
+            {{ item.name }}
+          </div>
         </div>
       </div>
       <div class="search-item">
-        <div class="search-item-type">售价：</div>
+        <div class="search-item-type">单价：</div>
         <div class="search-item-data">
-          <div class="search-item-data-i" >100万以下</div>
+          <div class="search-item-data-i">100万以下</div>
           <div class="search-item-data-i">100-150万</div>
           <div class="search-item-data-i">150-200万</div>
           <div class="search-item-data-i">200-250万</div>
@@ -53,7 +61,15 @@
       <div class="search-item">
         <div class="search-item-type">面积：</div>
         <div class="search-item-data">
-          <div class="search-item-data-i" v-for="(item,index) in areaList" :key="index">{{item.name}}</div>
+          <div
+            class="search-item-data-i"
+            v-for="(item, index) in areaList"
+            :key="index"
+            @click="clickArea(index)"
+            :class="{ 'activityData-i': areaIndex == index }"
+          >
+            {{ item.name }}
+          </div>
           <div class="search-item-input-box">
             <input
               type="text"
@@ -74,36 +90,24 @@
         </div>
       </div>
       <div class="search-item">
-        <div class="search-item-type">房型：</div>
+        <div class="search-item-type">装修：</div>
         <div class="search-item-data">
-          <div class="search-item-data-i">一室</div>
-          <div class="search-item-data-i">二室</div>
-          <div class="search-item-data-i">三室</div>
-          <div class="search-item-data-i">四室</div>
-          <div class="search-item-data-i">五室</div>
-          <div class="search-item-data-i">五室以上</div>
-        </div>
-      </div>
-      <div class="search-item">
-        <div class="search-item-type">其他：</div>
-        <div class="search-item-data">
-            <el-checkbox-group v-model="checkList">
-                <el-checkbox label="近地铁"></el-checkbox>
-                <el-checkbox label="近学校"></el-checkbox>
-                <el-checkbox label="有电梯"></el-checkbox>
-                <el-checkbox label="安选验真" ></el-checkbox>
-            </el-checkbox-group>
+          <div class="search-item-data-i">装修不限</div>
+          <div class="search-item-data-i">豪装</div>
+          <div class="search-item-data-i">精装</div>
+          <div class="search-item-data-i">简装</div>
+          <div class="search-item-data-i">毛坯</div>
         </div>
       </div>
     </div>
     <div id="content-box">
       <div id="content-left-box">
         <div id="data-list-type">
-          <div class="data-list-type-item act-type-item">反反复复</div>
-          <div class="data-list-type-item">反反复复</div>
-          <div class="data-list-type-item">反反复复</div>
-          <div class="data-list-type-item">反反复复</div>
-          <div id="data-num">共4915套房源</div>
+          <div class="data-list-type-item act-type-item">全部房源</div>
+          <div class="data-list-type-item">最新</div>
+          <div class="data-list-type-item">热门</div>
+          <div class="data-list-type-item">热门</div>
+          <div id="data-num">共{{ allNum }}套房源</div>
         </div>
         <div>
           <house v-for="item in dataList" :key="item" :data="item"></house>
@@ -112,8 +116,10 @@
           <el-pagination
             background
             layout="prev, pager, next"
-            :page-size="8"
-            :total="25"
+            :current-page="page"
+            :page-size="size"
+            :total="allNum"
+            @current-change="handleCurrentChange"
           ></el-pagination>
         </div>
       </div>
@@ -125,7 +131,7 @@
           </div>
         </div>
         <div id="poster-hot-house">
-          <h3>热门大厦</h3>
+          <h3>热点楼盘</h3>
           <div id="hot-house-item" v-for="item in 5" :key="item">
             <img
               src="https://images.diandianzu.com/Public/Home/v5/images/listing/side_bg_mapsearch.png"
@@ -149,40 +155,100 @@
 </template>
 <script>
 import house from "../components/house";
-import{getBuilding} from "../api/index"
+import { getBuilding } from "../api/index";
 
 export default {
   components: { house },
   data() {
     return {
+      regionIndex: 0, //选择区域index
+      areaIndex: 0, //选择面积index
       money1: "",
       money2: "",
       checkList: [],
-      searchMap:{
-        county:"蜀山",//房源所在县镇
+      searchMap: {
+        county: "全部", //区域搜索
+        end: "", //截止面积
+        start: "", //开始面积
       },
-      dataList:[],
+      dataList: [],
+      allNum: 0,
+      page: 1,
+      size: 8,
     };
   },
-  computed:{
-    regionList(){
-      return this.$store.state.regionList
+  computed: {
+    regionList() {
+      //区域列表
+      return this.$store.state.regionList;
     },
-    areaList(){
-      return this.$store.state.areaList
+    areaList() {
+      //面积列表
+      return this.$store.state.areaList;
     },
   },
   created() {
     this.$store.commit("actNav", 2);
-    console.log("输出类型",this.$route.params.type)
-    getBuilding({page:1,size:10,searchMap:this.searchMap}).then(res=>{
-      console.log("楼宇数据",res)
-      if(res.code==20000){
-        this.dataList = res.data.rows
-      }
-    })
+    console.log(this.$route.params.type, this.$route.params.code);
+    if (this.$route.params.type == 1) {
+      //1:区域搜索
+      this.regionList.forEach((item, index) => {
+        if (item.code == this.$route.params.code) {
+          this.searchMap.county = item.name;
+          this.regionIndex = index;
+          return;
+        }
+      });
+    } else if (this.$route.params.type == 2) {
+      //2：面积搜索
+      this.areaList.forEach((item, index) => {
+        if (item.code == this.$route.params.code) {
+          this.searchMap.start = item.start;
+          this.searchMap.end = item.end;
+          this.regionIndex = index;
+          return;
+        }
+      });
+    }
+    this.getBuilding();
   },
-  methods: {},
+  methods: {
+    clickRegion(index) {
+      //点击区域
+      this.regionIndex = index;
+      this.page = 1; //恢复页码
+      this.searchMap.county = this.regionList[index].name;
+      this.getBuilding();
+    },
+    clickArea(index) {
+      //点击面积
+      this.areaIndex = index;
+      this.page = 1; //恢复页码
+      // this.searchMap.county = this.regionList[index].name;
+      if (index == 0) {
+          this.searchMap.start = "";
+          this.searchMap.end = "";
+      } else {
+          this.searchMap.start = this.areaList[index].start;
+          this.searchMap.end = this.areaList[index].end;
+      }
+      this.getBuilding();
+    },
+    handleCurrentChange(val) {
+      this.page = val;
+      this.getBuilding();
+    },
+    getBuilding() {
+      getBuilding(this.searchMap, { page: this.page, size: this.size }).then(
+        (res) => {
+          if (res.code == 20000) {
+            this.dataList = res.data.rows;
+            this.allNum = res.data.total;
+          }
+        }
+      );
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -203,8 +269,8 @@ export default {
     line-height: 35px;
     border-bottom: dashed 1px #aaa;
     padding: 10px 5px;
-    &:last-child{
-        border-bottom: none;
+    &:last-child {
+      border-bottom: none;
     }
     .search-item-type {
       font-size: 14px;
@@ -216,10 +282,10 @@ export default {
       align-items: center;
       padding-left: 20px;
       flex-wrap: wrap;
-        /deep/ .el-checkbox-group{
-            display: flex;
-            align-items: center;
-        }
+      /deep/ .el-checkbox-group {
+        display: flex;
+        align-items: center;
+      }
       .search-item-data-i {
         font-size: 13px;
         color: #333;
@@ -228,6 +294,9 @@ export default {
         &:hover {
           color: #cc2929;
         }
+      }
+      .activityData-i {
+        color: #cc2929;
       }
       .search-item-input-box {
         font-size: 12px;

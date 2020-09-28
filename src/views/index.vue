@@ -12,10 +12,10 @@
             <img src="../assets/image/nav_logo.png" alt />
           </div>
           <div id="nav-data">
-            <router-link to="./lookup" class="nav-item">找办公室</router-link>
+            <router-link to="./lookup" class="nav-item">写字楼</router-link>
+            <router-link to="./lookup" class="nav-item">优选好房</router-link>
             <router-link to="./entrust" class="nav-item">委托找房</router-link>
             <router-link to="./throwIn" class="nav-item">投放房源</router-link>
-            <router-link to="./gift" class="nav-item">企业礼包</router-link>
             <router-link to="./mapLookup" class="nav-item">地图找房</router-link>
           </div>
         </div>
