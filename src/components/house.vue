@@ -20,11 +20,8 @@
         <i class="el-icon-time"></i>
         <span>发布时间：{{ data.createtime }}</span>
       </div>
-      <div id="house-info-type">
-        <span>近地铁</span>
-        <span>近地铁</span>
-        <span>近地铁</span>
-        <span>近地铁</span>
+      <div id="house-info-type" v-show="data.label.length>0">
+        <span v-for="(item,index) in data.label" :key="index">{{item}}</span>
       </div>
     </div>
     <div id="house-right-box">
@@ -54,7 +51,7 @@ export default {
     },
     showImg(data){
       if(data.image.length>0){
-        return data.images[0]
+        return data.image[0]
       }else{
         return require('../assets/image/none-img.png')
       }
