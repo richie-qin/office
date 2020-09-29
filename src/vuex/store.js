@@ -35,6 +35,14 @@ const store = new Vuex.Store({
             {name:"300㎡-500㎡",start:"300",end:"500",code:"05"},
             {name:"500㎡-1000㎡",start:"500",end:"1000",code:"06"},
             {name:"1000㎡以上",start:"",end:"1000",code:"07"},
+        ],
+        buildList:[//建筑类型
+            {value:null,label:"全部"},
+            {value:1,label:"写字楼"},
+            {value:2,label:"公寓"},
+            {value:3,label:"商铺"},
+            {value:4,label:"厂房"},
+            {value:5,label:"园区"},
         ]
 
     },

@@ -118,7 +118,7 @@
   </div>
 </template>
 <script>
-// import{getBuilding} from "../api/index"
+import{getBuilding} from "../api/index"
 export default {
   data() {
     return {
@@ -140,7 +140,11 @@ export default {
     },
   },
   created() {
-    
+    getBuilding({
+      type:1
+    },{ page: 1, size: 10 }).then(res=>{
+      console.log(res)
+    })
   },
   methods: {
     goLookup(item,index){//index 1:区域搜索 2：面积搜素

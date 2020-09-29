@@ -89,14 +89,10 @@
           </div>
         </div>
       </div>
-      <div class="search-item">
-        <div class="search-item-type">装修：</div>
+      <div class="search-item" v-show="buildList.length>0">
+        <div class="search-item-type">类型：</div>
         <div class="search-item-data">
-          <div class="search-item-data-i">装修不限</div>
-          <div class="search-item-data-i">豪装</div>
-          <div class="search-item-data-i">精装</div>
-          <div class="search-item-data-i">简装</div>
-          <div class="search-item-data-i">毛坯</div>
+          <div class="search-item-data-i" @click="clickBuildType(index)" v-for="(item,index) in buildList" :key="index" :class="{ 'activityData-i': typeIndex == index }">{{item.label}}</div>
         </div>
       </div>
     </div>
@@ -163,6 +159,7 @@ export default {
     return {
       regionIndex: 0, //选择区域index
       areaIndex: 0, //选择面积index
+      typeIndex:0,//选择类型
       money1: "",
       money2: "",
       checkList: [],
@@ -171,6 +168,7 @@ export default {
         end: "", //截止面积
         start: "", //开始面积
         bname:"",//搜索名字
+        type:null,
       },
       dataList: [],
       allNum: 0,
@@ -186,6 +184,9 @@ export default {
     areaList() {
       //面积列表
       return this.$store.state.areaList;
+    },
+    buildList(){//楼宇类型
+      return this.$store.state.buildList;
     },
   },
   created() {
@@ -225,6 +226,17 @@ export default {
         this.start= "", //开始面积
       this.getBuilding();
 
+    },
+    clickBuildType(index){
+      // 点击类型
+      this.typeIndex = index;
+      this.page = 1; //恢复页码
+      if(index==0){
+        this.searchMap.type = null;
+      }else{
+        this.searchMap.type = this.buildList[index].value;
+      }
+      this.getBuilding();
     },
     clickRegion(index) {
       //点击区域

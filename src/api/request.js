@@ -1,19 +1,8 @@
 import axios from 'axios'
 
-function getCookie(objName) {//获取指定名称的cookie的值
-  var arrStr = document.cookie.split("; ");
-  for (var i = 0; i < arrStr.length; i++) {
-      var temp = arrStr[i].split("=");
-      if (temp[0] == objName) return unescape(temp[1]);  //解码
-  }
-  return "";
-}
-
-const TGT = getCookie("TGT")
-  
 // 根据环境不同引入不同api地址
 // create an axios instance
-var baseUrl = `//${location.hostname}`; //服务器地址
+var baseUrl = `http://47.94.5.59:9001`; //服务器地址
 if (location.hostname == "localhost") {
   baseUrl = "/api";
 }
@@ -21,8 +10,7 @@ if (location.hostname == "localhost") {
 const service = axios.create({
   baseURL: baseUrl, // url = base api url + request url
   withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000, // request timeout
-  headers:{WEBTGT:TGT}
+  timeout: 10000, // request timeout
 })
 
 // request拦截器 request interceptor
