@@ -3,7 +3,7 @@
     <div id="content1">
         <img id="content1-img" src="../assets/image/nav_logo.png" alt="">
         <div id="content1-div1">© 2014-2020</div>
-        <div id="content1-div2">深圳爱布丁梦想科技有限公司</div>
+        <div id="content1-div2">青岛归山网络科技有限公司</div>
         <div id="content1-div3"> All Rights Reserved.</div>
         <div id="content1-div4">粤ICP备14032837号</div>
     </div>

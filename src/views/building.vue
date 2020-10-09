@@ -1,5 +1,5 @@
 <template>
-  <!-- 找房 -->
+  <!-- 楼宇 -->
   <div id="lookup">
     <black-nav></black-nav>
     <search-nav @searchKey="searchKey"></search-nav>

@@ -13,11 +13,19 @@ const routes = [
     }
   },
   {
-    path: '/lookup',
-    name: 'lookup',
-    component: () => import('../views/lookup.vue'),
+    path: '/building',
+    name: 'building',
+    component: () => import('../views/building.vue'),
     meta:{
-      title: '找办公室'
+      title: '楼宇'
+    }
+  },
+  {
+    path: '/resource',
+    name: 'resource',
+    component: () => import('../views/resource.vue'),
+    meta:{
+      title: '房源'
     }
   },
   {
