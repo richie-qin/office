@@ -2,11 +2,10 @@
   <div id="black-nav">
         <div id="nav-left">
             <router-link to="./index" class="nav-l-item" :class="{'activityNav':activityNav==1}">首页</router-link>
-            <router-link to="./edificeDetails" class="nav-l-item" :class="{'activityNav':activityNav==2}">写字楼</router-link>
-            <router-link to="./houseDetails" class="nav-l-item" :class="{'activityNav':activityNav==7}">优选好房</router-link>
-            <router-link to="./entrust" class="nav-l-item" :class="{'activityNav':activityNav==3}">委托找房</router-link>
-            <router-link to="./throwIn" class="nav-l-item" :class="{'activityNav':activityNav==4}">投放房源</router-link>
-            <!-- <router-link to="./gift" class="nav-l-item" :class="{'activityNav':activityNav==5}">企业礼包</router-link> -->
+            <router-link to="./building" class="nav-l-item" :class="{'activityNav':activityNav==2}">写字楼</router-link>
+            <router-link to="./resource" class="nav-l-item" :class="{'activityNav':activityNav==3}">优选好房</router-link>
+            <router-link to="./entrust" class="nav-l-item" :class="{'activityNav':activityNav==4}">委托找房</router-link>
+            <router-link to="./throwIn" class="nav-l-item" :class="{'activityNav':activityNav==5}">投放房源</router-link>
             <router-link to="./mapLookup" class="nav-l-item" :class="{'activityNav':activityNav==6}">地图找房</router-link>
         </div>
         <div id="nav-right">

@@ -1,6 +1,6 @@
 <template>
   <!-- 楼宇 -->
-  <div id="lookup">
+  <div id="build">
     <black-nav></black-nav>
     <search-nav @searchKey="searchKey"></search-nav>
     <div id="search-box">
@@ -105,10 +105,13 @@
           <div class="data-list-type-item">热门</div>
           <div id="data-num">共{{ allNum }}套房源</div>
         </div>
-        <div>
-          <house v-for="item in dataList" :key="item" :data="item"></house>
+        <div v-show="dataList.length>0" id="haveList">
+          <buildItem v-for="item in dataList" :key="item" :data="item"></buildItem>
         </div>
-        <div id="data-pagination">
+        <div v-show="dataList.length==0" id="noneList">
+          暂无数据~
+        </div>
+        <div id="data-pagination" v-show="allNum>size">
           <el-pagination
             background
             layout="prev, pager, next"
@@ -150,11 +153,11 @@
   </div>
 </template>
 <script>
-import house from "../components/house";
+import build from "../components/build";
 import { getBuilding } from "../api/index";
 
 export default {
-  components: { house },
+  components: { buildItem:build },
   data() {
     return {
       regionIndex: 0, //选择区域index
@@ -277,7 +280,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-#lookup {
+#build {
   width: 100%;
   background: #fff;
 }
@@ -392,6 +395,16 @@ export default {
         font-size: 14px;
         line-height: 50px;
       }
+    }
+    #haveList{
+      margin-bottom: 30px;
+    }
+    #noneList{
+      height: 300px;
+      line-height: 300px;
+      font-size: 20px;
+      color: #888;
+      text-align: center;
     }
     #data-pagination {
       text-align: right;

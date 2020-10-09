@@ -18,26 +18,27 @@
     <div id="img-box">
       <div id="img-left">
         <el-carousel height="420px">
-          <el-carousel-item v-for="item in swipers" :key="item">
-            <img :src="item.src" alt="" />
+          <el-carousel-item v-for="(item,index) in details.image" :key="index">
+            <img :src="item" alt="" />
           </el-carousel-item>
         </el-carousel>
       </div>
       <div id="img-right">
         <div id="img-right-div1">
-          <b>15.6</b>万元/月<span>单价3.8元/㎡/天</span>
+          <b>{{details.month_rent}}</b>万元/月
+          <!-- <span>单价3.8元/㎡/天</span> -->
         </div>
         <div id="img-right-div2">
           <div class="div2-item">
-            <div class="div2-item-top">1350㎡</div>
+            <div class="div2-item-top">{{details.square}}㎡</div>
             <div class="div2-item-bot">建筑面积</div>
           </div>
           <div class="div2-item">
-            <div class="div2-item-top">130~200人</div>
-            <div class="div2-item-bot">可容纳工位数</div>
+            <div class="div2-item-top">{{details.floor}}</div>
+            <div class="div2-item-bot">房屋所在楼层</div>
           </div>
           <div class="div2-item">
-            <div class="div2-item-top">毛胚</div>
+            <div class="div2-item-top">{{details.renovation}}</div>
             <div class="div2-item-bot">装修程度</div>
           </div>
         </div>
@@ -51,14 +52,14 @@
           <div style="display: flex;align-items: center;">
             <img src="../assets/image/act-wx.png" alt="" />
             <div id="img-right-div4-user">
-              <p id="div-user-title">李嘉诚</p>
-              <p>远中产业园</p>
-              <p>专属服务顾问</p>
+              <p id="div-user-title">{{details.name}}</p>
+              <p>{{details.relation}}</p>
+              <p>{{details.look_way}}</p>
             </div>
           </div>
           <div id="user-btn">
             <el-button type="primary" icon="el-icon-phone-outline"
-              >13333333333</el-button
+              >{{details.phone}}</el-button
             >
           </div>
         </div>
@@ -124,6 +125,7 @@
   </div>
 </template>
 <script>
+import {getResourceDetails} from "../api/index"
 export default {
   data() {
     return {
@@ -132,11 +134,17 @@ export default {
         { src: require("../assets/image/swiper2.jpg") },
         { src: require("../assets/image/swiper3.jpg") }
       ],
-      input10: ""
+      input10: "",
+      details:{}
     };
   },
   created() {
     this.$store.commit("actNav", 2);
+    getResourceDetails(this.$route.query.id).then(res=>{
+      if(res.code == 20000){
+        this.details = res.data
+      }
+    })
   },
   methods: {}
 };

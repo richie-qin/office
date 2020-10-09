@@ -1,5 +1,5 @@
 <template>
-  <!-- 房子详情 -->
+  <!-- 楼宇详情 -->
   <div id="edificeDetails">
     <black-nav></black-nav>
     <search-nav></search-nav>

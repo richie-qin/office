@@ -7,32 +7,33 @@
       />
     </div>
     <div id="house-center-box">
-      <h3 @click="toDetails">{{ data.county }}-{{ data.house_title }}</h3>
-      <div class="house-info" v-show="data.floor||data.square">
+      <h3 @click="toDetails">{{ data.county }}-{{ data.bname }}</h3>
+      <div class="house-info" v-show="data.bdesc">
         <i class="el-icon-info"></i>
-        <span>{{ data.floor }}楼  {{data.square}}㎡</span>
+        <span>{{ data.bdesc }}</span>
       </div>
       <div class="house-info" v-show="data.address">
         <i class="el-icon-location-outline"></i>
         <span>{{ data.address }}</span>
       </div>
-      <div class="house-info" >
+      <div class="house-info" v-show="data.createtime">
         <i class="el-icon-time"></i>
-        <span>发布时间：{{ data.bailor_time.split(" ")[0] }}</span>
+        <span>发布时间：{{ data.createtime }}</span>
       </div>
-      <div id="house-info-type">
+      <div id="house-info-type" v-show="data.label.length>0">
         <span v-for="(item,index) in data.label" :key="index">{{item}}</span>
       </div>
     </div>
     <div id="house-right-box">
-      <div id="house-m1" v-show="data.month_rent > 0">
-        <b>{{ data.month_rent }}</b
-        >元/m²/月
+      <div id="house-m1" v-show="data.bproperty > 0">
+        <b>{{ data.bproperty }}</b
+        >元/m²/天
       </div>
-      <div id="house-m1" v-show="!data.month_rent || data.month_rent <= 0">
+      <div id="house-m1" v-show="!data.bproperty || data.bproperty <= 0">
         暂无报价
       </div>
-      <div id="house-info-btn" @click="toDetails(data.id)">查看详情</div>
+      <!-- <div id="house-m2">{{data.bproperty}}元/m²/天</div> -->
+      <div id="house-info-btn" @click="toDetails">查看详情</div>
     </div>
   </div>
 </template>
@@ -44,8 +45,8 @@ export default {
   },
   created() {},
   methods: {
-    toDetails(id) {
-      let routeData = this.$router.resolve({path:`./houseDetails?id=${id}`});
+    toDetails() {
+      let routeData = this.$router.resolve("./edificeDetails");
       window.open(routeData.href, '_blank');
     },
     showImg(data){

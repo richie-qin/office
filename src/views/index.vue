@@ -13,8 +13,8 @@
           </div>
           <div id="nav-data">
             <router-link to="./" class="nav-item" style="font-weight: bold;">首页</router-link>
-            <router-link to="./edificeDetails" class="nav-item">找写字楼</router-link>
-            <router-link to="./houseDetails" class="nav-item">找办公室</router-link>
+            <router-link to="./building" class="nav-item">找写字楼</router-link>
+            <router-link to="./resource" class="nav-item">找办公室</router-link>
             <router-link to="./entrust" class="nav-item">委托找房</router-link>
             <router-link to="./throwIn" class="nav-item">投放房源</router-link>
             <router-link to="./mapLookup" class="nav-item">地图找房</router-link>
