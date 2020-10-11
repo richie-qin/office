@@ -21,6 +21,15 @@ export function getResource(data,number){
   })
 }
 
+// 房源详情
+export function getBuildingDetails(id){
+  return request({
+    url: `/rent/building/${id}`,
+    method: 'get',
+  })
+}
+
+// 房源详情
 export function getResourceDetails(id){
   return request({
     url: `/rent/resource/${id}`,

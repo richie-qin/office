@@ -18,7 +18,7 @@
           </div>
         </div>
       </div>
-      <div class="search-item">
+      <!-- <div class="search-item">
         <div class="search-item-type">单价：</div>
         <div class="search-item-data">
           <div class="search-item-data-i">100万以下</div>
@@ -57,8 +57,8 @@
             <button>确定</button>
           </div>
         </div>
-      </div>
-      <div class="search-item">
+      </div> -->
+      <!-- <div class="search-item">
         <div class="search-item-type">面积：</div>
         <div class="search-item-data">
           <div
@@ -88,30 +88,66 @@
             <button>确定</button>
           </div>
         </div>
-      </div>
-      <div class="search-item" v-show="buildList.length>0">
+      </div> -->
+      <div class="search-item" v-show="buildList.length > 0">
         <div class="search-item-type">类型：</div>
         <div class="search-item-data">
-          <div class="search-item-data-i" @click="clickBuildType(index)" v-for="(item,index) in buildList" :key="index" :class="{ 'activityData-i': typeIndex == index }">{{item.label}}</div>
+          <div
+            class="search-item-data-i"
+            @click="clickBuildType(index)"
+            v-for="(item, index) in buildList"
+            :key="index"
+            :class="{ 'activityData-i': typeIndex == index }"
+          >
+            {{ item.label }}
+          </div>
         </div>
       </div>
     </div>
     <div id="content-box">
       <div id="content-left-box">
         <div id="data-list-type">
-          <div class="data-list-type-item act-type-item">全部房源</div>
-          <div class="data-list-type-item">最新</div>
-          <div class="data-list-type-item">热门</div>
-          <div class="data-list-type-item">热门</div>
+          <div
+            class="data-list-type-item"
+            :class="{ 'act-type-item': moldIndex == 0 }"
+            @click="changeMold(0)"
+          >
+            全部房源
+          </div>
+          <div
+            class="data-list-type-item"
+            :class="{ 'act-type-item': moldIndex == 1 }"
+            @click="changeMold(1)"
+          >
+            推荐
+          </div>
+          <div
+            class="data-list-type-item"
+            :class="{ 'act-type-item': moldIndex == 2 }"
+            @click="changeMold(2)"
+          >
+            最新
+          </div>
+          <div
+            class="data-list-type-item"
+            :class="{ 'act-type-item': moldIndex == 3 }"
+            @click="changeMold(3)"
+          >
+            热门
+          </div>
           <div id="data-num">共{{ allNum }}套房源</div>
         </div>
-        <div v-show="dataList.length>0" id="haveList">
-          <buildItem v-for="item in dataList" :key="item" :data="item"></buildItem>
+        <div v-show="dataList.length > 0" id="haveList">
+          <buildItem
+            v-for="item in dataList"
+            :key="item"
+            :data="item"
+          ></buildItem>
         </div>
-        <div v-show="dataList.length==0" id="noneList">
+        <div v-show="dataList.length == 0" id="noneList">
           暂无数据~
         </div>
-        <div id="data-pagination" v-show="allNum>size">
+        <div id="data-pagination" v-show="allNum > size">
           <el-pagination
             background
             layout="prev, pager, next"
@@ -146,7 +182,7 @@
         <div id="poster-entrust">
           <h3>委托找房</h3>
           <div id="poster-entrust-text1">10分钟快速响应</div>
-          <div id="poster-entrust-btn">立即委托</div>
+          <div id="poster-entrust-btn" @click="$router.push('./entrust')">立即委托</div>
         </div>
       </div>
     </div>
@@ -157,12 +193,13 @@ import build from "../components/build";
 import { getBuilding } from "../api/index";
 
 export default {
-  components: { buildItem:build },
+  components: { buildItem: build },
   data() {
     return {
       regionIndex: 0, //选择区域index
       areaIndex: 0, //选择面积index
-      typeIndex:0,//选择类型
+      typeIndex: 0, //选择类型
+      moldIndex: 0, //选择最新或最热
       money1: "",
       money2: "",
       checkList: [],
@@ -170,13 +207,16 @@ export default {
         county: "全部", //区域搜索
         end: "", //截止面积
         start: "", //开始面积
-        bname:"",//搜索名字
-        type:null,
+        bname: "", //搜索名字
+        type: null,
+        hot: null, //最热
+        newest: null, //最新
+        recommend: null //推荐
       },
       dataList: [],
       allNum: 0,
       page: 1,
-      size: 8,
+      size: 8
     };
   },
   computed: {
@@ -188,9 +228,10 @@ export default {
       //面积列表
       return this.$store.state.areaList;
     },
-    buildList(){//楼宇类型
+    buildList() {
+      //楼宇类型
       return this.$store.state.buildList;
-    },
+    }
   },
   created() {
     this.$store.commit("actNav", 2);
@@ -218,25 +259,43 @@ export default {
     this.getBuilding();
   },
   methods: {
-    searchKey(key){//搜索
-      console.log("搜索key",key);
-      this.searchMap.bname = key;
-      this.regionIndex = -1;
-      this.areaIndex = -1;
-      this.page = 1;
-      this.county="", //区域搜索
-        this.end= "", //截止面积
-        this.start= "", //开始面积
+    changeMold(index) {
+      //选择最新最热
+      this.moldIndex = index;
+      this.searchMap.hot = null;
+      this.searchMap.newest = null;
+      this.searchMap.recommend = null;
+      if (index == 1) {
+        this.searchMap.recommend = 1;
+      } else if (index == 2) {
+        this.searchMap.newest = 1;
+      } else if (index == 3) {
+        this.searchMap.hot = 1;
+      }
       this.getBuilding();
-
     },
-    clickBuildType(index){
+    searchKey(key) {
+      //搜索
+      this.searchMap.bname = key;
+      this.regionIndex = 0;
+      this.areaIndex = 0;
+      this.page = 1;
+      (this.searchMap.county = ""), //区域搜索
+        (this.searchMap.end = ""), //截止面积
+        (this.searchMap.start = ""), //开始面积
+        this.getBuilding();
+    },
+    clickBuildType(index) {
       // 点击类型
       this.typeIndex = index;
       this.page = 1; //恢复页码
-      if(index==0){
+      this.moldIndex = 0;
+      this.searchMap.hot = null;
+      this.searchMap.newest = null;
+      this.searchMap.recommend = null;
+      if (index == 0) {
         this.searchMap.type = null;
-      }else{
+      } else {
         this.searchMap.type = this.buildList[index].value;
       }
       this.getBuilding();
@@ -246,6 +305,10 @@ export default {
       this.regionIndex = index;
       this.page = 1; //恢复页码
       this.searchMap.county = this.regionList[index].name;
+      this.moldIndex = 0;
+      this.searchMap.hot = null;
+      this.searchMap.newest = null;
+      this.searchMap.recommend = null;
       this.getBuilding();
     },
     clickArea(index) {
@@ -254,11 +317,11 @@ export default {
       this.page = 1; //恢复页码
       // this.searchMap.county = this.regionList[index].name;
       if (index == 0) {
-          this.searchMap.start = "";
-          this.searchMap.end = "";
+        this.searchMap.start = "";
+        this.searchMap.end = "";
       } else {
-          this.searchMap.start = this.areaList[index].start;
-          this.searchMap.end = this.areaList[index].end;
+        this.searchMap.start = this.areaList[index].start;
+        this.searchMap.end = this.areaList[index].end;
       }
       this.getBuilding();
     },
@@ -268,15 +331,15 @@ export default {
     },
     getBuilding() {
       getBuilding(this.searchMap, { page: this.page, size: this.size }).then(
-        (res) => {
+        res => {
           if (res.code == 20000) {
             this.dataList = res.data.rows;
             this.allNum = res.data.total;
           }
         }
       );
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -381,9 +444,9 @@ export default {
         font-size: 14px;
         display: inline-block;
         cursor: pointer;
-        &:hover {
-          color: #17a1e6;
-        }
+        // &:hover {
+        //   color: #17a1e6;
+        // }
       }
       .act-type-item {
         background: #17a1e6;
@@ -396,10 +459,10 @@ export default {
         line-height: 50px;
       }
     }
-    #haveList{
+    #haveList {
       margin-bottom: 30px;
     }
-    #noneList{
+    #noneList {
       height: 300px;
       line-height: 300px;
       font-size: 20px;
@@ -520,6 +583,7 @@ export default {
         text-align: center;
         background: #17a1e6;
         border-radius: 4px;
+        cursor: pointer;
       }
     }
   }

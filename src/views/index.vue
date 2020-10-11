@@ -148,7 +148,7 @@ export default {
   },
   methods: {
     goLookup(item,index){//index 1:区域搜索 2：面积搜素
-        this.$router.push({name:"lookup",params:{type:index,code:item.code}})
+        this.$router.push({name:"building",params:{type:index,code:item.code}})
     }
   }
 };

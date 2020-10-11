@@ -25,15 +25,15 @@
       </div>
     </div>
     <div id="house-right-box">
-      <div id="house-m1" v-show="data.bproperty > 0">
-        <b>{{ data.bproperty }}</b
+      <div id="house-m1" v-show="data.price">
+        <b>{{ data.price }}</b
         >元/m²/天
       </div>
-      <div id="house-m1" v-show="!data.bproperty || data.bproperty <= 0">
+      <div id="house-m1" v-show="!data.price">
         暂无报价
       </div>
       <!-- <div id="house-m2">{{data.bproperty}}元/m²/天</div> -->
-      <div id="house-info-btn" @click="toDetails">查看详情</div>
+      <div id="house-info-btn" @click="toDetails(data.id)">查看详情</div>
     </div>
   </div>
 </template>
@@ -45,8 +45,8 @@ export default {
   },
   created() {},
   methods: {
-    toDetails() {
-      let routeData = this.$router.resolve("./edificeDetails");
+    toDetails(id) {
+      let routeData = this.$router.resolve({path:`./edificeDetails?id=${id}`});
       window.open(routeData.href, '_blank');
     },
     showImg(data){

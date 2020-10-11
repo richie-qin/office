@@ -35,7 +35,7 @@ export default {
   watch:{
     input4(val){
       if(val==""){
-        console.log("违抗")
+        this.$emit('searchKey',"")
       }
     }
   }
