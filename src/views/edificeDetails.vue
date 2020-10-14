@@ -6,35 +6,51 @@
     <div id="img-box">
       <div id="img-left">
         <el-carousel height="420px">
-          <el-carousel-item v-for="(item,index) in details.image" :key="index">
+          <el-carousel-item v-for="(item, index) in details.image" :key="index">
             <img :src="item" alt="" />
           </el-carousel-item>
         </el-carousel>
       </div>
       <div id="img-right">
         <div id="img-right-div1">
-          <b>{{details.bname}}</b>
-          <p> <span>{{details.bproperty}}</span> 元/㎡/天</p>
+          <b>{{ details.bname }}</b>
+          <p>
+            <span>{{ details.bproperty }}</span> 元/㎡/天
+          </p>
         </div>
         <div id="img-right-div2">
           <div class="div2-item">
-            <div class="div2-item-top">{{details.floor_number||"暂无数据"}}楼</div>
+            <div class="div2-item-top">
+              {{ details.floor_number || "暂无数据" }}楼
+            </div>
             <div class="div2-item-bot">楼层数量</div>
           </div>
           <div class="div2-item">
-            <div class="div2-item-top">{{details.car_number||"暂无数据"}}</div>
+            <div class="div2-item-top">
+              {{ details.car_number || "暂无数据" }}
+            </div>
             <div class="div2-item-bot">车位数量</div>
           </div>
           <div class="div2-item">
-            <div class="div2-item-top">{{details.renovation||"暂无数据"}}</div>
+            <div class="div2-item-top">
+              {{ details.renovation || "暂无数据" }}
+            </div>
             <div class="div2-item-bot">装修程度</div>
           </div>
         </div>
         <div id="img-right-div3">
-          <div v-show="details.county"><span>区域：</span>{{details.county}}</div>
-          <div v-show="details.address"><span>详细地址：</span>{{details.address}}</div>
-          <div v-show="details.enter"><span>入住企业：</span>{{details.enter}}</div>
-          <div v-show="details.bdesc"><span>描述：</span>{{details.bdesc}}</div>
+          <div v-show="details.county">
+            <span>区域：</span>{{ details.county }}
+          </div>
+          <div v-show="details.address">
+            <span>详细地址：</span>{{ details.address }}
+          </div>
+          <div v-show="details.enter">
+            <span>入住企业：</span>{{ details.enter }}
+          </div>
+          <div v-show="details.bdesc">
+            <span>描述：</span>{{ details.bdesc }}
+          </div>
         </div>
         <div id="img-right-div4">
           <!-- <div style="display: flex;align-items: center;">
@@ -91,6 +107,19 @@
             <div class="base-info-content">3213123123</div>
           </div>
         </div>
+        <baidu-map :center="center" :zoom="zoom" @ready="handler" class="bm-view">
+          <!-- 缩放 -->
+          <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+          <!-- 定位 -->
+          <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
+          <!-- 点 -->
+          <bm-marker :position="{lng: center.lng, lat: center.lat}" :dragging="false" @click="infoWindowOpen" animation="BMAP_ANIMATION_BOUNCE">
+            <!-- 备注 -->
+            <bm-label :content="buildName" :labelStyle="{color: 'red', fontSize : '16px'}" :offset="{width: -35, height: 30}"/>
+            <!-- 弹出框 -->
+            <bm-info-window :show="show" @close="infoWindowClose" @open="infoWindowOpen">我爱北京天安门</bm-info-window>
+          </bm-marker>
+        </baidu-map>
       </div>
       <div id="right-info-box">
         <div id="ljyy">
@@ -113,31 +142,50 @@
   </div>
 </template>
 <script>
-import {getBuildingDetails} from "../api/index"
+import { getBuildingDetails } from "../api/index";
 export default {
   data() {
     return {
       swipers: [
         { src: require("../assets/image/swiper1.jpg") },
         { src: require("../assets/image/swiper2.jpg") },
-        { src: require("../assets/image/swiper3.jpg") }
+        { src: require("../assets/image/swiper3.jpg") },
       ],
       input10: "",
-      details:{}
+      details: {},
+      center: {lng: 117.233725, lat: 31.827},
+      zoom: 15,
+      buildName:"合肥市中心",
+      show:false,
     };
   },
   created() {
     this.$store.commit("actNav", 2);
-    getBuildingDetails(this.$route.query.id).then(res=>{
-      if(res.code == 20000){
-        this.details = res.data
+    getBuildingDetails(this.$route.query.id).then((res) => {
+      if (res.code == 20000) {
+        this.details = res.data;
       }
-    })
+    });
   },
-  methods: {}
+  mounted() {
+  },
+  methods: {
+    handler ({BMap, map}) {
+      console.log(BMap, map)
+      // this.center.lng = 116.404
+      // this.center.lat = 39.915
+      // this.zoom = 15
+    },
+    infoWindowClose () {
+      this.show = false
+    },
+    infoWindowOpen () {
+      this.show = true
+    }
+  },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 #houseDetails {
   width: 100%;
   background: #f7f7f7;
@@ -203,7 +251,7 @@ export default {
     background: #fff;
     // margin: 0 calc(50% - 600px);
     width: 100%;
-    padding:  25px calc(50% - 600px);
+    padding: 25px calc(50% - 600px);
     border-radius: 5px;
     overflow: hidden;
     background: #3d5a73;
@@ -241,7 +289,7 @@ export default {
         p {
           margin: 10px 0;
           font-size: 18px;
-          span{
+          span {
             font-size: 34px;
           }
         }
@@ -414,7 +462,7 @@ export default {
           font-size: 12px;
         }
       }
-      #tjfy{
+      #tjfy {
         text-align: center;
         border-bottom: solid 1px #ebebeb;
         padding-bottom: 30px;
@@ -436,23 +484,23 @@ export default {
             vertical-align: bottom;
           }
         }
-        #tjfy-content{
+        #tjfy-content {
           display: flex;
           justify-content: space-between;
           align-items: center;
           flex-wrap: wrap;
-          div{
+          div {
             width: 160px;
             height: 160px;
-            border:solid 1px #eee;
+            border: solid 1px #eee;
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
-            p{
+            p {
               box-sizing: border-box;
               position: absolute;
               bottom: 0;
-              left:0;
+              left: 0;
               display: block;
               width: 160px;
               height: 25px;
@@ -460,12 +508,16 @@ export default {
               padding: 0 10px;
               font-size: 14px;
               color: #fff;
-              background: rgba(0,0,0,0.5);
+              background: rgba(0, 0, 0, 0.5);
             }
           }
         }
       }
     }
   }
+}
+.bm-view {
+  width: 100%;
+  height: 300px;
 }
 </style>
