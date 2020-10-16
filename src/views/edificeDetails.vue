@@ -107,19 +107,7 @@
             <div class="base-info-content">3213123123</div>
           </div>
         </div>
-        <baidu-map :center="center" :zoom="zoom" @ready="handler" class="bm-view">
-          <!-- 缩放 -->
-          <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
-          <!-- 定位 -->
-          <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
-          <!-- 点 -->
-          <bm-marker :position="{lng: center.lng, lat: center.lat}" :dragging="false" @click="infoWindowOpen" animation="BMAP_ANIMATION_BOUNCE">
-            <!-- 备注 -->
-            <bm-label :content="buildName" :labelStyle="{color: 'red', fontSize : '16px'}" :offset="{width: -35, height: 30}"/>
-            <!-- 弹出框 -->
-            <bm-info-window :show="show" @close="infoWindowClose" @open="infoWindowOpen">我爱北京天安门</bm-info-window>
-          </bm-marker>
-        </baidu-map>
+        <mapItem></mapItem>
       </div>
       <div id="right-info-box">
         <div id="ljyy">
@@ -143,7 +131,9 @@
 </template>
 <script>
 import { getBuildingDetails } from "../api/index";
+import mapItem from "../components/mapItem"
 export default {
+  components:{mapItem},
   data() {
     return {
       swipers: [
@@ -153,10 +143,6 @@ export default {
       ],
       input10: "",
       details: {},
-      center: {lng: 117.233725, lat: 31.827},
-      zoom: 15,
-      buildName:"合肥市中心",
-      show:false,
     };
   },
   created() {
@@ -176,12 +162,6 @@ export default {
       // this.center.lat = 39.915
       // this.zoom = 15
     },
-    infoWindowClose () {
-      this.show = false
-    },
-    infoWindowOpen () {
-      this.show = true
-    }
   },
 };
 </script>
@@ -516,8 +496,5 @@ export default {
     }
   }
 }
-.bm-view {
-  width: 100%;
-  height: 300px;
-}
+
 </style>
