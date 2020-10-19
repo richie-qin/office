@@ -6,7 +6,7 @@
     <div id="img-box">
       <div id="img-left">
         <el-carousel height="420px">
-          <el-carousel-item v-for="(item, index) in details.image" :key="index">
+          <el-carousel-item v-for="(item, index) in swiperImg(details.image)" :key="index">
             <img :src="item" alt="" />
           </el-carousel-item>
         </el-carousel>
@@ -15,13 +15,13 @@
         <div id="img-right-div1">
           <b>{{ details.bname }}</b>
           <p>
-            <span>{{ details.bproperty }}</span> 元/㎡/天
+            <span>{{ details.price }}</span> 元/㎡/天
           </p>
         </div>
         <div id="img-right-div2">
           <div class="div2-item">
             <div class="div2-item-top">
-              {{ details.floor_number || "暂无数据" }}楼
+              {{ details.floor_number || "暂无数据" }}{{details.floor_number?"楼":""}}
             </div>
             <div class="div2-item-bot">楼层数量</div>
           </div>
@@ -42,14 +42,14 @@
           <div v-show="details.county">
             <span>区域：</span>{{ details.county }}
           </div>
-          <div v-show="details.address">
-            <span>详细地址：</span>{{ details.address }}
+          <div>
+            <span>详细地址：</span>{{ details.address||"无" }}
           </div>
-          <div v-show="details.enter">
-            <span>入住企业：</span>{{ details.enter }}
+          <div>
+            <span>入住企业：</span>{{ details.enter||"无" }}
           </div>
-          <div v-show="details.bdesc">
-            <span>描述：</span>{{ details.bdesc }}
+          <div>
+            <span>描述：</span>{{ details.bdesc||"无" }}
           </div>
         </div>
         <div id="img-right-div4">
@@ -156,6 +156,13 @@ export default {
   mounted() {
   },
   methods: {
+    swiperImg(arr){
+      if(arr&&arr.length>0){
+        return arr
+      }else{
+        return [require("../assets/image/none-img.png")]
+      }
+    },
     handler ({BMap, map}) {
       console.log(BMap, map)
       // this.center.lng = 116.404
@@ -244,7 +251,7 @@ export default {
       .el-carousel__item img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        // object-fit: cover;
       }
     }
     #img-right {
@@ -312,7 +319,7 @@ export default {
       }
       #img-right-div4 {
         padding: 10px 0;
-        border-bottom: solid 1px #ebebeb;
+        // border-bottom: solid 1px #ebebeb;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -330,8 +337,14 @@ export default {
           }
         }
         #user-btn {
-          font-size: 12px;
           margin: 0 auto;
+          width: 80%;
+          /deep/ button{
+            width: 100%;
+            height: 60px;
+            font-size: 18px;
+
+          }
         }
       }
     }
