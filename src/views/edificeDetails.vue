@@ -6,90 +6,142 @@
     <div id="img-box">
       <div id="img-left">
         <el-carousel height="420px">
-          <el-carousel-item v-for="(item, index) in swiperImg(details.image)" :key="index">
+          <el-carousel-item
+            v-for="(item, index) in swiperImg(details.image)"
+            :key="index"
+          >
             <img :src="item" alt="" />
           </el-carousel-item>
         </el-carousel>
       </div>
       <div id="img-right">
-        <div id="img-right-div1">
-          <b>{{ details.bname }}</b>
-          <p>
-            <span>{{ details.price }}</span> 元/㎡/天
-          </p>
-        </div>
-        <div id="img-right-div2">
-          <div class="div2-item">
-            <div class="div2-item-top">
-              {{ details.floor_number || "暂无数据" }}{{details.floor_number?"楼":""}}
-            </div>
-            <div class="div2-item-bot">楼层数量</div>
-          </div>
-          <div class="div2-item">
-            <div class="div2-item-top">
-              {{ details.car_number || "暂无数据" }}
-            </div>
-            <div class="div2-item-bot">车位数量</div>
-          </div>
-          <div class="div2-item">
-            <div class="div2-item-top">
-              {{ details.renovation || "暂无数据" }}
-            </div>
-            <div class="div2-item-bot">装修程度</div>
-          </div>
-        </div>
-        <div id="img-right-div3">
-          <div v-show="details.county">
-            <span>区域：</span>{{ details.county }}
-          </div>
-          <div>
-            <span>详细地址：</span>{{ details.address||"无" }}
-          </div>
-          <div>
-            <span>入住企业：</span>{{ details.enter||"无" }}
-          </div>
-          <div>
-            <span>描述：</span>{{ details.bdesc||"无" }}
-          </div>
-        </div>
-        <div id="img-right-div4">
-          <!-- <div style="display: flex;align-items: center;">
-            <img src="../assets/image/act-wx.png" alt="" />
-            <div id="img-right-div4-user">
-              <p id="div-user-title">{{details.name}}</p>
-              <p>{{details.relation}}</p>
-              <p>{{details.look_way}}</p>
-            </div>
-          </div> -->
-          <div id="user-btn">
-            <el-button type="primary" icon="el-icon-phone-outline"
-              >12321321323</el-button
-            >
-          </div>
+        <mapItem
+          height="420px"
+          :data="{
+            center: { lng: details.longitude, lat: details.latitude },
+            zoom: 15,
+            buildName: details.bname
+          }"
+        ></mapItem>
+        <div id="maskDiv" @click="lookupMap">
+          <div id="maskDiv-msg">查看附近的交通与设施</div>
         </div>
       </div>
     </div>
     <div id="information">
       <div id="left-info-box">
-        <div id="jbxx">
+        <!-- <div id="jbxx">
           <h3 class="info-title"><i></i>基本信息</h3>
+          <h4>  </h4>
           <div class="base-info-item" v-for="item in 8" :key="item">
             <div class="base-info-title">房源编码</div>
             <div class="base-info-content">3213123123</div>
           </div>
-        </div>
+        </div> -->
         <div id="jzxx">
-          <h3 class="info-title"><i></i>建筑信息</h3>
+          <h3 class="info-title"><i></i>基本信息</h3>
           <div id="jzxx-content">
-            <div v-for="item in 3" :key="item">
-              <div class="base-info-item" v-for="item in 3" :key="item">
-                <div class="base-info-title">房源编码</div>
-                <div class="base-info-content">3213123123</div>
+            <div class="content-div">
+              <div class="base-info-item">
+                <div class="base-info-title">楼宇：</div>
+                <div class="base-info-content">
+                  {{ details.county }}-{{ details.bname }}
+                </div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">类型：</div>
+                <div class="base-info-content">后台没返回</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">单价：</div>
+                <div class="base-info-content">{{ details.price?details.price+"元/m²/天":"无" }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">楼层高度：</div>
+                <div class="base-info-content">{{ details.floor_height || "无" }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">物业：</div>
+                <div class="base-info-content">{{ details.boffice || "无" }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">车位数量：</div>
+                <div class="base-info-content">{{ details.car_number || "无"  }}</div>
+              </div>
+
+              <div class="base-info-item">
+                <div class="base-info-title">空调：</div>
+                <div class="base-info-content">{{ details.air || "无"  }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">空调费：</div>
+                <div class="base-info-content">{{ details.air_pay || "无"  }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">网络：</div>
+                <div class="base-info-content">{{ details.internet || "无"  }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">楼盘标签：</div>
+                <div
+                v-show="details.label&&details.label.length>0"
+                  class="base-info-content"
+                  v-for="item in details.label"
+                  :key="item"
+                >
+                  {{ item }}
+                </div>
+                <div class="base-info-content" v-show="!details.label">无</div>
+                &nbsp;
+              </div>
+            </div>
+            <div class="content-div">
+              <div class="base-info-item">
+                <div class="base-info-title">详细地址：</div>
+                <div class="base-info-content">{{ details.address || "无"  }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">装修程度：</div>
+                <div class="base-info-content">{{ details.renovation || "无"  }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">入住企业：</div>
+                <div class="base-info-content">{{ details.enter || "无"  }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">楼层数量：</div>
+                <div class="base-info-content">{{ details.floor_number || "无"  }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">物业费：</div>
+                <div class="base-info-content">
+                  {{ details.bproperty?details.bproperty+"元/㎡/月" : "无" }}
+                </div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">车位月租：</div>
+                <div class="base-info-content">{{ details.car_month || "无"  }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">状态：</div>
+                <div class="base-info-content">{{ details.bstatus || "无"  }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">空调开放时间：</div>
+                <div class="base-info-content">{{ details.air_open || "无"  }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">电梯：</div>
+                <div class="base-info-content">{{ details.elevator || "无"  }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">描述：</div>
+                <div class="base-info-content">{{ details.bdesc || "无"  }}</div>
               </div>
             </div>
           </div>
         </div>
-        <div id="jgxx">
+        <!-- <div id="jgxx">
           <h3 class="info-title"><i></i>价格信息</h3>
           <div id="jzxx-content">
             <div v-for="item in 3" :key="item">
@@ -106,7 +158,7 @@
             <div class="base-info-title">房源编码</div>
             <div class="base-info-content">3213123123</div>
           </div>
-        </div>
+        </div> -->
         <mapItem></mapItem>
       </div>
       <div id="right-info-box">
@@ -131,45 +183,51 @@
 </template>
 <script>
 import { getBuildingDetails } from "../api/index";
-import mapItem from "../components/mapItem"
+import mapItem from "../components/mapItem";
 export default {
-  components:{mapItem},
+  components: { mapItem },
   data() {
     return {
       swipers: [
         { src: require("../assets/image/swiper1.jpg") },
         { src: require("../assets/image/swiper2.jpg") },
-        { src: require("../assets/image/swiper3.jpg") },
+        { src: require("../assets/image/swiper3.jpg") }
       ],
       input10: "",
-      details: {},
+      details: {}
     };
   },
   created() {
     this.$store.commit("actNav", 2);
-    getBuildingDetails(this.$route.query.id).then((res) => {
+    getBuildingDetails(this.$route.query.id).then(res => {
       if (res.code == 20000) {
         this.details = res.data;
       }
     });
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
-    swiperImg(arr){
-      if(arr&&arr.length>0){
-        return arr
-      }else{
-        return [require("../assets/image/none-img.png")]
+    // 去地图查看
+    lookupMap() {
+      this.$router.push({
+        name: "mapLookup",
+        query: { build: this.details.id }
+      });
+    },
+    swiperImg(arr) {
+      if (arr && arr.length > 0) {
+        return arr;
+      } else {
+        return [require("../assets/image/none-img.png")];
       }
     },
-    handler ({BMap, map}) {
-      console.log(BMap, map)
+    handler({ BMap, map }) {
+      console.log(BMap, map);
       // this.center.lng = 116.404
       // this.center.lat = 39.915
       // this.zoom = 15
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -255,12 +313,36 @@ export default {
       }
     }
     #img-right {
-      width: 370px;
-      height: 100%;
+      width: 380px;
+      height: 420px;
       overflow: hidden;
       border-radius: 5px;
-      padding-left: 20px;
-      padding-right: 30px;
+      margin-left: 10px;
+      position: relative;
+      #maskDiv {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        background: rgba(0, 0, 0, 0.5);
+        #maskDiv-msg {
+          width: 170px;
+          line-height: 28px;
+          text-align: center;
+          background: rgba(0, 0, 0, 0.5);
+          border-radius: 20px;
+          font-weight: 600;
+          color: #fff;
+          font-size: 14px;
+          margin: 50% auto;
+        }
+        &:hover {
+          opacity: 0.5;
+          cursor: pointer;
+        }
+      }
       #img-right-div1 {
         // height: 88px;
         margin-top: 6px;
@@ -339,11 +421,10 @@ export default {
         #user-btn {
           margin: 0 auto;
           width: 80%;
-          /deep/ button{
+          /deep/ button {
             width: 100%;
             height: 60px;
             font-size: 18px;
-
           }
         }
       }
@@ -363,7 +444,6 @@ export default {
       .base-info-item {
         margin: 10px 0;
         .base-info-title {
-          min-width: 78px;
           height: 17px;
           font-size: 12px;
           color: #b2b2b2;
@@ -373,7 +453,7 @@ export default {
           font-size: 12px;
           color: #4a4a4a;
           height: 17px;
-          display: inline-block;
+          display: inline;
         }
       }
       .info-title {
@@ -405,6 +485,10 @@ export default {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          .content-div {
+            width: 50%;
+            padding-right: 20px;
+          }
         }
       }
       #jgxx {
@@ -509,5 +593,4 @@ export default {
     }
   }
 }
-
 </style>

@@ -139,7 +139,7 @@ export default {
     };
   },
   created() {
-    this.$store.commit("actNav", 2);
+    this.$store.commit("actNav", 3);
     getResourceDetails(this.$route.query.id).then(res=>{
       if(res.code == 20000){
         this.details = res.data

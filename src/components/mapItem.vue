@@ -1,8 +1,8 @@
 <template>
   <div>
-    <baidu-map :center="data.center" :zoom="data.zoom" @ready="handler" class="bm-view">
+    <baidu-map :center="data.center" :zoom="data.zoom" :style="{height:height}" class="bm-view">
       <!-- 缩放 -->
-      <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+      <bm-navigation v-show="false" anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
       <!-- 定位 -->
       <bm-geolocation
         anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
@@ -17,14 +17,14 @@
         animation="BMAP_ANIMATION_BOUNCE"
       >
         <!-- 备注 -->
-        <bm-label
+        <!-- <bm-label
           :content="data.buildName"
           :labelStyle="{ color: 'red', fontSize: '16px' }"
-          :offset="{ width: -35, height: 30 }"
-        />
+          :offset="{ width: 0, height: 30 }"
+        /> -->
         <!-- 弹出框 -->
         <bm-info-window
-          :show="data.show"
+          :show="show"
           @close="infoWindowClose"
           @open="infoWindowOpen"
           >我爱北京天安门</bm-info-window
@@ -42,13 +42,15 @@ export default {
         center: { lng: 117.233725, lat: 31.827 },
         zoom: 15,
         buildName: "合肥市中心",
-        show: false,
       },
     },
+    height:{
+      default:"320px"
+    }
   },
   data() {
     return {
-
+      show: false,
     };
   },
   created() {},
@@ -65,6 +67,5 @@ export default {
 <style lang="less" scoped>
 .bm-view {
   width: 100%;
-  height: 300px;
 }
 </style>
