@@ -134,7 +134,7 @@
         </div>
       </div>
       <div id="content-right-box">
-        <div id="poster-map">
+        <div id="poster-map" @click="$router.push('/mapLookup')">
           <h3>地图找房</h3>
           <div>
             <p>合肥写字楼</p>

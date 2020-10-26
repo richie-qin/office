@@ -181,9 +181,9 @@
       <div id="right-info-box">
         <div id="ljyy">
           <h3><i></i>预约看房</h3>
-          <el-input placeholder="请输入内容" v-model="input10" clearable>
+          <el-input placeholder="请输入您的手机号" v-model="input10" clearable>
           </el-input>
-          <el-button type="primary">立即预约</el-button>
+          <el-button type="primary" @click="subscribe(input10)">立即预约</el-button>
           <p>巧租承诺仅将你的联系方式用于找房服务</p>
         </div>
         <div id="tjfy">
@@ -199,7 +199,7 @@
   </div>
 </template>
 <script>
-import { getBuildingDetails,getResource } from "../api/index";
+import { getBuildingDetails,getResource,getSubscribe } from "../api/index";
 import mapItem from "../components/mapItem";
 import houseType from "../components/houseType";
 
@@ -232,6 +232,36 @@ export default {
   },
   mounted() {},
   methods: {
+    subscribe(val){
+      let phoneReg = /(^1\d{10}$)|(^[0-9]\d{7}$)/;
+      if(!phoneReg.test(val)){
+        this.$notify({
+            title: "警告",
+            message: "请正确填写手机号",
+            type: "warning",
+          });
+          return
+      }
+      getSubscribe({
+        house_id:this.details.id,
+        mobile:val,
+        house_name:this.details.house_title
+      }).then(res=>{
+        if (res.code == 20000) {
+          this.$notify({
+            title: "成功",
+            message: "预约成功",
+            type: "success",
+          });
+        } else {
+          this.$notify({
+            title: "警告",
+            message: res.message,
+            type: "warning",
+          });
+        }
+      })
+    },
     getResource(){
       getResource({building:this.details.bname},{ page: this.page, size: this.size }).then(res=>{
           if (res.code == 20000) {

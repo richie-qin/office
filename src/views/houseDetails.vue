@@ -109,7 +109,7 @@
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">注册</div>
-                <div class="base-info-content">3213123123</div>
+                <div class="base-info-content">{{details.registers || "-"}}</div>
               </div>
             </div>
             <div>
@@ -125,7 +125,7 @@
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">性质</div>
-                <div class="base-info-content">3213123123</div>
+                <div class="base-info-content">{{details.natures || "-"}}</div>
               </div>
             </div>
             <div>
@@ -137,7 +137,7 @@
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">分割</div>
-                <div class="base-info-content">3213123123</div>
+                <div class="base-info-content">{{details.divisions || "-"}}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">房屋年限</div>
@@ -207,9 +207,9 @@
       <div id="right-info-box">
         <div id="ljyy">
           <h3><i></i>预约看房</h3>
-          <el-input placeholder="请输入内容" v-model="input10" clearable>
+          <el-input placeholder="请输入您的手机号" v-model="input10" clearable>
           </el-input>
-          <el-button type="primary" @click="$router.push('./entrust')"
+          <el-button type="primary" @click="subscribe(input10)"
             >立即预约</el-button
           >
           <p>巧租承诺仅将你的联系方式用于找房服务</p>
@@ -227,7 +227,7 @@
   </div>
 </template>
 <script>
-import { getResourceDetails } from "../api/index";
+import { getResourceDetails,getSubscribe } from "../api/index";
 export default {
   data() {
     return {
@@ -248,7 +248,38 @@ export default {
       }
     });
   },
-  methods: {},
+  methods: {
+    subscribe(val){
+      let phoneReg = /(^1\d{10}$)|(^[0-9]\d{7}$)/;
+      if(!phoneReg.test(val)){
+        this.$notify({
+            title: "警告",
+            message: "请正确填写手机号",
+            type: "warning",
+          });
+          return
+      }
+      getSubscribe({
+        house_id:this.details.id,
+        mobile:val,
+        house_name:this.details.house_title
+      }).then(res=>{
+        if (res.code == 20000) {
+          this.$notify({
+            title: "成功",
+            message: "预约成功",
+            type: "success",
+          });
+        } else {
+          this.$notify({
+            title: "警告",
+            message: res.message,
+            type: "warning",
+          });
+        }
+      })
+    }
+  },
 };
 </script>
 <style lang="less" scoped>

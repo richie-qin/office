@@ -56,14 +56,14 @@
             </ul>
           </div>
           <div id="looking-btn">马上找房</div>
-          <div id="from-Map">
+          <!-- <div id="from-Map">
             <el-input
               placeholder="大厦名称或区域位置"
               prefix-icon="el-icon-search"
               v-model="input21"
             ></el-input>
             <el-button type="primary" plain>地图找房</el-button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -487,6 +487,7 @@ export default {
       height: 470px;
       display: inline-block;
       margin-right: 10px;
+      cursor: pointer;
     }
     #hot-right-img {
       width: 760px;
@@ -497,6 +498,7 @@ export default {
         height: 235px;
         margin-bottom: 10px;
         display: inline-block;
+        cursor: pointer;
       }
       #right-bot-img {
         width: 100%;
@@ -506,12 +508,15 @@ export default {
           width: 375px;
           height: 100%;
           display: inline-block;
+          cursor: pointer;
         }
         #bot-img2 {
           width: 375px;
           height: 100%;
           display: inline-block;
           margin-left: 10px;
+          cursor: pointer;
+
         }
       }
     }
@@ -540,6 +545,7 @@ export default {
       border-radius: 5px;
       overflow: hidden;
       transition: all 0.2s;
+      cursor: pointer;
       &:hover {
         transform: scale(1.02);
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);

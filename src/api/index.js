@@ -58,4 +58,14 @@ export function custHouse(data){
 }
 
 
+// 预约看房
+export function getSubscribe(data){
+  return request({
+    url: `/rent/request`,
+    method: 'post',
+    data
+  })
+}
+
+
 
