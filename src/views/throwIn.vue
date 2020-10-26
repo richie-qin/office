@@ -1,7 +1,6 @@
 <template>
   <!-- 投放房源 -->
   <div id="throwIn">
-    <black-nav></black-nav>
     <search-nav></search-nav>
     <div id="throwIn-banner">
       <img src="../assets/image/swiper1.jpg" alt="" />
@@ -10,21 +9,10 @@
       <h3>在租投放房源</h3>
       <p>为你出租更多闲置办公物业</p>
       <img src="../assets/image/business-require-icon.jpg" alt="" />
-      <!-- <el-input
-        type="textarea"
-        :rows="3"
-        placeholder="你的需求， 如：外滩SOHO，200平米写字楼，简装带家私，租金8元/㎡/天左右，附近有地铁"
-        v-model="textarea"
-      >
-      </el-input> -->
-      <!-- <el-input class="input1" v-model="userPhone" placeholder="手机号"></el-input>
-      <el-input class="input2" placeholder="验证码" v-model="yzm">
-        <template slot="append">获取验证码</template>
-      </el-input> -->
       <div>
         <el-input
           class="input1"
-          v-model="userPhone"
+          v-model="userName"
           placeholder="真实姓名"
         ></el-input>
       </div>
@@ -35,35 +23,44 @@
           placeholder="手机号码"
         ></el-input>
       </div>
+      <div>
+        <el-input
+          class="input1"
+          v-model="building"
+          placeholder="所在楼盘名称"
+        ></el-input>
+      </div>
       <div class="lp-box">
         <el-input
           class="input1"
-          v-model="userPhone"
-          placeholder="楼盘名称"
+          v-model="house"
+          placeholder="房屋名称"
         ></el-input>
-        <el-select v-model="value" placeholder="区域位置">
+        <el-select v-model="county" placeholder="区域位置">
           <el-option
             v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item.name"
+            :label="item.name"
+            :value="item.name"
           >
           </el-option>
         </el-select>
       </div>
       <div id="czmj">
-        <el-input placeholder="请输入内容" class="input1" v-model="input3">
+        <el-input placeholder="请输入内容" class="input1" v-model="area">
           <template slot="prepend">出租面积</template>
           <template slot="append">㎡</template>
         </el-input>
       </div>
       <div id="zj-box">
-        <el-input placeholder="请输入内容" class="input1" v-model="input3">
+        <el-input placeholder="请输入内容" class="input1" v-model="month_rent">
           <template slot="append">元/㎡·月</template>
           <template slot="prepend">租金</template>
         </el-input>
       </div>
-      <el-button type="primary" class="ljwt-btn">投放房源</el-button>
+      <el-button type="primary" class="ljwt-btn" @click="throwIn"
+        >投放房源</el-button
+      >
       <div id="box-bottom">
         你也可以拨打 <span>4000-623-678</span> 直接委托需求
       </div>
@@ -71,41 +68,122 @@
   </div>
 </template>
 <script>
+import { custHouse } from "../api/index";
 export default {
   data() {
     return {
-      textarea: "",
+      userName: "",
       userPhone: "",
-      yzm: "",
-      value: "",
+      house: "",
+      county: "",
+      area: "",
+      month_rent: "",
+      building: "",
       options: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
+        { name: "蜀山区", code: "02" },
+        { name: "滨湖新区", code: "03" },
+        { name: "政务区", code: "04" },
+        { name: "新站区", code: "05" },
+        { name: "瑶海区", code: "06" },
+        { name: "庐阳区", code: "07" },
+        { name: "包河区", code: "08" },
+        { name: "长丰县", code: "09" },
+        { name: "肥东县", code: "10" },
+        { name: "肥西县", code: "11" },
+        { name: "庐江县", code: "12" },
+        { name: "高新区", code: "13" },
+        { name: "经开区", code: "14" },
+        { name: "巢湖市", code: "15" },
       ],
     };
   },
   created() {
     this.$store.commit("actNav", 5);
   },
-  methods: {},
+  methods: {
+    throwIn() {
+      let phoneReg = /(^1\d{10}$)|(^[0-9]\d{7}$)/;
+      if (!this.userName) {
+        this.$notify({
+          title: "警告",
+          message: "请填写您的真实姓名",
+          type: "warning",
+        });
+        return;
+      }
+      if (!phoneReg.test(this.userPhone)) {
+        this.$notify({
+          title: "警告",
+          message: "请正确填写手机号",
+          type: "warning",
+        });
+        return;
+      }
+      if (!this.building) {
+        this.$notify({
+          title: "警告",
+          message: "请填写楼盘名称",
+          type: "warning",
+        });
+        return;
+      }
+      if (!this.house) {
+        this.$notify({
+          title: "警告",
+          message: "请填写房屋名称",
+          type: "warning",
+        });
+        return;
+      }
+      if (!this.county) {
+        this.$notify({
+          title: "警告",
+          message: "请选择楼盘所在区域",
+          type: "warning",
+        });
+        return;
+      }
+      if (!this.area) {
+        this.$notify({
+          title: "警告",
+          message: "请填写出租面积",
+          type: "warning",
+        });
+        return;
+      }
+      if (!this.month_rent) {
+        this.$notify({
+          title: "警告",
+          message: "请填写租金",
+          type: "warning",
+        });
+        return;
+      }
+      custHouse({
+        name: this.userName,
+        phone: this.userPhone,
+        area: this.area,
+        month_rent: this.month_rent,
+        building: this.building,
+        county: this.county,
+        house: this.house,
+      }).then((res) => {
+        if (res.code == 20000) {
+          this.$notify({
+            title: "成功",
+            message: res.message,
+            type: "success",
+          });
+        } else {
+          this.$notify({
+            title: "警告",
+            message: res.message,
+            type: "warning",
+          });
+        }
+      });
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -233,24 +311,24 @@ export default {
     width: 90%;
     margin: 10px auto;
     font-size: 19px;
-    .input1{
+    .input1 {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
     }
-    /deep/ .el-input-group__prepend{
+    /deep/ .el-input-group__prepend {
       height: 100%;
       font-size: 14px;
       width: auto;
-      border:none;
+      border: none;
       background: #f5f5f5;
     }
-    /deep/ .el-input-group__append{
+    /deep/ .el-input-group__append {
       height: 100%;
       font-size: 14px;
       width: auto;
-      border:none;
+      border: none;
       background: #f5f5f5;
     }
   }
@@ -259,24 +337,24 @@ export default {
     border-radius: 5px;
     width: 90%;
     margin: 10px auto;
-    .input1{
+    .input1 {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
     }
-    /deep/ .el-input-group__prepend{
+    /deep/ .el-input-group__prepend {
       height: 100%;
       font-size: 14px;
       width: auto;
-      border:none;
+      border: none;
       background: #f5f5f5;
     }
-    /deep/ .el-input-group__append{
+    /deep/ .el-input-group__append {
       height: 100%;
       font-size: 14px;
       width: auto;
-      border:none;
+      border: none;
       background: #f5f5f5;
     }
   }

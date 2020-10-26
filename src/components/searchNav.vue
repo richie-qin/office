@@ -1,11 +1,12 @@
 <template>
 <div id="search-nav">
       <div id="search-nav-left">
-        <img src="../assets/image/nav_logo2.png" alt />
-        <!-- <span>合肥</span> -->
-        <div>写字楼</div>
-        <div>联合办公</div>
-        <div>优选好房</div>
+        <img @click="$router.push('/')" src="../assets/image/nav_logo2.png" alt />
+        <router-link to="./building"  :class="{'activityNav':activityNav==2}">写字楼</router-link>
+        <router-link to="./resource"  :class="{'activityNav':activityNav==3}">优选好房</router-link>
+        <router-link to="./entrust"  :class="{'activityNav':activityNav==4}">委托找房</router-link>
+        <router-link to="./throwIn"  :class="{'activityNav':activityNav==5}">投放房源</router-link>
+        <router-link to="./mapLookup"  :class="{'activityNav':activityNav==6}">地图找房</router-link>
       </div>
       <div id="search-nav-right">
         <el-input placeholder="请输入大厦名称" v-model="input4" :clearable="true">
@@ -29,7 +30,11 @@ export default {
   created() {},
   methods: {
     toSearch(){
-      this.$emit('searchKey',this.input4)
+      if(this.$route.name=="building"){
+        this.$emit('searchKey',this.input4)
+      }else{
+        this.$router.push({name:"building",params:{searchKey:this.input4}})
+      }
     }
   },
   watch:{
@@ -58,12 +63,16 @@ export default {
       height: 35px;
       width: auto;
       margin-right: 15px;
+      cursor: pointer;
     }
     span {
       font-size: 12px;
       margin-right: 30px;
     }
-    div {
+    .activityNav{
+      color: #17a1e6;
+    }
+    a {
       line-height: 28px;
       margin-right: 30px;
       color: #666;

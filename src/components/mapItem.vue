@@ -37,7 +37,6 @@
 export default {
   props: {
     data: {
-    //   type: Object,
       default: {
         center: { lng: 117.233725, lat: 31.827 },
         zoom: 15,

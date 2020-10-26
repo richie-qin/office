@@ -16,6 +16,15 @@ import searchNav from "./components/searchNav";
 Vue.component("blackNav", blackNav);//全局自定义组件
 Vue.component("searchNav", searchNav);//全局自定义组件
 
+let priceF = function(val){
+  if(val>10000){
+    return (val/10000).toFixed(2) + "万"
+  }else{
+    return val
+  }
+}
+Vue.filter("priceF",priceF)
+
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
   if (to.meta.title) {

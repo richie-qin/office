@@ -1,7 +1,6 @@
 <template>
 <!-- 企业礼包 -->
   <div id="gift">
-      <black-nav></black-nav>
   </div>
 </template>
 <script>

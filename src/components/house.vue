@@ -26,7 +26,7 @@
     </div>
     <div id="house-right-box">
       <div id="house-m1" v-show="data.month_rent > 0">
-        <b>{{ data.month_rent }}</b
+        <b>{{ data.month_rent | priceF }}</b
         >元/m²/月
       </div>
       <div id="house-m1" v-show="!data.month_rent || data.month_rent <= 0">

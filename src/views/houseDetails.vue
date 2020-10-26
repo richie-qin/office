@@ -1,7 +1,6 @@
 <template>
   <!-- 房子详情 -->
   <div id="houseDetails">
-    <black-nav></black-nav>
     <search-nav></search-nav>
     <!-- <div id="title-money">
       <div id="title">南苏55（720全景VR看房）</div>
@@ -18,69 +17,131 @@
     <div id="img-box">
       <div id="img-left">
         <el-carousel height="420px">
-          <el-carousel-item v-for="(item,index) in details.image" :key="index">
+          <el-carousel-item v-for="(item, index) in details.image" :key="index">
             <img :src="item" alt="" />
           </el-carousel-item>
         </el-carousel>
       </div>
       <div id="img-right">
         <div id="img-right-div1">
-          <b>{{details.month_rent}}</b>万元/月
+          <b>{{ details.month_rent | priceF }}</b
+          >万元/月
           <!-- <span>单价3.8元/㎡/天</span> -->
         </div>
         <div id="img-right-div2">
           <div class="div2-item">
-            <div class="div2-item-top">{{details.square}}㎡</div>
+            <div class="div2-item-top">{{ details.square }}㎡</div>
             <div class="div2-item-bot">建筑面积</div>
           </div>
           <div class="div2-item">
-            <div class="div2-item-top">{{details.floor}}</div>
-            <div class="div2-item-bot">房屋所在楼层</div>
+            <div class="div2-item-top">{{ details.floor }}</div>
+            <div class="div2-item-bot">房源楼层</div>
           </div>
           <div class="div2-item">
-            <div class="div2-item-top">{{details.renovation}}</div>
+            <div class="div2-item-top">{{ details.renovation }}</div>
             <div class="div2-item-bot">装修程度</div>
           </div>
         </div>
         <div id="img-right-div3">
-          <div><span>实用率：</span>蚊子蚊子蚊子</div>
-          <div><span>实用率：</span>蚊子蚊子蚊子</div>
-          <div><span>实用率：</span>蚊子蚊子蚊子</div>
-          <div><span>实用率：</span>蚊子蚊子蚊子</div>
-        </div>
-        <div id="img-right-div4">
-          <div style="display: flex;align-items: center;">
-            <img src="../assets/image/act-wx.png" alt="" />
-            <div id="img-right-div4-user">
-              <p id="div-user-title">{{details.name}}</p>
-              <p>{{details.relation}}</p>
-              <p>{{details.look_way}}</p>
-            </div>
+          <div v-show="details.land_use">
+            <span>用地性质：</span>{{ details.land_use }}
           </div>
+          <div v-show="details.house_title">
+            <span>房源名称：</span>{{ details.house_title }}
+          </div>
+          <div v-show="details.address">
+            <span>房源位置：</span>{{ details.address }}
+          </div>
+          <div v-show="details.rent_status">
+            <span>房屋状态：</span>{{ details.rent_status }}
+          </div>
+        </div>
+        <!-- <div id="img-right-div4" >
+
           <div id="user-btn">
             <el-button type="primary" icon="el-icon-phone-outline"
-              >{{details.phone}}</el-button
+              >{{ details.name }}：{{ details.phone }}</el-button
             >
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div id="information">
       <div id="left-info-box">
         <div id="jbxx">
           <h3 class="info-title"><i></i>基本信息</h3>
-          <div class="base-info-item" v-for="item in 8" :key="item">
-            <div class="base-info-title">房源编码</div>
-            <div class="base-info-content">3213123123</div>
+          <div class="base-info-item">
+            <div class="base-info-title">房源名称</div>
+            <div class="base-info-content">
+              {{ details.house_title || "-" }}
+            </div>
+          </div>
+          <div class="base-info-item">
+            <div class="base-info-title">所在楼宇</div>
+            <div class="base-info-content">{{ details.building || "-" }}</div>
+          </div>
+          <div class="base-info-item">
+            <div class="base-info-title">房源楼层</div>
+            <div class="base-info-content">{{ details.floor || "-" }}</div>
+          </div>
+          <div class="base-info-item">
+            <div class="base-info-title">房源房号</div>
+            <div class="base-info-content">
+              {{ details.house_number || "-" }}
+            </div>
           </div>
         </div>
         <div id="jzxx">
           <h3 class="info-title"><i></i>建筑信息</h3>
           <div id="jzxx-content">
-            <div v-for="item in 3" :key="item">
-              <div class="base-info-item" v-for="item in 3" :key="item">
-                <div class="base-info-title">房源编码</div>
+            <div>
+              <div class="base-info-item">
+                <div class="base-info-title">房源朝向</div>
+                <div class="base-info-content">
+                  {{ details.orientation || "-" }}
+                </div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">装修程度</div>
+                <div class="base-info-content">
+                  {{ details.renovation || "-" }}
+                </div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">注册</div>
                 <div class="base-info-content">3213123123</div>
+              </div>
+            </div>
+            <div>
+              <div class="base-info-item">
+                <div class="base-info-title">房源面积</div>
+                <div class="base-info-content">{{ details.square?details.square+"㎡" : "-" }}</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">付款方式</div>
+                <div class="base-info-content">
+                  {{ details.pay_way || "-" }}
+                </div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">性质</div>
+                <div class="base-info-content">3213123123</div>
+              </div>
+            </div>
+            <div>
+              <div class="base-info-item">
+                <div class="base-info-title">看房方式</div>
+                <div class="base-info-content">
+                  {{ details.look_way || "-" }}
+                </div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">分割</div>
+                <div class="base-info-content">3213123123</div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">房屋年限</div>
+                <div class="base-info-content">{{ details.years || "-" }}</div>
               </div>
             </div>
           </div>
@@ -88,19 +149,58 @@
         <div id="jgxx">
           <h3 class="info-title"><i></i>价格信息</h3>
           <div id="jzxx-content">
-            <div v-for="item in 3" :key="item">
-              <div class="base-info-item" v-for="item in 3" :key="item">
-                <div class="base-info-title">房源编码</div>
-                <div class="base-info-content">3213123123</div>
+            <div>
+              <div class="base-info-item">
+                <div class="base-info-title">月租费用</div>
+                <div class="base-info-content">
+                  {{ details.month_rent ? details.month_rent + "元/㎡" : "-" }}
+                </div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">得房率</div>
+                <div class="base-info-content">
+                  {{ details.rate ? details.rate + "%" : "-" }}
+                </div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">车位费</div>
+                <div class="base-info-content">{{ details.car || "-" }}</div>
               </div>
             </div>
-          </div>
-        </div>
-        <div id="jpxx">
-          <h3 class="info-title"><i></i>接盘信息</h3>
-          <div class="base-info-item" v-for="item in 8" :key="item">
-            <div class="base-info-title">房源编码</div>
-            <div class="base-info-content">3213123123</div>
+            <div>
+              <div class="base-info-item">
+                <div class="base-info-title">物业费</div>
+                <div class="base-info-content">
+                  {{ details.property ? details.property + "元/㎡/月" : "-" }}
+                </div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">房屋状态</div>
+                <div class="base-info-content">
+                  {{ details.rent_status || "-" }}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="base-info-item">
+                <div class="base-info-title">起租期</div>
+                <div class="base-info-content">
+                  {{ details.start_rent ? details.start_rent + "个月" : "-" }}
+                </div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">水电费</div>
+                <div class="base-info-content">
+                  {{ details.hydropower || "-" }}
+                </div>
+              </div>
+              <div class="base-info-item">
+                <div class="base-info-title">用地性质</div>
+                <div class="base-info-content">
+                  {{ details.land_use || "-" }}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -109,7 +209,9 @@
           <h3><i></i>预约看房</h3>
           <el-input placeholder="请输入内容" v-model="input10" clearable>
           </el-input>
-          <el-button type="primary">立即预约</el-button>
+          <el-button type="primary" @click="$router.push('./entrust')"
+            >立即预约</el-button
+          >
           <p>巧租承诺仅将你的联系方式用于找房服务</p>
         </div>
         <div id="tjfy">
@@ -125,31 +227,31 @@
   </div>
 </template>
 <script>
-import {getResourceDetails} from "../api/index"
+import { getResourceDetails } from "../api/index";
 export default {
   data() {
     return {
       swipers: [
         { src: require("../assets/image/swiper1.jpg") },
         { src: require("../assets/image/swiper2.jpg") },
-        { src: require("../assets/image/swiper3.jpg") }
+        { src: require("../assets/image/swiper3.jpg") },
       ],
       input10: "",
-      details:{}
+      details: {},
     };
   },
   created() {
     this.$store.commit("actNav", 3);
-    getResourceDetails(this.$route.query.id).then(res=>{
-      if(res.code == 20000){
-        this.details = res.data
+    getResourceDetails(this.$route.query.id).then((res) => {
+      if (res.code == 20000) {
+        this.details = res.data;
       }
-    })
+    });
   },
-  methods: {}
+  methods: {},
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 #houseDetails {
   width: 100%;
   background: #f7f7f7;
@@ -215,7 +317,7 @@ export default {
     background: #fff;
     // margin: 0 calc(50% - 600px);
     width: 100%;
-    padding:  25px calc(50% - 600px);
+    padding: 25px calc(50% - 600px);
     border-radius: 5px;
     overflow: hidden;
     background: #3d5a73;
@@ -233,7 +335,7 @@ export default {
     }
     #img-right {
       width: 370px;
-      height: 100%;
+      height: 420px;
       overflow: hidden;
       border-radius: 5px;
       padding-left: 20px;
@@ -278,7 +380,7 @@ export default {
       #img-right-div3 {
         padding: 20px 0;
         border-bottom: solid 1px #ebebeb;
-
+        height: 150px;
         div {
           margin-bottom: 10px;
           height: 17px;
@@ -290,7 +392,7 @@ export default {
         }
       }
       #img-right-div4 {
-        padding: 10px 0;
+        padding: 20px 0;
         border-bottom: solid 1px #ebebeb;
         display: flex;
         align-items: center;
@@ -310,6 +412,7 @@ export default {
         }
         #user-btn {
           font-size: 12px;
+          margin: 0 auto;
         }
       }
     }
@@ -420,7 +523,7 @@ export default {
           font-size: 12px;
         }
       }
-      #tjfy{
+      #tjfy {
         text-align: center;
         border-bottom: solid 1px #ebebeb;
         padding-bottom: 30px;
@@ -442,23 +545,23 @@ export default {
             vertical-align: bottom;
           }
         }
-        #tjfy-content{
+        #tjfy-content {
           display: flex;
           justify-content: space-between;
           align-items: center;
           flex-wrap: wrap;
-          div{
+          div {
             width: 160px;
             height: 160px;
-            border:solid 1px #eee;
+            border: solid 1px #eee;
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
-            p{
+            p {
               box-sizing: border-box;
               position: absolute;
               bottom: 0;
-              left:0;
+              left: 0;
               display: block;
               width: 160px;
               height: 25px;
@@ -466,7 +569,7 @@ export default {
               padding: 0 10px;
               font-size: 14px;
               color: #fff;
-              background: rgba(0,0,0,0.5);
+              background: rgba(0, 0, 0, 0.5);
             }
           }
         }

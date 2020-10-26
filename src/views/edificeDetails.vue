@@ -1,7 +1,6 @@
 <template>
   <!-- 房子详情 -->
   <div id="houseDetails">
-    <black-nav></black-nav>
     <search-nav></search-nav>
     <div id="img-box">
       <div id="img-left">
@@ -54,7 +53,7 @@
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">单价：</div>
-                <div class="base-info-content">{{ details.price?details.price+"元/m²/天":"无" }}</div>
+                <div class="base-info-content">{{ details.price? (details.price | priceF) +"元/m²/天":"无" }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">楼层高度：</div>
@@ -86,8 +85,8 @@
                 <div
                 v-show="details.label&&details.label.length>0"
                   class="base-info-content"
-                  v-for="item in details.label"
-                  :key="item"
+                  v-for="(item,index) in details.label"
+                  :key="index"
                 >
                   {{ item }}
                 </div>
@@ -159,7 +158,25 @@
             <div class="base-info-content">3213123123</div>
           </div>
         </div> -->
-        <mapItem></mapItem>
+        <div id="zzhx" v-show="zzhxList.length>0">
+          <h3 class="info-title"><i></i>在租户型</h3>
+          <div id="houseTypeTitle">
+            <div>照片</div>
+            <div>面积</div>
+            <div>装修程度</div>
+            <div>单价</div>
+            <div>更新时间</div>
+          </div>
+          <div>
+            <houseType v-for="(item,index) in zzhxList" :key="index" :data="item"></houseType>
+          </div>
+          <div id="lookMore" @click="getResource" v-show="zzhxList.length<zzhxAll">查看更多户型</div>
+        </div>
+        <mapItem :data="{
+            center: { lng: details.longitude, lat: details.latitude },
+            zoom: 15,
+            buildName: details.bname
+          }"></mapItem>
       </div>
       <div id="right-info-box">
         <div id="ljyy">
@@ -172,7 +189,7 @@
         <div id="tjfy">
           <h3><i></i>推荐房源</h3>
           <div id="tjfy-content">
-            <div v-for="item in 4" :key="item">
+            <div v-for="(item,index) in 4" :key="index">
               <p>某某大厦</p>
             </div>
           </div>
@@ -182,10 +199,12 @@
   </div>
 </template>
 <script>
-import { getBuildingDetails } from "../api/index";
+import { getBuildingDetails,getResource } from "../api/index";
 import mapItem from "../components/mapItem";
+import houseType from "../components/houseType";
+
 export default {
-  components: { mapItem },
+  components: { mapItem , houseType},
   data() {
     return {
       swipers: [
@@ -194,7 +213,11 @@ export default {
         { src: require("../assets/image/swiper3.jpg") }
       ],
       input10: "",
-      details: {}
+      details: {},
+      zzhxList:[],
+      zzhxAll:0,
+      page:1,
+      size:8
     };
   },
   created() {
@@ -202,11 +225,29 @@ export default {
     getBuildingDetails(this.$route.query.id).then(res => {
       if (res.code == 20000) {
         this.details = res.data;
+        this.getResource();
       }
     });
+    
   },
   mounted() {},
   methods: {
+    getResource(){
+      getResource({building:this.details.bname},{ page: this.page, size: this.size }).then(res=>{
+          if (res.code == 20000) {
+            if(this.zzhxList.length>0){
+              res.data.rows.forEach(item=>{
+              this.zzhxList.push(item)
+
+              })
+            }else{
+              this.zzhxList = res.data.rows
+            }
+            this.zzhxAll = res.data.total;
+            this.page++;
+          }
+        })
+    },
     // 去地图查看
     lookupMap() {
       this.$router.push({
@@ -488,6 +529,39 @@ export default {
           .content-div {
             width: 50%;
             padding-right: 20px;
+          }
+        }
+      }
+      #zzhx{
+        margin-top: 40px;
+        border-bottom: solid 1px #ebebeb;
+        padding-bottom: 30px;
+        #houseTypeTitle{
+          display: flex;
+          div{
+            width: 20%;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+          }
+        }
+        #lookMore{
+          width: 200px;
+          margin: 20px auto;
+          text-align: center;
+          height: 50px;
+          line-height: 50px;
+          font-size: 16px;
+          color: tomato;
+          border: solid 1px tomato;
+          padding: 0 30px;
+          border-radius: 5px;
+          cursor: pointer;
+          &:hover{
+            background: tomato;
+            color: #fff;
           }
         }
       }

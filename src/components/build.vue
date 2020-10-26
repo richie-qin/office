@@ -7,10 +7,10 @@
       />
     </div>
     <div id="house-center-box">
-      <h3 @click="toDetails">{{ data.county }}-{{ data.bname }}</h3>
-      <div class="house-info" v-show="data.bdesc">
+      <h3 @click="toDetails">{{ data.county }}-{{ data.bname }} <span v-show="data.type">（{{data.type==1?"写字楼":data.type==2?"公寓":data.type==3?"商铺":data.type==4?"厂房":"园区"}}）</span> </h3>
+      <div class="house-info" v-show="data.renovation">
         <i class="el-icon-info"></i>
-        <span>{{ data.bdesc }}</span>
+        <span>装修程度：{{ data.renovation }}</span>
       </div>
       <div class="house-info" v-show="data.address">
         <i class="el-icon-location-outline"></i>
@@ -26,7 +26,7 @@
     </div>
     <div id="house-right-box">
       <div id="house-m1" v-show="data.price">
-        <b>{{ data.price }}</b
+        <b>{{ data.price | priceF }}</b
         >元/m²/天
       </div>
       <div id="house-m1" v-show="!data.price">

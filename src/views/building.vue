@@ -1,7 +1,6 @@
 <template>
   <!-- 楼宇 -->
   <div id="build">
-    <black-nav></black-nav>
     <search-nav @searchKey="searchKey"></search-nav>
     <div id="search-box">
       <div class="search-item">
@@ -18,6 +17,37 @@
           </div>
         </div>
       </div>
+      <!-- <div class="search-item">
+        <div class="search-item-type">面积：</div>
+        <div class="search-item-data">
+          <div
+            class="search-item-data-i"
+            v-for="(item, index) in areaList"
+            :key="index"
+            @click="clickArea(index)"
+            :class="{ 'activityData-i': areaIndex == index }"
+          >
+            {{ item.name }}
+          </div>
+          <div class="search-item-input-box">
+            <input
+              type="text"
+              maxlength="5"
+              autocomplete="off"
+              v-model="money1"
+            />
+            <span>-</span>
+            <input
+              type="text"
+              maxlength="5"
+              autocomplete="off"
+              v-model="money2"
+            />
+            ㎡
+            <button>确定</button>
+          </div>
+        </div>
+      </div> -->
       <!-- <div class="search-item">
         <div class="search-item-type">单价：</div>
         <div class="search-item-data">
@@ -58,37 +88,20 @@
           </div>
         </div>
       </div> -->
-      <!-- <div class="search-item">
-        <div class="search-item-type">面积：</div>
+      <div class="search-item" v-show="renovationList.length > 0">
+        <div class="search-item-type">装修：</div>
         <div class="search-item-data">
           <div
             class="search-item-data-i"
-            v-for="(item, index) in areaList"
+            @click="clickBuildZX(index)"
+            v-for="(item, index) in renovationList"
             :key="index"
-            @click="clickArea(index)"
-            :class="{ 'activityData-i': areaIndex == index }"
+            :class="{ 'activityData-i': zxIndex == index }"
           >
-            {{ item.name }}
-          </div>
-          <div class="search-item-input-box">
-            <input
-              type="text"
-              maxlength="5"
-              autocomplete="off"
-              v-model="money1"
-            />
-            <span>-</span>
-            <input
-              type="text"
-              maxlength="5"
-              autocomplete="off"
-              v-model="money2"
-            />
-            ㎡
-            <button>确定</button>
+            {{ item.label }}
           </div>
         </div>
-      </div> -->
+      </div>
       <div class="search-item" v-show="buildList.length > 0">
         <div class="search-item-type">类型：</div>
         <div class="search-item-data">
@@ -139,8 +152,8 @@
         </div>
         <div v-show="dataList.length > 0" id="haveList">
           <buildItem
-            v-for="item in dataList"
-            :key="item"
+            v-for="(item,index) in dataList"
+            :key="index"
             :data="item"
           ></buildItem>
         </div>
@@ -159,23 +172,23 @@
         </div>
       </div>
       <div id="content-right-box">
-        <div id="poster-map">
+        <div id="poster-map" @click="$router.push('/mapLookup')">
           <h3>地图找房</h3>
           <div>
-            <p>上海写字楼</p>
+            <p>合肥写字楼</p>
           </div>
         </div>
         <div id="poster-hot-house">
           <h3>热点楼盘</h3>
-          <div id="hot-house-item" v-for="item in 5" :key="item">
+          <div id="hot-house-item" @click="toDetails(item.id)"  v-for="(item,index) in hotBuildData" :key="index">
             <img
-              src="https://images.diandianzu.com/Public/Home/v5/images/listing/side_bg_mapsearch.png"
+              :src="item.image[0]"
               alt
             />
             <div>
-              <p>中航天盛广场</p>
-              <p>4 元/m²/天</p>
-              <p>近30天有 12 人关注</p>
+              <p>{{item.bname}}</p>
+              <p v-show="item.price">{{item.price | priceF}}元/m²/天</p>
+              <p v-show="item.renovation">{{item.renovation}}</p>
             </div>
           </div>
         </div>
@@ -198,6 +211,7 @@ export default {
     return {
       regionIndex: 0, //选择区域index
       areaIndex: 0, //选择面积index
+      zxIndex:0,//选择装修
       typeIndex: 0, //选择类型
       moldIndex: 0, //选择最新或最热
       money1: "",
@@ -205,6 +219,7 @@ export default {
       checkList: [],
       searchMap: {
         county: "全部", //区域搜索
+        renovation:null,//装修
         end: "", //截止面积
         start: "", //开始面积
         bname: "", //搜索名字
@@ -216,7 +231,8 @@ export default {
       dataList: [],
       allNum: 0,
       page: 1,
-      size: 8
+      size: 8,
+      hotBuildData:[],
     };
   },
   computed: {
@@ -228,6 +244,10 @@ export default {
       //面积列表
       return this.$store.state.areaList;
     },
+    renovationList() {
+      //装修类型
+      return this.$store.state.renovationList;
+    },
     buildList() {
       //楼宇类型
       return this.$store.state.buildList;
@@ -235,7 +255,6 @@ export default {
   },
   created() {
     this.$store.commit("actNav", 2);
-    console.log(this.$route.params.type, this.$route.params.code);
     if (this.$route.params.type == 1) {
       //1:区域搜索
       this.regionList.forEach((item, index) => {
@@ -256,9 +275,19 @@ export default {
         }
       });
     }
+    if(this.$route.params.searchKey){
+      this.searchKey(this.$route.params.searchKey);
+    }
+    if(localStorage.getItem("hotBuildData")){
+      this.hotBuildData = JSON.parse(localStorage.getItem("hotBuildData"));
+    }
     this.getBuilding();
   },
   methods: {
+    toDetails(id) {
+      let routeData = this.$router.resolve({path:`./edificeDetails?id=${id}`});
+      window.open(routeData.href, '_blank');
+    },
     changeMold(index) {
       //选择最新最热
       this.moldIndex = index;
@@ -284,6 +313,21 @@ export default {
         (this.searchMap.end = ""), //截止面积
         (this.searchMap.start = ""), //开始面积
         this.getBuilding();
+    },
+    clickBuildZX(index){
+      // 点击装修
+      this.zxIndex = index;
+      this.page = 1; //恢复页码
+      this.moldIndex = 0;
+      this.searchMap.hot = null;
+      this.searchMap.newest = null;
+      this.searchMap.recommend = null;
+      if (index == 0) {
+        this.searchMap.renovation = null;
+      } else {
+        this.searchMap.renovation = this.renovationList[index].label;
+      }
+      this.getBuilding();
     },
     clickBuildType(index) {
       // 点击类型
@@ -343,6 +387,13 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+//显示一行，超出省略号
+.show-text-1 {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-all;
+}
 #build {
   width: 100%;
   background: #fff;
@@ -477,6 +528,7 @@ export default {
   #content-right-box {
     width: 250px;
     #poster-map {
+      cursor: pointer;
       padding: 0 0 30px 0;
       margin: 0 0 30px 0;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -517,9 +569,14 @@ export default {
         font-weight: 600;
       }
       #hot-house-item {
+        cursor: pointer;
         display: flex;
         align-items: center;
         margin: 0 0 20px 0;
+        padding: 10px ;
+        &:hover{
+          background: #eee;
+        }
         img {
           width: 96px;
           height: 60px;
@@ -527,7 +584,9 @@ export default {
         }
         div {
           margin-left: 10px;
+          width: 122px;
           p {
+            .show-text-1;
             &:nth-child(1) {
               font-size: 14px;
               height: 20px;

@@ -1,7 +1,7 @@
 <template>
 <!-- 地图找房 -->
   <div id="mapLookup">
-      <black-nav></black-nav>
+    <search-nav @searchKey="searchKey"></search-nav>
       <div id="center-box">
         <baidu-map :center="item.center" :zoom="item.zoom" class="bm-view">
       <!-- 缩放 -->

@@ -1,7 +1,6 @@
 <template>
   <!-- 委托 -->
   <div id="entrust">
-    <black-nav></black-nav>
     <search-nav></search-nav>
     <div id="entrust-banner">
       <img src="../assets/image/swiper1.jpg" alt="" />
@@ -17,11 +16,27 @@
         v-model="textarea"
       >
       </el-input>
-      <el-input class="input1" v-model="userPhone" placeholder="手机号"></el-input>
-      <el-input class="input2" placeholder="验证码" v-model="yzm">
+      <el-input
+        class="input1"
+        v-model="userName"
+        placeholder="您的称呼"
+      ></el-input>
+      <el-input
+        class="input1"
+        v-model="userPhone"
+        placeholder="手机号"
+      ></el-input>
+      <el-input
+        class="input1"
+        v-model="agent"
+        placeholder="经纪人名称（选填）"
+      ></el-input>
+      <!-- <el-input class="input2" placeholder="验证码" v-model="yzm">
         <template slot="append">获取验证码</template>
-      </el-input>
-      <el-button type="primary" class="ljwt-btn">立即委托</el-button>
+      </el-input> -->
+      <el-button type="primary" class="ljwt-btn" @click="ljwtBtn"
+        >立即委托</el-button
+      >
       <div id="box-bottom">
         你也可以拨打 <span>4000-623-678</span> 直接委托需求
       </div>
@@ -29,18 +44,62 @@
   </div>
 </template>
 <script>
+import { entrustSeek } from "../api/index";
+
 export default {
   data() {
     return {
+      userName: "",
       textarea: "",
       userPhone: "",
-      yzm:"",
+      yzm: "",
+      agent: "",
     };
   },
   created() {
     this.$store.commit("actNav", 4);
   },
-  methods: {},
+  methods: {
+    ljwtBtn() {
+      let phoneReg = /(^1\d{10}$)|(^[0-9]\d{7}$)/;
+      if(!this.textarea){
+        this.$notify({
+            title: "警告",
+            message: "请填写您的需求",
+            type: "warning",
+          });
+          return
+      }
+      if(!phoneReg.test(this.userPhone)){
+        this.$notify({
+            title: "警告",
+            message: "请正确填写手机号",
+            type: "warning",
+          });
+          return
+      }
+      entrustSeek({
+        cust_name: this.userName, //名字
+        cust_phone: this.userPhone, //电话
+        agent: this.agent, //经纪人
+        remark: this.textarea, //内容
+      }).then((res) => {
+        if (res.code == 20000) {
+          this.$notify({
+            title: "成功",
+            message: res.message,
+            type: "success",
+          });
+        } else {
+          this.$notify({
+            title: "警告",
+            message: res.message,
+            type: "warning",
+          });
+        }
+      });
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -68,14 +127,14 @@ export default {
   margin: -190px auto 50px auto;
   position: relative;
   z-index: 10;
-  h3{
+  h3 {
     height: 31px;
     font-size: 24px;
     text-align: center;
     color: #000;
     margin-top: 46px;
   }
-  p{
+  p {
     height: 19px;
     text-align: center;
     color: #666;
@@ -83,18 +142,18 @@ export default {
     margin-bottom: 37px;
     font-size: 14px;
   }
-  img{
+  img {
     width: 90%;
     height: auto;
     margin: 0 auto;
     display: block;
   }
-  /deep/ .el-textarea{
+  /deep/ .el-textarea {
     display: block;
     width: 90%;
     margin: 40px auto 0;
-    
-    textarea{
+
+    textarea {
       line-height: 20px;
       border: 1px solid #f5f5f5;
       background: #f5f5f5;
@@ -102,49 +161,49 @@ export default {
       padding: 15px 20px;
     }
   }
-  /deep/ .input1{
-      display: block;
-      width: 90%;
-      margin: 10px auto;
-      input{
-        border: 1px solid #f5f5f5!important;
-        width: 100%;
-        height: 48px;
-        line-height: 48px;
-        border-radius: 5px;
-        background-color: #f5f5f5;
-        padding: 0 20px;
-        font-size: 14px;
-      }
-  }
-  /deep/ .input2{
-      display: block;
-      width: 90%;
-      margin: 10px auto;
-      display: flex;
-      justify-content: space-between;
+  /deep/ .input1 {
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    input {
+      border: 1px solid #f5f5f5 !important;
+      width: 100%;
+      height: 48px;
+      line-height: 48px;
+      border-radius: 5px;
       background-color: #f5f5f5;
-      input{
-        border: 1px solid #f5f5f5!important;
-        width: 100%;
-        height: 48px;
-        line-height: 48px;
-        border-radius: 5px;
-        background-color: #f5f5f5;
-        padding: 0 20px;
-        font-size: 14px;
-      }
-      div{
-        line-height: 48px;
-        padding: 0 30px;
-        background: none;
-        font-size: 14px;
-        border:none;
-        cursor: pointer;
-        width: auto;
-      }
+      padding: 0 20px;
+      font-size: 14px;
+    }
   }
-  .ljwt-btn{
+  /deep/ .input2 {
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    display: flex;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    input {
+      border: 1px solid #f5f5f5 !important;
+      width: 100%;
+      height: 48px;
+      line-height: 48px;
+      border-radius: 5px;
+      background-color: #f5f5f5;
+      padding: 0 20px;
+      font-size: 14px;
+    }
+    div {
+      line-height: 48px;
+      padding: 0 30px;
+      background: none;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      width: auto;
+    }
+  }
+  .ljwt-btn {
     width: 90%;
     margin: 20px 0 40px 0;
     display: block;

@@ -1,7 +1,6 @@
 <template>
   <!-- 房源 -->
   <div id="build">
-    <black-nav></black-nav>
     <search-nav @searchKey="searchKey"></search-nav>
     <div id="search-box">
       <div class="search-item">
@@ -21,24 +20,10 @@
       <div class="search-item">
         <div class="search-item-type">单价：</div>
         <div class="search-item-data">
-          <div class="search-item-data-i">100万以下</div>
-          <div class="search-item-data-i">100-150万</div>
-          <div class="search-item-data-i">150-200万</div>
-          <div class="search-item-data-i">200-250万</div>
-          <div class="search-item-data-i">250-300万</div>
-          <div class="search-item-data-i">300万以上</div>
-          <div class="search-item-data-i">100万以下</div>
-          <div class="search-item-data-i">100-150万</div>
-          <div class="search-item-data-i">150-200万</div>
-          <div class="search-item-data-i">200-250万</div>
-          <div class="search-item-data-i">250-300万</div>
-          <div class="search-item-data-i">300万以上</div>
-          <div class="search-item-data-i">100万以下</div>
-          <div class="search-item-data-i">100-150万</div>
-          <div class="search-item-data-i">150-200万</div>
-          <div class="search-item-data-i">200-250万</div>
-          <div class="search-item-data-i">250-300万</div>
-          <div class="search-item-data-i">300万以上</div>
+          <div class="search-item-data-i" v-for="(item, index) in priceList"
+            :key="index"
+            @click="clickPrice(index)"
+            :class="{ 'activityData-i': priceIndex == index }">{{item.name}}</div>
           <div class="search-item-input-box">
             <input
               type="text"
@@ -54,7 +39,7 @@
               v-model="money2"
             />
             万
-            <button>确定</button>
+            <button @click="choisePrice">确定</button>
           </div>
         </div>
       </div>
@@ -75,45 +60,69 @@
               type="text"
               maxlength="5"
               autocomplete="off"
-              v-model="money1"
+              v-model="area1"
             />
             <span>-</span>
             <input
               type="text"
               maxlength="5"
               autocomplete="off"
-              v-model="money2"
+              v-model="area2"
             />
             ㎡
-            <button>确定</button>
+            <button @click="choiseArea">确定</button>
           </div>
         </div>
       </div>
-      <div class="search-item">
+      <!-- <div class="search-item">
         <div class="search-item-type">房源名称：</div>
         <div class="search-item-data">
-            <el-input placeholder="请输入内容" v-model="input5">
-              <el-button slot="append" icon="el-icon-search"></el-button>
-            </el-input>
+          <el-input placeholder="请输入内容" v-model="input5">
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
         </div>
-      </div>
+      </div> -->
     </div>
     <div id="content-box">
       <div id="content-left-box">
         <div id="data-list-type">
-          <div class="data-list-type-item act-type-item">全部房源</div>
-          <div class="data-list-type-item">最新</div>
-          <div class="data-list-type-item">热门</div>
-          <div class="data-list-type-item">热门</div>
+          <div
+            class="data-list-type-item"
+            :class="{ 'act-type-item': moldIndex == 0 }"
+            @click="changeMold(0)"
+          >
+            全部房源
+          </div>
+          <div
+            class="data-list-type-item"
+            :class="{ 'act-type-item': moldIndex == 1 }"
+            @click="changeMold(1)"
+          >
+            推荐
+          </div>
+          <div
+            class="data-list-type-item"
+            :class="{ 'act-type-item': moldIndex == 2 }"
+            @click="changeMold(2)"
+          >
+            最新
+          </div>
+          <div
+            class="data-list-type-item"
+            :class="{ 'act-type-item': moldIndex == 3 }"
+            @click="changeMold(3)"
+          >
+            热门
+          </div>
           <div id="data-num">共{{ allNum }}套房源</div>
         </div>
-        <div v-show="dataList.length>0" id="haveList">
-          <house v-for="item in dataList" :key="item" :data="item"></house>
+        <div v-show="dataList.length > 0" id="haveList">
+          <house v-for="(item,index) in dataList" :key="index" :data="item"></house>
         </div>
-        <div v-show="dataList.length==0" id="noneList">
+        <div v-show="dataList.length == 0" id="noneList">
           暂无数据~
         </div>
-        <div id="data-pagination" v-show="allNum>size">
+        <div id="data-pagination" v-show="allNum > size">
           <el-pagination
             background
             layout="prev, pager, next"
@@ -128,27 +137,27 @@
         <div id="poster-map">
           <h3>地图找房</h3>
           <div>
-            <p>上海写字楼</p>
+            <p>合肥写字楼</p>
           </div>
         </div>
         <div id="poster-hot-house">
           <h3>热点楼盘</h3>
-          <div id="hot-house-item" v-for="item in 5" :key="item">
+          <div id="hot-house-item" @click="toDetails(item.id)"  v-for="(item,index) in hotBuildData" :key="index">
             <img
-              src="https://images.diandianzu.com/Public/Home/v5/images/listing/side_bg_mapsearch.png"
+              :src="item.image[0]"
               alt
             />
             <div>
-              <p>中航天盛广场</p>
-              <p>4 元/m²/天</p>
-              <p>近30天有 12 人关注</p>
+              <p>{{item.bname}}</p>
+              <p v-show="item.price">{{item.price | priceF}}元/m²/天</p>
+              <p v-show="item.renovation">{{item.renovation}}</p>
             </div>
           </div>
         </div>
         <div id="poster-entrust">
           <h3>委托找房</h3>
           <div id="poster-entrust-text1">10分钟快速响应</div>
-          <div id="poster-entrust-btn">立即委托</div>
+          <div id="poster-entrust-btn" @click="$router.push('./entrust')">立即委托</div>
         </div>
       </div>
     </div>
@@ -164,20 +173,30 @@ export default {
     return {
       regionIndex: 0, //选择区域index
       areaIndex: 0, //选择面积index
+      priceIndex: 0, //选择单价index
+      moldIndex: 0, //选择最新或最热
       money1: "",
       money2: "",
+      area1: "",
+      area2: "",
       checkList: [],
       searchMap: {
         county: "全部", //区域搜索
+        renovation:null,//装修
         end: "", //截止面积
         start: "", //开始面积
-        bname:"",//搜索名字
-        type:null,
+        bname: "", //搜索名字
+        type: null,
+        hot: null, //最热
+        newest: null, //最新
+        recommend: null //推荐
       },
       dataList: [],
       allNum: 0,
       page: 1,
       size: 8,
+      hotBuildData:[],
+
     };
   },
   computed: {
@@ -189,10 +208,13 @@ export default {
       //面积列表
       return this.$store.state.areaList;
     },
+    priceList() {
+      //面积列表
+      return this.$store.state.priceList;
+    },
   },
   created() {
     this.$store.commit("actNav", 3);
-    console.log(this.$route.params.type, this.$route.params.code);
     if (this.$route.params.type == 1) {
       //1:区域搜索
       this.regionList.forEach((item, index) => {
@@ -213,20 +235,76 @@ export default {
         }
       });
     }
+    if(localStorage.getItem("hotBuildData")){
+      this.hotBuildData = JSON.parse(localStorage.getItem("hotBuildData"));
+    }
     this.getResource();
   },
   methods: {
-    searchKey(key){//搜索
-      console.log("搜索key",key);
+    toDetails(id) {
+      let routeData = this.$router.resolve({path:`./edificeDetails?id=${id}`});
+      window.open(routeData.href, '_blank');
+    },
+    changeMold(index) {
+      //选择最新最热
+      this.moldIndex = index;
+      this.searchMap.hot = null;
+      this.searchMap.newest = null;
+      this.searchMap.recommend = null;
+      if (index == 1) {
+        this.searchMap.recommend = 1;
+      } else if (index == 2) {
+        this.searchMap.newest = 1;
+      } else if (index == 3) {
+        this.searchMap.hot = 1;
+      }
+      this.getResource();
+    },
+    choisePrice(){
+      //选择面积
+      this.priceList.forEach((item, index) => {
+        if (item.start == this.money1 && item.end == this.money2) {
+          this.clickPrice(index);
+          return;
+        }
+      });
+      if (this.money1 > -1 && this.money2 > this.money1) {
+        this.page = 1; //恢复页码
+        this.searchMap.start = this.money1;
+        this.searchMap.end = this.money2;
+        this.getResource();
+      } else {
+        console.log("请正确输入信息");
+      }
+    },
+    choiseArea() {
+      //选择面积
+      this.areaList.forEach((item, index) => {
+        if (item.start == this.area1 && item.end == this.area2) {
+          this.clickArea(index);
+          return;
+        }
+      });
+      if (this.area1 > -1 && this.area2 > this.area1) {
+        this.page = 1; //恢复页码
+        this.searchMap.start = this.area1;
+        this.searchMap.end = this.area2;
+        this.getResource();
+      } else {
+        console.log("请正确输入信息");
+      }
+    },
+    searchKey(key) {
+      //搜索
+      console.log("搜索key", key);
       this.searchMap.bname = key;
       this.regionIndex = -1;
       this.areaIndex = -1;
       this.page = 1;
-      this.county="", //区域搜索
-        this.end= "", //截止面积
-        this.start= "", //开始面积
-      this.getResource();
-
+      (this.county = ""), //区域搜索
+        (this.end = ""), //截止面积
+        (this.start = ""), //开始面积
+        this.getResource();
     },
     clickRegion(index) {
       //点击区域
@@ -235,17 +313,33 @@ export default {
       this.searchMap.county = this.regionList[index].name;
       this.getResource();
     },
+    clickPrice(index){
+      //点击单价
+      this.money1 = "";
+      this.money2 = "";
+      this.priceIndex = index;
+      this.page = 1; //恢复页码
+      if (index == 0) {
+        this.searchMap.month_price_start = "";
+        this.searchMap.month_price_end = "";
+      } else {
+        this.searchMap.month_price_start = this.priceList[index].start;
+        this.searchMap.month_price_end = this.priceList[index].end;
+      }
+      this.getResource();
+    },
     clickArea(index) {
       //点击面积
+      this.area1 = "";
+      this.area2 = "";
       this.areaIndex = index;
       this.page = 1; //恢复页码
-      // this.searchMap.county = this.regionList[index].name;
       if (index == 0) {
-          this.searchMap.start = "";
-          this.searchMap.end = "";
+        this.searchMap.start = "";
+        this.searchMap.end = "";
       } else {
-          this.searchMap.start = this.areaList[index].start;
-          this.searchMap.end = this.areaList[index].end;
+        this.searchMap.start = this.areaList[index].start;
+        this.searchMap.end = this.areaList[index].end;
       }
       this.getResource();
     },
@@ -329,7 +423,7 @@ export default {
           text-align: center;
           margin: -4px 0px 0px 0px;
           margin-top: 0px;
-          width: 25px;
+          width: 35px;
           font-size: 12px;
           outline: none;
           text-align: center;
@@ -369,7 +463,7 @@ export default {
         display: inline-block;
         cursor: pointer;
         &:hover {
-          color: #17a1e6;
+          // color: #17a1e6;
         }
       }
       .act-type-item {
@@ -383,10 +477,10 @@ export default {
         line-height: 50px;
       }
     }
-    #haveList{
+    #haveList {
       margin-bottom: 30px;
     }
-    #noneList{
+    #noneList {
       height: 300px;
       line-height: 300px;
       font-size: 20px;
@@ -420,6 +514,7 @@ export default {
         border-radius: 4px;
         background: url(../assets/image/side_bg_mapsearch.png) no-repeat 0 0;
         background-size: 100%;
+        cursor: pointer;
         p {
           padding: 40px 0 0 70px;
           line-height: 24px;
@@ -444,6 +539,11 @@ export default {
         display: flex;
         align-items: center;
         margin: 0 0 20px 0;
+        padding: 10px ;
+        cursor: pointer;
+        &:hover{
+          background: #eee;
+        }
         img {
           width: 96px;
           height: 60px;
@@ -507,6 +607,8 @@ export default {
         text-align: center;
         background: #17a1e6;
         border-radius: 4px;
+        cursor: pointer;
+
       }
     }
   }

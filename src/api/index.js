@@ -38,4 +38,24 @@ export function getResourceDetails(id){
 }
 
 
+// 委托找房
+export function entrustSeek(data){
+  return request({
+    url: `/rent/entrust`,
+    method: 'post',
+    data
+  })
+}
+
+
+// 投放房源
+export function custHouse(data){
+  return request({
+    url: `/rent/custHouse`,
+    method: 'post',
+    data
+  })
+}
+
+
 
