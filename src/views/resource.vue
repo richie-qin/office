@@ -141,15 +141,15 @@
           </div>
         </div>
         <div id="poster-hot-house">
-          <h3>热点楼盘</h3>
-          <div id="hot-house-item" @click="toDetails(item.id)"  v-for="(item,index) in hotBuildData" :key="index">
+          <h3>热点房源</h3>
+          <div id="hot-house-item" @click="toDetails(item.id)"  v-for="(item,index) in hotHouseData" :key="index">
             <img
               :src="item.image[0]"
               alt
             />
             <div>
-              <p>{{item.bname}}</p>
-              <p v-show="item.price">{{item.price | priceF}}元/m²/天</p>
+              <p>{{item.house_title}}</p>
+              <p v-show="item.month_rent">{{item.month_rent | priceF}}元/m²/天</p>
               <p v-show="item.renovation">{{item.renovation}}</p>
             </div>
           </div>
@@ -195,7 +195,7 @@ export default {
       allNum: 0,
       page: 1,
       size: 8,
-      hotBuildData:[],
+      hotHouseData:[],
 
     };
   },
@@ -235,14 +235,14 @@ export default {
         }
       });
     }
-    if(localStorage.getItem("hotBuildData")){
-      this.hotBuildData = JSON.parse(localStorage.getItem("hotBuildData"));
+    if(localStorage.getItem("hotHouseData")){
+      this.hotHouseData = JSON.parse(localStorage.getItem("hotHouseData"));
     }
     this.getResource();
   },
   methods: {
     toDetails(id) {
-      let routeData = this.$router.resolve({path:`./edificeDetails?id=${id}`});
+      let routeData = this.$router.resolve({path:`./houseDetails?id=${id}`});
       window.open(routeData.href, '_blank');
     },
     changeMold(index) {
@@ -309,6 +309,10 @@ export default {
     clickRegion(index) {
       //点击区域
       this.regionIndex = index;
+      this.moldIndex = 0;
+      this.searchMap.hot = null;
+      this.searchMap.newest = null;
+      this.searchMap.recommend = null;
       this.page = 1; //恢复页码
       this.searchMap.county = this.regionList[index].name;
       this.getResource();
@@ -318,6 +322,10 @@ export default {
       this.money1 = "";
       this.money2 = "";
       this.priceIndex = index;
+      this.moldIndex = 0;
+      this.searchMap.hot = null;
+      this.searchMap.newest = null;
+      this.searchMap.recommend = null;
       this.page = 1; //恢复页码
       if (index == 0) {
         this.searchMap.month_price_start = "";
@@ -333,6 +341,10 @@ export default {
       this.area1 = "";
       this.area2 = "";
       this.areaIndex = index;
+      this.moldIndex = 0;
+      this.searchMap.hot = null;
+      this.searchMap.newest = null;
+      this.searchMap.recommend = null;
       this.page = 1; //恢复页码
       if (index == 0) {
         this.searchMap.start = "";

@@ -128,16 +128,16 @@
     <div id="recommend-area">
       <div id="recommend-area-title">不容错过的办公室</div>
       <div id="recommend-area-content">
-        <div class="recommend-city" v-for="(item, index) in 11" :key="index">
+        <div class="recommend-city" @click="toHouseDetails(item.id)" v-for="(item, index) in hotHouseData" :key="index">
           <div class="recommend-city-img">
             <img
-              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600447514753&di=bbae8a582384c863b42a387e671fdb9d&imgtype=0&src=http%3A%2F%2Fwatermark.lovepik.com%2Fphoto%2F50072%2F5457.jpg_wh1200.jpg"
+              :src="item.image[0]"
               alt=""
             />
           </div>
           <div class="recommend-city-info">
-            <div class="recommend-city-title">北京软件园区</div>
-            <div class="recommend-city-text">文化之根 智慧之源 生态之城</div>
+            <div class="recommend-city-title">{{item.house_title}}</div>
+            <!-- <div class="recommend-city-text">文化之根 智慧之源 生态之城</div> -->
           </div>
         </div>
         <div class="recommend-city more-ciry">
@@ -150,7 +150,7 @@
   </div>
 </template>
 <script>
-import { getBuilding } from "../api/index";
+import { getBuilding,getResource } from "../api/index";
 
 export default {
   data() {
@@ -171,6 +171,7 @@ export default {
         recommend: null //推荐
       },
       hotBuildData:[],//热门楼宇
+      hotHouseData:[],
       input21: ""
     };
   },
@@ -191,8 +192,18 @@ export default {
         }
       }
     );
+    getResource(this.searchMap,{page:1,size:11}).then(res=>{
+      if (res.code == 20000) {
+          this.hotHouseData = res.data.rows
+          localStorage.setItem("hotHouseData",JSON.stringify(res.data.rows));
+        }
+    })
   },
   methods: {
+    toHouseDetails(id){
+      let routeData = this.$router.resolve({path:`./houseDetails?id=${id}`});
+      window.open(routeData.href, '_blank');
+    },
     resourceMore(){
       this.$router.push({name:"resource"})
     },
@@ -540,7 +551,7 @@ export default {
     flex-wrap: wrap;
     .recommend-city {
       width: 365px;
-      height: 290px;
+      height: 270px;
       margin-bottom: 20px;
       border-radius: 5px;
       overflow: hidden;
@@ -562,7 +573,7 @@ export default {
         }
       }
       .recommend-city-info {
-        height: 65px;
+        // height: 65px;
         background: #fff;
         text-align: center;
         overflow: hidden;
@@ -571,7 +582,7 @@ export default {
           line-height: 30px;
           font-size: 20px;
           color: #353535;
-          margin-top: 8px;
+          margin: 8px 0;
         }
         .recommend-city-text {
           color: #b2b2b2;

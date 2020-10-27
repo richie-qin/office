@@ -73,21 +73,21 @@
           <div class="base-info-item">
             <div class="base-info-title">房源名称</div>
             <div class="base-info-content">
-              {{ details.house_title || "-" }}
+              {{ details.house_title || "暂无数据" }}
             </div>
           </div>
           <div class="base-info-item">
             <div class="base-info-title">所在楼宇</div>
-            <div class="base-info-content">{{ details.building || "-" }}</div>
+            <div class="base-info-content">{{ details.building || "暂无数据" }}</div>
           </div>
           <div class="base-info-item">
             <div class="base-info-title">房源楼层</div>
-            <div class="base-info-content">{{ details.floor || "-" }}</div>
+            <div class="base-info-content">{{ details.floor || "暂无数据" }}</div>
           </div>
           <div class="base-info-item">
             <div class="base-info-title">房源房号</div>
             <div class="base-info-content">
-              {{ details.house_number || "-" }}
+              {{ details.house_number || "暂无数据" }}
             </div>
           </div>
         </div>
@@ -98,50 +98,50 @@
               <div class="base-info-item">
                 <div class="base-info-title">房源朝向</div>
                 <div class="base-info-content">
-                  {{ details.orientation || "-" }}
+                  {{ details.orientation || "暂无数据" }}
                 </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">装修程度</div>
                 <div class="base-info-content">
-                  {{ details.renovation || "-" }}
+                  {{ details.renovation || "暂无数据" }}
                 </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">注册</div>
-                <div class="base-info-content">{{details.registers || "-"}}</div>
+                <div class="base-info-content">{{details.registers || "暂无数据"}}</div>
               </div>
             </div>
             <div>
               <div class="base-info-item">
                 <div class="base-info-title">房源面积</div>
-                <div class="base-info-content">{{ details.square?details.square+"㎡" : "-" }}</div>
+                <div class="base-info-content">{{ details.square?details.square+"㎡" : "暂无数据" }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">付款方式</div>
                 <div class="base-info-content">
-                  {{ details.pay_way || "-" }}
+                  {{ details.pay_way || "暂无数据" }}
                 </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">性质</div>
-                <div class="base-info-content">{{details.natures || "-"}}</div>
+                <div class="base-info-content">{{details.natures || "暂无数据"}}</div>
               </div>
             </div>
             <div>
               <div class="base-info-item">
                 <div class="base-info-title">看房方式</div>
                 <div class="base-info-content">
-                  {{ details.look_way || "-" }}
+                  {{ details.look_way || "暂无数据" }}
                 </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">分割</div>
-                <div class="base-info-content">{{details.divisions || "-"}}</div>
+                <div class="base-info-content">{{details.divisions || "暂无数据"}}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">房屋年限</div>
-                <div class="base-info-content">{{ details.years || "-" }}</div>
+                <div class="base-info-content">{{ details.years || "暂无数据" }}</div>
               </div>
             </div>
           </div>
@@ -153,31 +153,31 @@
               <div class="base-info-item">
                 <div class="base-info-title">月租费用</div>
                 <div class="base-info-content">
-                  {{ details.month_rent ? details.month_rent + "元/㎡" : "-" }}
+                  {{ details.month_rent ? details.month_rent + "元/㎡" : "暂无数据" }}
                 </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">得房率</div>
                 <div class="base-info-content">
-                  {{ details.rate ? details.rate + "%" : "-" }}
+                  {{ details.rate ? details.rate + "%" : "暂无数据" }}
                 </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">车位费</div>
-                <div class="base-info-content">{{ details.car || "-" }}</div>
+                <div class="base-info-content">{{ details.car || "暂无数据" }}</div>
               </div>
             </div>
             <div>
               <div class="base-info-item">
                 <div class="base-info-title">物业费</div>
                 <div class="base-info-content">
-                  {{ details.property ? details.property + "元/㎡/月" : "-" }}
+                  {{ details.property ? details.property + "元/㎡/月" : "暂无数据" }}
                 </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">房屋状态</div>
                 <div class="base-info-content">
-                  {{ details.rent_status || "-" }}
+                  {{ details.rent_status || "暂无数据" }}
                 </div>
               </div>
             </div>
@@ -185,19 +185,19 @@
               <div class="base-info-item">
                 <div class="base-info-title">起租期</div>
                 <div class="base-info-content">
-                  {{ details.start_rent ? details.start_rent + "个月" : "-" }}
+                  {{ details.start_rent ? details.start_rent + "个月" : "暂无数据" }}
                 </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">水电费</div>
                 <div class="base-info-content">
-                  {{ details.hydropower || "-" }}
+                  {{ details.hydropower || "暂无数据" }}
                 </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">用地性质</div>
                 <div class="base-info-content">
-                  {{ details.land_use || "-" }}
+                  {{ details.land_use || "暂无数据" }}
                 </div>
               </div>
             </div>

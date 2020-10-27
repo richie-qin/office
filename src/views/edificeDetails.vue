@@ -53,32 +53,32 @@
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">单价：</div>
-                <div class="base-info-content">{{ details.price? (details.price | priceF) +"元/m²/天":"无" }}</div>
+                <div class="base-info-content">{{ details.price? (details.price | priceF) +"元/m²/天":"暂无数据" }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">楼层高度：</div>
-                <div class="base-info-content">{{ details.floor_height || "无" }}</div>
+                <div class="base-info-content">{{ details.floor_height || "暂无数据" }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">物业：</div>
-                <div class="base-info-content">{{ details.boffice || "无" }}</div>
+                <div class="base-info-content">{{ details.boffice || "暂无数据" }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">车位数量：</div>
-                <div class="base-info-content">{{ details.car_number || "无"  }}</div>
+                <div class="base-info-content">{{ details.car_number || "暂无数据"  }}</div>
               </div>
 
               <div class="base-info-item">
                 <div class="base-info-title">空调：</div>
-                <div class="base-info-content">{{ details.air || "无"  }}</div>
+                <div class="base-info-content">{{ details.air || "暂无数据"  }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">空调费：</div>
-                <div class="base-info-content">{{ details.air_pay || "无"  }}</div>
+                <div class="base-info-content">{{ details.air_pay || "暂无数据"  }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">网络：</div>
-                <div class="base-info-content">{{ details.internet || "无"  }}</div>
+                <div class="base-info-content">{{ details.internet || "暂无数据"  }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">楼盘标签：</div>
@@ -90,52 +90,52 @@
                 >
                   {{ item }}
                 </div>
-                <div class="base-info-content" v-show="!details.label">无</div>
+                <div class="base-info-content" v-show="details.label.length==0">暂无数据</div>
                 &nbsp;
               </div>
             </div>
             <div class="content-div">
               <div class="base-info-item">
                 <div class="base-info-title">详细地址：</div>
-                <div class="base-info-content">{{ details.address || "无"  }}</div>
+                <div class="base-info-content">{{ details.address || "暂无数据"  }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">装修程度：</div>
-                <div class="base-info-content">{{ details.renovation || "无"  }}</div>
+                <div class="base-info-content">{{ details.renovation || "暂无数据"  }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">入住企业：</div>
-                <div class="base-info-content">{{ details.enter || "无"  }}</div>
+                <div class="base-info-content">{{ details.enter || "暂无数据"  }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">楼层数量：</div>
-                <div class="base-info-content">{{ details.floor_number || "无"  }}</div>
+                <div class="base-info-content">{{ details.floor_number || "暂无数据"  }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">物业费：</div>
                 <div class="base-info-content">
-                  {{ details.bproperty?details.bproperty+"元/㎡/月" : "无" }}
+                  {{ details.bproperty?details.bproperty+"元/㎡/月" : "暂无数据" }}
                 </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">车位月租：</div>
-                <div class="base-info-content">{{ details.car_month || "无"  }}</div>
+                <div class="base-info-content">{{ details.car_month || "暂无数据"  }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">状态：</div>
-                <div class="base-info-content">{{ details.bstatus || "无"  }}</div>
+                <div class="base-info-content">{{ details.bstatus || "暂无数据"  }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">空调开放时间：</div>
-                <div class="base-info-content">{{ details.air_open || "无"  }}</div>
+                <div class="base-info-content">{{ details.air_open || "暂无数据"  }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">电梯：</div>
-                <div class="base-info-content">{{ details.elevator || "无"  }}</div>
+                <div class="base-info-content">{{ details.elevator || "暂无数据"  }}</div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">描述：</div>
-                <div class="base-info-content">{{ details.bdesc || "无"  }}</div>
+                <div class="base-info-content">{{ details.bdesc || "暂无数据"  }}</div>
               </div>
             </div>
           </div>
