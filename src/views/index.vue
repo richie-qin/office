@@ -1,35 +1,50 @@
 <template>
   <div id="index-main">
+    <div id="header-con">
+      <div id="header-content">
+        <div id="nav-logo">
+          <img src="../assets/image/nav_logo2.png" alt />
+        </div>
+        <div id="nav-data">
+          <router-link to="./" class="nav-item" style="font-weight: bold;"
+            >首页</router-link
+          >
+          <router-link to="./building" class="nav-item">楼宇</router-link>
+          <router-link to="./resource" class="nav-item">办公室</router-link>
+          <router-link to="./entrust" class="nav-item">委托我们</router-link>
+          <router-link to="./throwIn" class="nav-item">投放房源</router-link>
+          <router-link to="./mapLookup" class="nav-item">地图找房</router-link>
+        </div>
+        <div id="nav-phone">
+          <i class="el-icon-phone"></i>
+          <span>400-138-9996</span>
+        </div>
+      </div>
+    </div>
     <div id="header-box">
       <el-carousel height="680px">
         <el-carousel-item v-for="(item, index) in swipers" :key="index">
           <img :src="item.src" alt />
         </el-carousel-item>
       </el-carousel>
-      <div id="header-con">
-        <div id="header-content">
-          <div id="nav-logo">
-            <img src="../assets/image/nav_logo2.png" alt />
-          </div>
-          <div id="nav-data">
-            <!-- <router-link to="./" class="nav-item" style="font-weight: bold;"
-              >首页</router-link
-            > -->
-            <router-link to="./building" class="nav-item">找写字楼</router-link>
-            <router-link to="./resource" class="nav-item">找办公室</router-link>
-            <router-link to="./entrust" class="nav-item">委托找房</router-link>
-            <router-link to="./throwIn" class="nav-item">投放房源</router-link>
-            <router-link to="./mapLookup" class="nav-item"
-              >地图找房</router-link
-            >
-          </div>
-          <div id="nav-phone">
-            <i class="el-icon-phone"></i>
-            <span>400-138-9996</span>
+      <div id="swiper-inside-house">
+        <div id="inside-house-box">
+          <h3>新上房源</h3>
+          <div
+            class="inside-house-item"
+            @click="toHouseDetails(item.id)"
+            v-for="(item, index) in newHouseData"
+            :key="index"
+          >
+            <img :src="item.image[0]" alt="" />
+            <div class="house-item-info">
+              <p class="info-p1">{{ item.house_title }}</p>
+              <p class="info-p2">{{ item.bailor_time }}</p>
+            </div>
           </div>
         </div>
       </div>
-      <div id="select-search-box">
+      <!-- <div id="select-search-box">
         <div id="search-box">
           <div class="search-div">
             <h3>选择区域</h3>
@@ -56,19 +71,23 @@
             </ul>
           </div>
           <div id="looking-btn">马上找房</div>
-          <!-- <div id="from-Map">
-            <el-input
-              placeholder="大厦名称或区域位置"
-              prefix-icon="el-icon-search"
-              v-model="input21"
-            ></el-input>
-            <el-button type="primary" plain>地图找房</el-button>
-          </div> -->
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="our-nice">
-      <ul>
+      <div class="our-nice-box">
+        <div
+          class="our-nice-item"
+          v-for="(item, index) in trustList"
+          :key="index"
+        >
+          <div class="our-nice-num">{{ item.num }}</div>
+          <div class="our-nice-title">{{ item.title }}</div>
+          <div v-show="index!=trustList.length-1" class="line"></div>
+        </div>
+      </div>
+
+      <!-- <ul>
         <li class="fangyuan">
           真实房源
           <div class="line"></div>
@@ -83,74 +102,140 @@
           <div class="line"></div>
         </li>
         <li class="fuwu" style="float:left">1对1贴心服务</li>
-      </ul>
+      </ul> -->
     </div>
     <div id="hot-area">
       <div id="hot-area-title">
-        <h3>热门商圈</h3>
-        <p>进驻核心地段，尽享成熟配套</p>
+        <h3>热门楼宇</h3>
+        <p>进驻城市中心</p>
       </div>
-      <div id="hot-area-content">
-        <div id="hot-left-img" @click="toDetails(hotBuildData[0].id)">
-          <img
-            :src="hotBuildData[0].image[0]"
-            alt=""
-          />
-          <div class="img-cityName">{{hotBuildData[0].bname}}</div>
-        </div>
-        <div id="hot-right-img" @click="toDetails(hotBuildData[1].id)">
-          <div id="right-top-img">
-            <img
-              :src="hotBuildData[1].image[0]"
-              alt=""
-            />
-            <div class="img-cityName">{{hotBuildData[1].bname}}</div>
-          </div>
-          <div id="right-bot-img" @click="toDetails(hotBuildData[2].id)">
-            <div id="bot-img1">
-              <img
-                :src="hotBuildData[2].image[0]"
-                alt=""
-              />
-              <div class="img-cityName">{{hotBuildData[2].bname}}</div>
+      <div id="hot-build-box">
+        <div
+          class="build-city"
+          @click="toDetails(item.id)"
+          v-for="(item, index) in hotBuildData.slice(0, 9)"
+          :key="index"
+        >
+          <img :src="item.image[0]" alt="" />
+          <div class="build-info-bot">
+            <div>
+              <i class="el-icon-location"></i>
+              <div class="build-info-addr">
+                {{ item.address || "暂无数据" }}
+              </div>
             </div>
-            <div id="bot-img2" @click="toDetails(hotBuildData[3].id)">
-              <img
-                :src="hotBuildData[3].image[0]"
-                alt=""
-              />
-              <div class="img-cityName">{{hotBuildData[3].bname}}</div>
+            <div class="build-info-price" v-show="item.price">
+              <span>{{ item.price | priceF }}</span
+              >元/㎡/月
+            </div>
+          </div>
+          <div class="build-info-tag" v-show="item.label.length > 0">
+            <div
+              class="build-tag-item"
+              v-for="(item2, index2) in item.label"
+              :key="index2"
+            >
+              {{ item2 }}
             </div>
           </div>
         </div>
       </div>
     </div>
     <div id="recommend-area">
-      <div id="recommend-area-title">不容错过的办公室</div>
+      <div id="recommend-area-title">巧租推荐，精选优质房源</div>
       <div id="recommend-area-content">
-        <div class="recommend-city" @click="toHouseDetails(item.id)" v-for="(item, index) in hotHouseData" :key="index">
+        <div id="recommend-house1" @click="toHouseDetails(hotHouseData[0].id)">
+          <img :src="hotHouseData[0].image[0]" alt="" />
+          <div class="recommend-house1-info">
+            <div class="recommend-house1-title">
+              {{ hotHouseData[0].house_title }}
+            </div>
+            <div class="recommend-house1-lookUp">查看详情</div>
+          </div>
+        </div>
+        <div id="recommend-house-r">
+          <div
+            class="recommend-house-item"
+            v-for="(item, index) in hotHouseData.slice(1, 5)"
+            :key="index"
+          >
+            <img :src="item.image[0]" alt="" />
+            <div class="recommend-house-item-info">
+              <div class="recommend-house-item-title">
+                {{ item.house_title }}
+              </div>
+              <div
+                class="recommend-house-item-lookUp"
+                @click="toHouseDetails(item.id)"
+              >
+                查看详情
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div
+          class="recommend-city"
+          @click="toHouseDetails(item.id)"
+          v-for="(item, index) in hotHouseData"
+          :key="index"
+        >
           <div class="recommend-city-img">
-            <img
-              :src="item.image[0]"
-              alt=""
-            />
+            <img :src="item.image[0]" alt="" />
           </div>
           <div class="recommend-city-info">
-            <div class="recommend-city-title">{{item.house_title}}</div>
-            <!-- <div class="recommend-city-text">文化之根 智慧之源 生态之城</div> -->
+            <div class="recommend-city-title">{{ item.house_title }}</div>
           </div>
-        </div>
-        <div class="recommend-city more-ciry">
+        </div> -->
+        <!-- <div
+          class="recommend-city more-ciry"
+          @click="toHouseDetails(item.id)"
+          v-for="(item, index) in hotHouseData"
+          :key="index"
+        >
           <div class="more-text1">10000+</div>
           <div class="more-text2">套办公室任你挑</div>
-          <div class="more-btn" @click="resourceMore" >查看更多房源</div>
+          <div class="more-btn" @click="resourceMore">查看更多房源</div>
+        </div> -->
+      </div>
+    </div>
+    <div id="business-info-box">
+      <div id="business-info-in">
+        <div
+          class="business-item"
+          v-for="(item, index) in businessInfo"
+          :key="index"
+        >
+          <h3>{{ item.title }}</h3>
+          <div>{{ item.body }}</div>
         </div>
       </div>
+    </div>
+    <div id="contact-me-box">
+      <div id="contact-me-input">
+        <h3>联系我们</h3>
+        <div id="userPhone">
+          <el-input v-model="userPhone" placeholder="请输入手机号"></el-input>
+        </div>
+        <div id="userTextArea">
+          <el-input
+            type="textarea"
+            :rows="3"
+            placeholder="请输入内容"
+            v-model="textarea"
+            resize="none"
+          >
+          </el-input>
+        </div>
+        <div id="userBtn">
+          <el-button type="primary" @click="userSend">点击提交</el-button>
+        </div>
+      </div>
+      <img id="contact-me-img" src="../assets/image/swiper1.jpg" alt="" />
     </div>
   </div>
 </template>
 <script>
-import { getBuilding,getResource } from "../api/index";
+import { getBuilding, getResource } from "../api/index";
 
 export default {
   data() {
@@ -158,7 +243,7 @@ export default {
       swipers: [
         { src: require("../assets/image/swiper1.jpg") },
         { src: require("../assets/image/swiper2.jpg") },
-        { src: require("../assets/image/swiper3.jpg") }
+        { src: require("../assets/image/swiper3.jpg") },
       ],
       searchMap: {
         county: "全部", //区域搜索
@@ -168,11 +253,36 @@ export default {
         type: null,
         hot: 1, //最热
         newest: null, //最新
-        recommend: null //推荐
+        recommend: null, //推荐
       },
-      hotBuildData:[],//热门楼宇
-      hotHouseData:[],
-      input21: ""
+      hotBuildData: [], //热门楼宇
+      hotHouseData: [],
+      newHouseData: [],
+      input21: "",
+      businessInfo: [
+        {
+          title: "全系列房源",
+          body:
+            "覆盖14个区县优质房源，精准匹配客户需求，巧租为您提供全系列房源信息。",
+        },
+        {
+          title: "真实房源保证",
+          body:
+            "真实价格，真实房源，诚意满满在巧租可以了解到最放心的房源信息。",
+        },
+        {
+          title: "贴心经纪人服务",
+          body: "快速响应客户需求，提供周到的看房服务租房，巧租来陪您。",
+        },
+      ],
+      userPhone: "",
+      textarea: "",
+      trustList: [
+        { num: "10000+", title: "房源" },
+        { num: "2000+", title: "楼宇" },
+        { num: "800+", title: "用户认可" },
+        { num: "1", title: "1对1服务" },
+      ],
     };
   },
   computed: {
@@ -181,55 +291,154 @@ export default {
     },
     areaList() {
       return this.$store.state.areaList;
-    }
+    },
   },
   created() {
-    getBuilding(this.searchMap, { page: 1, size: 4 }).then(
-      res => {
-        if (res.code == 20000) {
-          this.hotBuildData = res.data.rows
-          localStorage.setItem("hotBuildData",JSON.stringify(res.data.rows));
-        }
-      }
-    );
-    getResource(this.searchMap,{page:1,size:11}).then(res=>{
+    getBuilding(this.searchMap, { page: 1, size: 4 }).then((res) => {
       if (res.code == 20000) {
-          this.hotHouseData = res.data.rows
-          localStorage.setItem("hotHouseData",JSON.stringify(res.data.rows));
-        }
-    })
+        this.hotBuildData = res.data.rows;
+        localStorage.setItem("hotBuildData", JSON.stringify(res.data.rows));
+      }
+    });
+    getResource(this.searchMap, { page: 1, size: 11 }).then((res) => {
+      if (res.code == 20000) {
+        this.hotHouseData = res.data.rows;
+        localStorage.setItem("hotHouseData", JSON.stringify(res.data.rows));
+      }
+    });
+    getResource(
+      {
+        county: "全部", //区域搜索
+        newest: 1, //最新
+      },
+      { page: 1, size: 11 }
+    ).then((res) => {
+      if (res.code == 20000) {
+        this.newHouseData = res.data.rows.slice(0, 5);
+        localStorage.setItem("newHouseData", JSON.stringify(res.data.rows));
+      }
+    });
   },
   methods: {
-    toHouseDetails(id){
-      let routeData = this.$router.resolve({path:`./houseDetails?id=${id}`});
-      window.open(routeData.href, '_blank');
+    userSend() {
+      let phoneReg = /(^1\d{10}$)|(^[0-9]\d{7}$)/;
+      if (!phoneReg.test(this.userPhone)) {
+        this.$notify({
+          title: "警告",
+          message: "请正确填写手机号",
+          type: "warning",
+        });
+        return;
+      }
+      if (!this.textarea) {
+        this.$notify({
+          title: "警告",
+          message: "请填写需求内容",
+          type: "warning",
+        });
+        return;
+      }
+      this.$notify({
+        title: "成功",
+        message: "请等待管理员给您致电",
+        type: "success",
+      });
     },
-    resourceMore(){
-      this.$router.push({name:"resource"})
+    toHouseDetails(id) {
+      let routeData = this.$router.resolve({ path: `./houseDetails?id=${id}` });
+      window.open(routeData.href, "_blank");
+    },
+    resourceMore() {
+      this.$router.push({ name: "resource" });
     },
     goLookup(item, index) {
       //index 1:区域搜索 2：面积搜素
       this.$router.push({
         name: "building",
-        params: { type: index, code: item.code }
+        params: { type: index, code: item.code },
       });
     },
     toDetails(id) {
-      let routeData = this.$router.resolve({path:`./edificeDetails?id=${id}`});
-      window.open(routeData.href, '_blank');
+      let routeData = this.$router.resolve({
+        path: `./edificeDetails?id=${id}`,
+      });
+      window.open(routeData.href, "_blank");
     },
-  }
+  },
 };
 </script>
 <style lang="less" scoped>
+//显示一行，超出省略号
+.show-text-1 {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-all;
+}
 #index-main {
   width: 100%;
   background: #f7f7f7;
+  height: auto;
+  font-size: 0;
+  overflow: hidden;
 }
 #header-box {
   width: 100%;
   height: 680px;
   position: relative;
+}
+#swiper-inside-house {
+  position: absolute;
+  top: 50px;
+  bottom: 50px;
+  width: 1200px;
+  z-index: 99;
+  right: -50%;
+  left: -50%;
+  margin: auto;
+  display: flex;
+  justify-content: flex-end;
+  #inside-house-box {
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 25px 40px;
+    border-radius: 5px;
+    h3 {
+      font-size: 25px;
+      color: #fff;
+      font-family: serif;
+      margin-bottom: 10px;
+    }
+    .inside-house-item {
+      display: flex;
+      align-items: center;
+      padding: 7px 0 7px 10px;
+      cursor: pointer;
+      &:hover {
+        box-shadow: 0px 3px 30px 5px rgba(255, 255, 255, 0.5);
+      }
+      img {
+        width: 120px;
+        height: 80px;
+        object-fit: cover;
+      }
+      .house-item-info {
+        margin-left: 15px;
+        padding-right: 10px;
+        p {
+          margin: 15px 0;
+        }
+        .info-p1 {
+          font-size: 16px;
+          color: #fff;
+        }
+        .info-p2 {
+          font-size: 16px;
+          color: #aaa;
+        }
+      }
+    }
+  }
 }
 .el-carousel__item img {
   width: 100%;
@@ -239,12 +448,12 @@ export default {
 #header-con {
   height: 80px;
   width: 100%;
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: -50%;
-  right: -50%;
-  z-index: 10;
+  // margin: auto;
+  // position: absolute;
+  // top: 0;
+  // left: -50%;
+  // right: -50%;
+  // z-index: 10;
   #header-content {
     height: 100%;
     width: 1200px;
@@ -270,8 +479,9 @@ export default {
         font-weight: 500;
         border-radius: 20px;
         cursor: pointer;
+        color: #333;
         &:hover {
-          // color: #17a1e6;
+          color: #fff;
           background-color: #3f88fb;
         }
       }
@@ -279,14 +489,15 @@ export default {
     #nav-phone {
       display: flex;
       align-items: center;
+      cursor: pointer;
       i {
         margin-right: 8px;
         font-size: 22px;
-        color: #fff;
+        color: #3f88fb;
       }
       span {
         font-size: 16px;
-        color: #fff;
+        color: #3f88fb;
         font-weight: bold;
       }
     }
@@ -391,8 +602,42 @@ export default {
 }
 .our-nice {
   width: 100%;
-  height: 90px;
-  background: #f7f7f7;
+  background: #fff;
+  .our-nice-box {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .our-nice-item {
+      text-align: center;
+      position: relative;
+      width: 25%;
+      .line {
+        position: absolute;
+        top: 50%;
+        bottom: 50%;
+        margin: auto;
+        width: 1px;
+        height: 20px;
+        background-color: #c3c3c3;
+        right: 0;
+      }
+      .our-nice-num {
+        color: #f59a23;
+        font-size: 30px;
+        font-weight: 600;
+      }
+      .our-nice-title {
+        color: #333;
+        font-size: 25px;
+        font-weight: 600;
+        margin-top: 5px;
+      }
+    }
+  }
+
   ul {
     width: 1160px;
     height: 90px;
@@ -447,7 +692,7 @@ export default {
   margin: 50px auto 0;
   padding: 0 30px;
   #hot-area-title {
-    text-align: center;
+    // text-align: center;
     margin-bottom: 30px;
     h3 {
       font-size: 35px;
@@ -459,75 +704,100 @@ export default {
       margin: 15px 0 20px;
     }
   }
-  #hot-area-content {
-    overflow: hidden;
-    div {
+  #hot-build-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    .build-city {
+      width: 365px;
+      height: 270px;
+      margin-bottom: 20px;
+      border-radius: 5px;
       overflow: hidden;
-      position: relative;
-    }
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
       transition: all 0.2s;
+      position: relative;
+      cursor: pointer;
       &:hover {
-        box-shadow: 0 15px 20px rgba(0, 0, 0, 0.1);
-        transform: scale(1.2);
-        -ms-transform: scale(1.2);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
         transition: all 0.2s;
       }
-    }
-    .img-cityName {
-      width: 100%;
-      height: 108px;
-      line-height: 130px;
-      display: block;
-      font-size: 20px;
-      color: #fff;
-      position: absolute;
-      bottom: 0;
-      padding-left: 20px;
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0),
-        rgba(0, 0, 0, 0.7)
-      );
-    }
-    #hot-left-img {
-      width: 370px;
-      height: 470px;
-      display: inline-block;
-      margin-right: 10px;
-      cursor: pointer;
-    }
-    #hot-right-img {
-      width: 760px;
-      height: 470px;
-      display: inline-block;
-      #right-top-img {
+      img {
         width: 100%;
-        height: 235px;
-        margin-bottom: 10px;
-        display: inline-block;
-        cursor: pointer;
+        height: 100%;
+        object-fit: cover;
       }
-      #right-bot-img {
+      .build-info-bot {
         width: 100%;
-        height: 225px;
-        display: inline-block;
-        #bot-img1 {
-          width: 375px;
-          height: 100%;
-          display: inline-block;
-          cursor: pointer;
+        height: 40px;
+        background: rgba(0, 0, 0, 0.4);
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        line-height: 40px;
+        padding: 0 10px;
+        font-size: 14px;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        overflow: hidden;
+        div {
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          .build-info-addr {
+            margin-left: 5px;
+            width: 180px;
+            height: 100%;
+            display: block;
+            .show-text-1;
+          }
+          .build-info-price {
+            width: 80px;
+          }
+          i {
+            font-size: 20px;
+            color: #fff;
+          }
+          span {
+            font-size: 20px;
+            margin-right: 5px;
+            color: #d9001b;
+          }
         }
-        #bot-img2 {
-          width: 375px;
-          height: 100%;
-          display: inline-block;
-          margin-left: 10px;
-          cursor: pointer;
-
+      }
+      .build-info-tag {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 100%;
+        padding: 0 15px;
+        display: flex;
+        align-items: center;
+        .build-tag-item {
+          border-radius: 10px;
+          font-size: 12px;
+          padding: 4px 10px;
+          margin-right: 10px;
+          color: #fff;
+          &:nth-child(1) {
+            background: #f59a23;
+          }
+          &:nth-child(2) {
+            background: #02a7f0;
+          }
+          &:nth-child(3) {
+            background: indianred;
+          }
+          &:nth-child(4) {
+            background: cornflowerblue;
+          }
+          &:nth-child(5) {
+            background: darkseagreen;
+          }
+          &:nth-child(6) {
+            background: #02a7f0;
+          }
         }
       }
     }
@@ -538,101 +808,270 @@ export default {
   margin: 50px auto 0;
   padding: 0 30px;
   #recommend-area-title {
-    font-size: 25px;
+    font-size: 30px;
     color: #333;
-    text-align: center;
-    // font-weight: bold;
+    font-weight: bold;
     margin-bottom: 30px;
   }
+  // #recommend-area-content {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: space-between;
+  //   flex-wrap: wrap;
+  //   .recommend-city {
+  //     width: 365px;
+  //     height: 270px;
+  //     margin-bottom: 20px;
+  //     border-radius: 5px;
+  //     overflow: hidden;
+  //     transition: all 0.2s;
+  //     cursor: pointer;
+  //     &:hover {
+  //       transform: scale(1.02);
+  //       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  //       transition: all 0.2s;
+  //     }
+  //     .recommend-city-img {
+  //       width: 100%;
+  //       height: 225px;
+  //       overflow: hidden;
+  //       img {
+  //         width: 100%;
+  //         height: 100%;
+  //         object-fit: cover;
+  //       }
+  //     }
+  //     .recommend-city-info {
+  //       // height: 65px;
+  //       background: #fff;
+  //       text-align: center;
+  //       overflow: hidden;
+  //       .recommend-city-title {
+  //         height: 30px;
+  //         line-height: 30px;
+  //         font-size: 20px;
+  //         color: #353535;
+  //         margin: 8px 0;
+  //       }
+  //       .recommend-city-text {
+  //         color: #b2b2b2;
+  //         font-size: 14px;
+  //       }
+  //     }
+  //   }
+  //   .more-ciry {
+  //     background: #17a1e6;
+  //     text-align: center;
+  //     &:hover {
+  //       transform: scale(1);
+  //       box-shadow: 0;
+  //     }
+  //     .more-text1 {
+  //       width: 100%;
+  //       font-size: 30px;
+  //       color: #fff;
+  //       margin-top: 70px;
+  //     }
+  //     .more-text2 {
+  //       width: 100%;
+
+  //       font-size: 20px;
+  //       height: 30px;
+  //       line-height: 30px;
+  //       margin-bottom: 10px;
+  //       color: #fff;
+  //     }
+  //     .more-btn {
+  //       display: block;
+  //       margin: 0 auto;
+  //       width: 130px;
+  //       height: 40px;
+  //       border: 1px solid #fff;
+  //       text-align: center;
+  //       line-height: 39px;
+  //       color: #fff;
+  //       border-radius: 5px;
+  //       background: #17a1e6;
+  //       transition: background 0.2s linear;
+  //       cursor: pointer;
+  //       font-size: 14px;
+  //       color: #fff;
+  //       &:hover {
+  //         background: #fff;
+  //         color: #17a1e6;
+  //       }
+  //     }
+  //   }
+  // }
   #recommend-area-content {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    .recommend-city {
-      width: 365px;
-      height: 270px;
-      margin-bottom: 20px;
+    #recommend-house1 {
+      width: 400px;
+      height: 500px;
+      position: relative;
       border-radius: 5px;
       overflow: hidden;
-      transition: all 0.2s;
-      cursor: pointer;
-      &:hover {
-        transform: scale(1.02);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        transition: all 0.2s;
-      }
-      .recommend-city-img {
+      img {
         width: 100%;
-        height: 225px;
+        height: 100%;
+        object-fit: cover;
+      }
+      .recommend-house1-info {
+        position: absolute;
+        height: 470px;
+        width: 350px;
+        background: rgba(0, 0, 0, 0.3);
+        left: 15px;
+        top: 15px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        border-radius: 5px;
+        .recommend-house1-title {
+          width: 100%;
+          font-size: 20px;
+          color: #fff;
+          text-align: center;
+          margin-top: 20px;
+        }
+        .recommend-house1-lookUp {
+          border-radius: 10px;
+          width: 120px;
+          height: 45px;
+          text-align: center;
+          font-size: 16px;
+          border: solid 1px #fff;
+          margin: 0 auto 20px;
+          color: #fff;
+          line-height: 45px;
+          cursor: pointer;
+          &:hover {
+            background: #fff;
+            color: #333;
+          }
+        }
+      }
+    }
+    #recommend-house-r {
+      width: 800px;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 7.5px;
+      .recommend-house-item {
+        width: 357px;
+        height: 227px;
+        margin: 7.5px;
+        position: relative;
+        border-radius: 5px;
         overflow: hidden;
+        cursor: pointer;
         img {
           width: 100%;
           height: 100%;
           object-fit: cover;
         }
-      }
-      .recommend-city-info {
-        // height: 65px;
-        background: #fff;
-        text-align: center;
-        overflow: hidden;
-        .recommend-city-title {
-          height: 30px;
-          line-height: 30px;
-          font-size: 20px;
-          color: #353535;
-          margin: 8px 0;
-        }
-        .recommend-city-text {
-          color: #b2b2b2;
-          font-size: 14px;
+        .recommend-house-item-info {
+          position: absolute;
+          height: 197px;
+          width: 327px;
+          background: rgba(0, 0, 0, 0.4);
+          left: 15px;
+          top: 15px;
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          border-radius: 5px;
+          .recommend-house-item-title {
+            width: 100%;
+            font-size: 20px;
+            color: #fff;
+            text-align: center;
+            margin-top: 20px;
+          }
+          .recommend-house-item-lookUp {
+            border-radius: 10px;
+            width: 120px;
+            height: 45px;
+            text-align: center;
+            font-size: 16px;
+            border: solid 1px #fff;
+            margin: 0 auto 20px;
+            color: #fff;
+            line-height: 45px;
+            cursor: pointer;
+            &:hover {
+              background: #fff;
+              color: #333;
+            }
+          }
         }
       }
     }
-    .more-ciry {
-      background: #17a1e6;
+  }
+}
+#business-info-box {
+  width: 100%;
+  margin: 50px auto;
+  font-size: 0;
+  border-top: solid 1px #333;
+  border-bottom: solid 1px #333;
+  #business-info-in {
+    width: 1200px;
+    margin: 30px auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .business-item {
       text-align: center;
-      &:hover {
-        transform: scale(1);
-        box-shadow: 0;
+      padding: 0 50px;
+      h3 {
+        font-size: 25px;
+        color: #333;
       }
-      .more-text1 {
-        width: 100%;
-        font-size: 30px;
-        color: #fff;
-        margin-top: 70px;
-      }
-      .more-text2 {
-        width: 100%;
-
-        font-size: 20px;
-        height: 30px;
-        line-height: 30px;
-        margin-bottom: 10px;
-        color: #fff;
-      }
-      .more-btn {
-        display: block;
-        margin: 0 auto;
-        width: 130px;
-        height: 40px;
-        border: 1px solid #fff;
-        text-align: center;
-        line-height: 39px;
-        color: #fff;
-        border-radius: 5px;
-        background: #17a1e6;
-        transition: background 0.2s linear;
-        cursor: pointer;
+      div {
         font-size: 14px;
-        color: #fff;
-        &:hover {
-          background: #fff;
-          color: #17a1e6;
-        }
+        color: #888;
+        margin-top: 5px;
       }
     }
+  }
+}
+#contact-me-box {
+  width: 1200px;
+  margin: 0 auto 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #2b2a48;
+  padding: 30px;
+  #contact-me-input {
+    width: 500px;
+    height: 300px;
+    h3 {
+      font-size: 25px;
+      color: #fff;
+    }
+    #userPhone {
+      margin-top: 50px;
+    }
+    #userTextArea {
+      margin-top: 20px;
+    }
+    #userBtn {
+      margin-top: 30px;
+      text-align: center;
+      /deep/ button {
+        width: 250px;
+        height: 50px;
+      }
+    }
+  }
+  #contact-me-img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
   }
 }
 </style>
