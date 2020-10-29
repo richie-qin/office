@@ -28,6 +28,19 @@
         </el-carousel-item>
       </el-carousel>
       <div id="swiper-inside-house">
+        <div id="inside-house-search">
+          <el-input
+            placeholder="请输入内容"
+            v-model="searchKey"
+            class="input-with-select"
+          >
+            <el-select v-model="selectType" slot="prepend" placeholder="请选择">
+              <el-option label="楼宇" value="1"></el-option>
+              <el-option label="房源" value="2"></el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search">搜索</el-button>
+          </el-input>
+        </div>
         <div id="inside-house-box">
           <h3>新上房源</h3>
           <div
@@ -83,7 +96,7 @@
         >
           <div class="our-nice-num">{{ item.num }}</div>
           <div class="our-nice-title">{{ item.title }}</div>
-          <div v-show="index!=trustList.length-1" class="line"></div>
+          <div v-show="index != trustList.length - 1" class="line"></div>
         </div>
       </div>
 
@@ -106,8 +119,7 @@
     </div>
     <div id="hot-area">
       <div id="hot-area-title">
-        <h3>热门楼宇</h3>
-        <p>进驻城市中心</p>
+        热门楼宇 进驻城市中心
       </div>
       <div id="hot-build-box">
         <div
@@ -243,7 +255,7 @@ export default {
       swipers: [
         { src: require("../assets/image/swiper1.jpg") },
         { src: require("../assets/image/swiper2.jpg") },
-        { src: require("../assets/image/swiper3.jpg") },
+        { src: require("../assets/image/swiper3.jpg") }
       ],
       searchMap: {
         county: "全部", //区域搜索
@@ -253,7 +265,7 @@ export default {
         type: null,
         hot: 1, //最热
         newest: null, //最新
-        recommend: null, //推荐
+        recommend: null //推荐
       },
       hotBuildData: [], //热门楼宇
       hotHouseData: [],
@@ -263,17 +275,16 @@ export default {
         {
           title: "全系列房源",
           body:
-            "覆盖14个区县优质房源，精准匹配客户需求，巧租为您提供全系列房源信息。",
+            "覆盖14个区县优质房源，精准匹配客户需求，巧租为您提供全系列房源信息。"
         },
         {
           title: "真实房源保证",
-          body:
-            "真实价格，真实房源，诚意满满在巧租可以了解到最放心的房源信息。",
+          body: "真实价格，真实房源，诚意满满在巧租可以了解到最放心的房源信息。"
         },
         {
           title: "贴心经纪人服务",
-          body: "快速响应客户需求，提供周到的看房服务租房，巧租来陪您。",
-        },
+          body: "快速响应客户需求，提供周到的看房服务租房，巧租来陪您。"
+        }
       ],
       userPhone: "",
       textarea: "",
@@ -281,8 +292,10 @@ export default {
         { num: "10000+", title: "房源" },
         { num: "2000+", title: "楼宇" },
         { num: "800+", title: "用户认可" },
-        { num: "1", title: "1对1服务" },
+        { num: "1", title: "1对1服务" }
       ],
+      searchKey: "",
+      selectType:""
     };
   },
   computed: {
@@ -291,16 +304,16 @@ export default {
     },
     areaList() {
       return this.$store.state.areaList;
-    },
+    }
   },
   created() {
-    getBuilding(this.searchMap, { page: 1, size: 4 }).then((res) => {
+    getBuilding(this.searchMap, { page: 1, size: 4 }).then(res => {
       if (res.code == 20000) {
         this.hotBuildData = res.data.rows;
         localStorage.setItem("hotBuildData", JSON.stringify(res.data.rows));
       }
     });
-    getResource(this.searchMap, { page: 1, size: 11 }).then((res) => {
+    getResource(this.searchMap, { page: 1, size: 11 }).then(res => {
       if (res.code == 20000) {
         this.hotHouseData = res.data.rows;
         localStorage.setItem("hotHouseData", JSON.stringify(res.data.rows));
@@ -309,10 +322,10 @@ export default {
     getResource(
       {
         county: "全部", //区域搜索
-        newest: 1, //最新
+        newest: 1 //最新
       },
       { page: 1, size: 11 }
-    ).then((res) => {
+    ).then(res => {
       if (res.code == 20000) {
         this.newHouseData = res.data.rows.slice(0, 5);
         localStorage.setItem("newHouseData", JSON.stringify(res.data.rows));
@@ -326,7 +339,7 @@ export default {
         this.$notify({
           title: "警告",
           message: "请正确填写手机号",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
@@ -334,14 +347,14 @@ export default {
         this.$notify({
           title: "警告",
           message: "请填写需求内容",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
       this.$notify({
         title: "成功",
         message: "请等待管理员给您致电",
-        type: "success",
+        type: "success"
       });
     },
     toHouseDetails(id) {
@@ -355,16 +368,16 @@ export default {
       //index 1:区域搜索 2：面积搜素
       this.$router.push({
         name: "building",
-        params: { type: index, code: item.code },
+        params: { type: index, code: item.code }
       });
     },
     toDetails(id) {
       let routeData = this.$router.resolve({
-        path: `./edificeDetails?id=${id}`,
+        path: `./edificeDetails?id=${id}`
       });
       window.open(routeData.href, "_blank");
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -391,20 +404,47 @@ export default {
   position: absolute;
   top: 50px;
   bottom: 50px;
-  width: 1200px;
+  min-width: 1200px;
+  width: 100%;
   z-index: 99;
   right: -50%;
   left: -50%;
   margin: auto;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+  #inside-house-search {
+    width: 1000px;
+    height: 100px;
+    // background: red;
+    display: flex;
+    justify-content: center;
+    /deep/ .el-select .el-input {
+      width: 90px;
+      font-size: 14px;
+    }
+    /deep/ .input-with-select .el-input-group__prepend {
+      background-color: #fff;
+      font-size: 14px;
+    }
+    /deep/ .el-button{
+      font-size: 14px;
+    }
+    /deep/ .el-input-group{
+      width: 600px;
+      margin-left: 200px;
+    }
+  }
   #inside-house-box {
+    flex: none;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    padding: 25px 40px;
+    padding: 15px;
     border-radius: 5px;
+    width: 310px;
+    overflow: hidden;
     h3 {
-      font-size: 25px;
+      font-size: 20px;
       color: #fff;
       font-family: serif;
       margin-bottom: 10px;
@@ -418,12 +458,12 @@ export default {
         box-shadow: 0px 3px 30px 5px rgba(255, 255, 255, 0.5);
       }
       img {
-        width: 120px;
+        width: 100px;
         height: 80px;
         object-fit: cover;
       }
       .house-item-info {
-        margin-left: 15px;
+        margin-left: 10px;
         padding-right: 10px;
         p {
           margin: 15px 0;
@@ -692,17 +732,10 @@ export default {
   margin: 50px auto 0;
   padding: 0 30px;
   #hot-area-title {
-    // text-align: center;
     margin-bottom: 30px;
-    h3 {
-      font-size: 35px;
-      color: #000;
-    }
-    p {
-      font-size: 15px;
-      color: #333;
-      margin: 15px 0 20px;
-    }
+    font-size: 34px;
+    font-weight: 700;
+    text-shadow: 1px 1px 0 #fff;
   }
   #hot-build-box {
     display: flex;
@@ -710,34 +743,30 @@ export default {
     justify-content: space-between;
     flex-wrap: wrap;
     .build-city {
-      width: 365px;
-      height: 270px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-      overflow: hidden;
-      transition: all 0.2s;
-      position: relative;
+      width: 274px;
+      background-color: #fff;
+      border-radius: 0 0 4px 4px;
+      -webkit-transition: all .3s ease-in-out;
+      transition: all .3s ease-in-out;
       cursor: pointer;
       &:hover {
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        transition: all 0.2s;
+       -webkit-transform: translateY(-5px);
+      transform: translateY(-5px);
+      box-shadow: 0 24px 40px -24px rgba(0,0,0,.1);
       }
       img {
         width: 100%;
-        height: 100%;
+        height: 268px;
         object-fit: cover;
+        display: block;
       }
       .build-info-bot {
+        padding: 20px 17px;
+        color: #333;
         width: 100%;
-        height: 40px;
-        background: rgba(0, 0, 0, 0.4);
-        position: absolute;
-        left: 0;
-        bottom: 0;
         line-height: 40px;
         padding: 0 10px;
         font-size: 14px;
-        color: #fff;
         display: flex;
         justify-content: space-between;
         overflow: hidden;
