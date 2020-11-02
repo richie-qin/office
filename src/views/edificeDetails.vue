@@ -2,6 +2,10 @@
   <!-- 房子详情 -->
   <div id="houseDetails">
     <search-nav></search-nav>
+    <div id="build-title">
+      {{ details.bname }}
+      <span>在售</span>
+    </div>
     <div id="img-box">
       <div id="img-left">
         <el-carousel height="420px">
@@ -14,16 +18,12 @@
         </el-carousel>
       </div>
       <div id="img-right">
-        <mapItem
-          height="420px"
-          :data="{
-            center: { lng: details.longitude, lat: details.latitude },
-            zoom: 15,
-            buildName: details.bname
-          }"
-        ></mapItem>
-        <div id="maskDiv" @click="lookupMap">
-          <div id="maskDiv-msg">查看附近的交通与设施</div>
+        <div id="buildInfo-price">
+          <div id="price-title">参考均价</div>
+          <div id="price-number">{{ details.price | priceF }}</div>
+          <div id="price-unit">
+            {{ details.price ? "元/m²/天" : "暂无数据" }}
+          </div>
         </div>
       </div>
     </div>
@@ -53,89 +53,134 @@
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">单价：</div>
-                <div class="base-info-content">{{ details.price? (details.price | priceF) +"元/m²/天":"暂无数据" }}</div>
+                <div class="base-info-content">
+                  {{
+                    details.price
+                      ? (details.price | priceF) + "元/m²/天"
+                      : "暂无数据"
+                  }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">楼层高度：</div>
-                <div class="base-info-content">{{ details.floor_height || "暂无数据" }}</div>
+                <div class="base-info-content">
+                  {{ details.floor_height || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">物业：</div>
-                <div class="base-info-content">{{ details.boffice || "暂无数据" }}</div>
+                <div class="base-info-content">
+                  {{ details.boffice || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">车位数量：</div>
-                <div class="base-info-content">{{ details.car_number || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.car_number || "暂无数据" }}
+                </div>
               </div>
 
               <div class="base-info-item">
                 <div class="base-info-title">空调：</div>
-                <div class="base-info-content">{{ details.air || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.air || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">空调费：</div>
-                <div class="base-info-content">{{ details.air_pay || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.air_pay || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">网络：</div>
-                <div class="base-info-content">{{ details.internet || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.internet || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">楼盘标签：</div>
                 <div
-                v-show="details.label&&details.label.length>0"
+                  v-show="details.label && details.label.length > 0"
                   class="base-info-content"
-                  v-for="(item,index) in details.label"
+                  v-for="(item, index) in details.label"
                   :key="index"
                 >
                   {{ item }}
                 </div>
-                <div class="base-info-content" v-show="details.label.length==0">暂无数据</div>
+                <div
+                  class="base-info-content"
+                  v-show="details.label.length == 0"
+                >
+                  暂无数据
+                </div>
                 &nbsp;
               </div>
             </div>
             <div class="content-div">
               <div class="base-info-item">
                 <div class="base-info-title">详细地址：</div>
-                <div class="base-info-content">{{ details.address || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.address || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">装修程度：</div>
-                <div class="base-info-content">{{ details.renovation || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.renovation || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">入住企业：</div>
-                <div class="base-info-content">{{ details.enter || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.enter || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">楼层数量：</div>
-                <div class="base-info-content">{{ details.floor_number || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.floor_number || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">物业费：</div>
                 <div class="base-info-content">
-                  {{ details.bproperty?details.bproperty+"元/㎡/月" : "暂无数据" }}
+                  {{
+                    details.bproperty
+                      ? details.bproperty + "元/㎡/月"
+                      : "暂无数据"
+                  }}
                 </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">车位月租：</div>
-                <div class="base-info-content">{{ details.car_month || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.car_month || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">状态：</div>
-                <div class="base-info-content">{{ details.bstatus || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.bstatus || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">空调开放时间：</div>
-                <div class="base-info-content">{{ details.air_open || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.air_open || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">电梯：</div>
-                <div class="base-info-content">{{ details.elevator || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.elevator || "暂无数据" }}
+                </div>
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">描述：</div>
-                <div class="base-info-content">{{ details.bdesc || "暂无数据"  }}</div>
+                <div class="base-info-content">
+                  {{ details.bdesc || "暂无数据" }}
+                </div>
               </div>
             </div>
           </div>
@@ -158,7 +203,7 @@
             <div class="base-info-content">3213123123</div>
           </div>
         </div> -->
-        <div id="zzhx" v-show="zzhxList.length>0">
+        <div id="zzhx" v-show="zzhxList.length > 0">
           <h3 class="info-title"><i></i>在租户型</h3>
           <div id="houseTypeTitle">
             <div>照片</div>
@@ -168,28 +213,42 @@
             <div>更新时间</div>
           </div>
           <div>
-            <houseType v-for="(item,index) in zzhxList" :key="index" :data="item"></houseType>
+            <houseType
+              v-for="(item, index) in zzhxList"
+              :key="index"
+              :data="item"
+            ></houseType>
           </div>
-          <div id="lookMore" @click="getResource" v-show="zzhxList.length<zzhxAll">查看更多户型</div>
+          <div
+            id="lookMore"
+            @click="getResource"
+            v-show="zzhxList.length < zzhxAll"
+          >
+            查看更多户型
+          </div>
         </div>
-        <mapItem :data="{
+        <mapItem
+          :data="{
             center: { lng: details.longitude, lat: details.latitude },
             zoom: 15,
             buildName: details.bname
-          }"></mapItem>
+          }"
+        ></mapItem>
       </div>
       <div id="right-info-box">
         <div id="ljyy">
           <h3><i></i>预约看房</h3>
           <el-input placeholder="请输入您的手机号" v-model="input10" clearable>
           </el-input>
-          <el-button type="primary" @click="subscribe(input10)">立即预约</el-button>
+          <el-button type="primary" @click="subscribe(input10)"
+            >立即预约</el-button
+          >
           <p>巧租承诺仅将你的联系方式用于找房服务</p>
         </div>
         <div id="tjfy">
           <h3><i></i>推荐房源</h3>
           <div id="tjfy-content">
-            <div v-for="(item,index) in 4" :key="index">
+            <div v-for="(item, index) in 4" :key="index">
               <p>某某大厦</p>
             </div>
           </div>
@@ -199,12 +258,12 @@
   </div>
 </template>
 <script>
-import { getBuildingDetails,getResource,getSubscribe } from "../api/index";
+import { getBuildingDetails, getResource, getSubscribe } from "../api/index";
 import mapItem from "../components/mapItem";
 import houseType from "../components/houseType";
 
 export default {
-  components: { mapItem , houseType},
+  components: { mapItem, houseType },
   data() {
     return {
       swipers: [
@@ -214,10 +273,10 @@ export default {
       ],
       input10: "",
       details: {},
-      zzhxList:[],
-      zzhxAll:0,
-      page:1,
-      size:8
+      zzhxList: [],
+      zzhxAll: 0,
+      page: 1,
+      size: 8
     };
   },
   created() {
@@ -228,55 +287,56 @@ export default {
         this.getResource();
       }
     });
-    
   },
   mounted() {},
   methods: {
-    subscribe(val){
+    subscribe(val) {
       let phoneReg = /(^1\d{10}$)|(^[0-9]\d{7}$)/;
-      if(!phoneReg.test(val)){
+      if (!phoneReg.test(val)) {
         this.$notify({
-            title: "警告",
-            message: "请正确填写手机号",
-            type: "warning",
-          });
-          return
+          title: "警告",
+          message: "请正确填写手机号",
+          type: "warning"
+        });
+        return;
       }
       getSubscribe({
-        house_id:this.details.id,
-        mobile:val,
-        house_name:this.details.house_title
-      }).then(res=>{
+        house_id: this.details.id,
+        mobile: val,
+        house_name: this.details.house_title
+      }).then(res => {
         if (res.code == 20000) {
           this.$notify({
             title: "成功",
             message: "预约成功",
-            type: "success",
+            type: "success"
           });
         } else {
           this.$notify({
             title: "警告",
             message: res.message,
-            type: "warning",
+            type: "warning"
           });
         }
-      })
+      });
     },
-    getResource(){
-      getResource({building:this.details.bname},{ page: this.page, size: this.size }).then(res=>{
-          if (res.code == 20000) {
-            if(this.zzhxList.length>0){
-              res.data.rows.forEach(item=>{
-              this.zzhxList.push(item)
-
-              })
-            }else{
-              this.zzhxList = res.data.rows
-            }
-            this.zzhxAll = res.data.total;
-            this.page++;
+    getResource() {
+      getResource(
+        { building: this.details.bname },
+        { page: this.page, size: this.size }
+      ).then(res => {
+        if (res.code == 20000) {
+          if (this.zzhxList.length > 0) {
+            res.data.rows.forEach(item => {
+              this.zzhxList.push(item);
+            });
+          } else {
+            this.zzhxList = res.data.rows;
           }
-        })
+          this.zzhxAll = res.data.total;
+          this.page++;
+        }
+      });
     },
     // 去地图查看
     lookupMap() {
@@ -304,7 +364,6 @@ export default {
 <style lang="less" scoped>
 #houseDetails {
   width: 100%;
-  background: #f7f7f7;
   overflow: hidden;
   #title-money {
     padding: 0 calc(50% - 600px);
@@ -359,21 +418,41 @@ export default {
       display: inline-block;
     }
   }
+  #build-title {
+    width: 1200px;
+    margin: 50px auto 30px auto;
+    font-size: 26px;
+    color: #101d37;
+    font-weight: 600;
+    height: 35px;
+    line-height: 35px;
+    display: flex;
+    align-items: center;
+    span {
+      line-height: 23px;
+      height: 23px;
+      padding: 0 5px;
+      vertical-align: middle;
+      font-size: 14px;
+      display: inline-block;
+      margin-left: 7px;
+      color: #fff;
+      background-image: linear-gradient(-135deg, #6b99f6, #3072f6);
+    }
+  }
   #img-box {
     // height: 420px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: #fff;
-    // margin: 0 calc(50% - 600px);
     width: 100%;
     padding: 25px calc(50% - 600px);
     border-radius: 5px;
     overflow: hidden;
-    background: #3d5a73;
     color: #fff;
     #img-left {
-      width: 820px;
+      width: 700px;
       height: 100%;
       overflow: hidden;
       border-radius: 5px;
@@ -384,119 +463,37 @@ export default {
       }
     }
     #img-right {
-      width: 380px;
+      width: 500px;
       height: 420px;
       overflow: hidden;
       border-radius: 5px;
       margin-left: 10px;
       position: relative;
-      #maskDiv {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        opacity: 0;
-        background: rgba(0, 0, 0, 0.5);
-        #maskDiv-msg {
-          width: 170px;
-          line-height: 28px;
-          text-align: center;
-          background: rgba(0, 0, 0, 0.5);
-          border-radius: 20px;
-          font-weight: 600;
-          color: #fff;
+      padding: 20px 30px;
+      box-sizing: border-box;
+      background: #fff;
+      box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.06);
+      -webkit-box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.06);
+      #buildInfo-price {
+        display: flex;
+        align-items: baseline;
+        border-bottom: 1px solid #e4e6f0;
+        padding-bottom: 15px;
+        #price-title {
+          width: 81px;
+          font-family: PingFangSC-Regular;
           font-size: 14px;
-          margin: 50% auto;
+          color: #9399a5;
         }
-        &:hover {
-          opacity: 0.5;
-          cursor: pointer;
+        #price-number {
+          color: #fe615a;
+          font-family: Tahoma-Bold;
+          font-size: 30px;
         }
-      }
-      #img-right-div1 {
-        // height: 88px;
-        margin-top: 6px;
-        border-bottom: solid 1px #ebebeb;
-        // line-height: 88px;
-        font-size: 12px;
-        font-weight: 500;
-
-        b {
-          font-size: 26px;
-          font-weight: 500;
-        }
-        p {
-          margin: 10px 0;
-          font-size: 18px;
-          span {
-            font-size: 34px;
-          }
-        }
-      }
-      #img-right-div2 {
-        border-bottom: solid 1px #ebebeb;
-
-        height: 88px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        .div2-item {
-          .div2-item-top {
-            height: 33px;
-            line-height: 33px;
-            font-size: 24px;
-            font-weight: 500;
-          }
-        }
-        .div2-item-bot {
-          height: 17px;
-          line-height: 17px;
-          font-size: 12px;
-          margin-top: 5px;
-        }
-      }
-      #img-right-div3 {
-        padding: 20px 0;
-        border-bottom: solid 1px #ebebeb;
-
-        div {
-          margin-bottom: 10px;
-          line-height: 17px;
-          font-size: 12px;
-          span {
-            font-size: 12px;
-            height: 17px;
-          }
-        }
-      }
-      #img-right-div4 {
-        padding: 10px 0;
-        // border-bottom: solid 1px #ebebeb;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        #img-right-div4-user {
-          margin-left: 10px;
-
-          #div-user-title {
-            font-size: 14px;
-            font-weight: 600;
-            line-height: 20px;
-          }
-          p {
-            line-height: 17px;
-            font-size: 12px;
-          }
-        }
-        #user-btn {
-          margin: 0 auto;
-          width: 80%;
-          /deep/ button {
-            width: 100%;
-            height: 60px;
-            font-size: 18px;
-          }
+        #price-unit {
+          font-family: HiraginoSansGB-W6;
+          font-size: 16px;
+          color: #fe615a;
         }
       }
     }
@@ -562,13 +559,13 @@ export default {
           }
         }
       }
-      #zzhx{
+      #zzhx {
         margin-top: 40px;
         border-bottom: solid 1px #ebebeb;
         padding-bottom: 30px;
-        #houseTypeTitle{
+        #houseTypeTitle {
           display: flex;
-          div{
+          div {
             width: 20%;
             height: 50px;
             display: flex;
@@ -577,7 +574,7 @@ export default {
             font-size: 16px;
           }
         }
-        #lookMore{
+        #lookMore {
           width: 200px;
           margin: 20px auto;
           text-align: center;
@@ -589,7 +586,7 @@ export default {
           padding: 0 30px;
           border-radius: 5px;
           cursor: pointer;
-          &:hover{
+          &:hover {
             background: tomato;
             color: #fff;
           }
