@@ -1,118 +1,83 @@
 <template>
   <!-- 楼宇 -->
   <div id="build">
-    <search-nav @searchKey="searchKey"></search-nav>
+    <search-nav></search-nav>
+    <div id="search-nav-right">
+      <el-input
+        placeholder="请输入大厦名称"
+        v-model="searchKeyVal"
+        :clearable="true"
+      >
+        <el-button
+          slot="append"
+          icon="el-icon-search"
+          @click="searchKey"
+        ></el-button>
+      </el-input>
+    </div>
     <div id="search-box">
-      <div class="search-item">
-        <div class="search-item-type">区域：</div>
-        <div class="search-item-data">
-          <div
-            class="search-item-data-i"
-            v-for="(item, index) in regionList"
-            :key="index"
-            @click="clickRegion(index)"
-            :class="{ 'activityData-i': regionIndex == index }"
-          >
-            {{ item.name }}
+      <div id="search-box-content">
+        <div id="search-item-wz">
+          <div id="wz-title">
+            <span class="item-title">位置</span>
+            <div>
+              <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="区域" name="area">区域</el-tab-pane>
+                <el-tab-pane label="地铁(1号线)" name="metro"
+                  >地铁(1号线)</el-tab-pane
+                >
+              </el-tabs>
+            </div>
+          </div>
+          <div id="wx-content1" v-show="activeName == 'area'">
+            <div
+              class="wz-region-item"
+              v-for="(item, index) in regionList"
+              :key="index"
+              @click="clickRegion(index)"
+              :class="{ 'activityData-i': regionIndex == index }"
+            >
+              {{ item.name }}
+            </div>
+          </div>
+          <div id="wx-content2" v-show="activeName == 'metro'">
+            <div
+              class="wz-region-item"
+              v-for="(item, index) in metroList"
+              :key="index"
+              @click="clickRegion(index)"
+              :class="{ 'activityData-i': regionIndex == index }"
+            >
+              {{ item.name }}
+            </div>
           </div>
         </div>
-      </div>
-      <!-- <div class="search-item">
-        <div class="search-item-type">面积：</div>
-        <div class="search-item-data">
-          <div
-            class="search-item-data-i"
-            v-for="(item, index) in areaList"
-            :key="index"
-            @click="clickArea(index)"
-            :class="{ 'activityData-i': areaIndex == index }"
-          >
-            {{ item.name }}
-          </div>
-          <div class="search-item-input-box">
-            <input
-              type="text"
-              maxlength="5"
-              autocomplete="off"
-              v-model="money1"
-            />
-            <span>-</span>
-            <input
-              type="text"
-              maxlength="5"
-              autocomplete="off"
-              v-model="money2"
-            />
-            ㎡
-            <button>确定</button>
+        <div id="search-item-zx">
+          <div class="item-title">装修</div>
+          <div>
+            <el-radio-group v-model="zxIndex" @change="clickBuildZX">
+              <el-radio
+                v-for="(item, index) in renovationList"
+                :key="index"
+                :class="{ 'activityData-i': zxIndex == index }"
+                :label="index"
+                >{{ item.label }}</el-radio
+              >
+            </el-radio-group>
           </div>
         </div>
-      </div> -->
-      <!-- <div class="search-item">
-        <div class="search-item-type">单价：</div>
-        <div class="search-item-data">
-          <div class="search-item-data-i">100万以下</div>
-          <div class="search-item-data-i">100-150万</div>
-          <div class="search-item-data-i">150-200万</div>
-          <div class="search-item-data-i">200-250万</div>
-          <div class="search-item-data-i">250-300万</div>
-          <div class="search-item-data-i">300万以上</div>
-          <div class="search-item-data-i">100万以下</div>
-          <div class="search-item-data-i">100-150万</div>
-          <div class="search-item-data-i">150-200万</div>
-          <div class="search-item-data-i">200-250万</div>
-          <div class="search-item-data-i">250-300万</div>
-          <div class="search-item-data-i">300万以上</div>
-          <div class="search-item-data-i">100万以下</div>
-          <div class="search-item-data-i">100-150万</div>
-          <div class="search-item-data-i">150-200万</div>
-          <div class="search-item-data-i">200-250万</div>
-          <div class="search-item-data-i">250-300万</div>
-          <div class="search-item-data-i">300万以上</div>
-          <div class="search-item-input-box">
-            <input
-              type="text"
-              maxlength="5"
-              autocomplete="off"
-              v-model="money1"
-            />
-            <span>-</span>
-            <input
-              type="text"
-              maxlength="5"
-              autocomplete="off"
-              v-model="money2"
-            />
-            万
-            <button>确定</button>
-          </div>
-        </div>
-      </div> -->
-      <div class="search-item" v-show="renovationList.length > 0">
-        <div class="search-item-type">装修：</div>
-        <div class="search-item-data">
-          <div
-            class="search-item-data-i"
-            @click="clickBuildZX(index)"
-            v-for="(item, index) in renovationList"
-            :key="index"
-            :class="{ 'activityData-i': zxIndex == index }"
-          >
-            {{ item.label }}
-          </div>
-        </div>
-      </div>
-      <div class="search-item" v-show="buildList.length > 0">
-        <div class="search-item-type">类型：</div>
-        <div class="search-item-data">
-          <div
-            class="search-item-data-i"
-            @click="clickBuildType(index)"
-            v-for="(item, index) in buildList"
-            :key="index"
-            :class="{ 'activityData-i': typeIndex == index }"
-          >
-            {{ item.label }}
+        <div id="search-item-lx">
+          <div class="item-title">类型</div>
+          <div>
+            <el-radio-group v-model="typeIndex" @change="clickBuildType">
+              <el-radio
+                v-for="(item, index) in buildList"
+                :key="index"
+                :class="{ 'activityData-i': typeIndex == index }"
+                :label="index"
+                >{{ item.label }}</el-radio
+              >
+            </el-radio-group>
           </div>
         </div>
       </div>
@@ -152,7 +117,7 @@
         </div>
         <div v-show="dataList.length > 0" id="haveList">
           <buildItem
-            v-for="(item,index) in dataList"
+            v-for="(item, index) in dataList"
             :key="index"
             :data="item"
           ></buildItem>
@@ -180,22 +145,26 @@
         </div>
         <div id="poster-hot-house">
           <h3>热点楼盘</h3>
-          <div id="hot-house-item" @click="toDetails(item.id)"  v-for="(item,index) in hotBuildData" :key="index">
-            <img
-              :src="item.image[0]"
-              alt
-            />
+          <div
+            id="hot-house-item"
+            @click="toDetails(item.id)"
+            v-for="(item, index) in hotBuildData"
+            :key="index"
+          >
+            <img :src="item.main_pic" alt />
             <div>
-              <p>{{item.bname}}</p>
-              <p v-show="item.price">{{item.price | priceF}}元/m²/天</p>
-              <p v-show="item.renovation">{{item.renovation}}</p>
+              <p>{{ item.bname }}</p>
+              <p v-show="item.price">{{ item.price | priceF }}元/m²/天</p>
+              <p v-show="item.renovation">{{ item.renovation }}</p>
             </div>
           </div>
         </div>
         <div id="poster-entrust">
           <h3>委托找房</h3>
           <div id="poster-entrust-text1">10分钟快速响应</div>
-          <div id="poster-entrust-btn" @click="$router.push('./entrust')">立即委托</div>
+          <div id="poster-entrust-btn" @click="$router.push('./entrust')">
+            立即委托
+          </div>
         </div>
       </div>
     </div>
@@ -204,6 +173,7 @@
 <script>
 import build from "../components/build";
 import { getBuilding } from "../api/index";
+import { getResource } from "../api/index";
 
 export default {
   components: { buildItem: build },
@@ -211,7 +181,7 @@ export default {
     return {
       regionIndex: 0, //选择区域index
       areaIndex: 0, //选择面积index
-      zxIndex:0,//选择装修
+      zxIndex: 0, //选择装修
       typeIndex: 0, //选择类型
       moldIndex: 0, //选择最新或最热
       money1: "",
@@ -219,26 +189,31 @@ export default {
       checkList: [],
       searchMap: {
         county: "全部", //区域搜索
-        renovation:null,//装修
+        renovation: null, //装修
         end: "", //截止面积
         start: "", //开始面积
         bname: "", //搜索名字
         type: null,
         hot: null, //最热
         newest: null, //最新
-        recommend: null //推荐
+        recommend: null, //推荐
       },
       dataList: [],
       allNum: 0,
       page: 1,
       size: 8,
-      hotBuildData:[],
+      hotBuildData: [],
+      searchKeyVal: "",
+      activeName: "area", //area  metro
     };
   },
   computed: {
     regionList() {
       //区域列表
       return this.$store.state.regionList;
+    },
+    metroList() {
+      return this.$store.state.metroList;
     },
     areaList() {
       //面积列表
@@ -251,7 +226,7 @@ export default {
     buildList() {
       //楼宇类型
       return this.$store.state.buildList;
-    }
+    },
   },
   created() {
     this.$store.commit("actNav", 2);
@@ -275,18 +250,20 @@ export default {
         }
       });
     }
-    if(this.$route.params.searchKey){
-      this.searchKey(this.$route.params.searchKey);
-    }
-    if(localStorage.getItem("hotBuildData")){
+    if (localStorage.getItem("hotBuildData")) {
       this.hotBuildData = JSON.parse(localStorage.getItem("hotBuildData"));
     }
     this.getBuilding();
   },
   methods: {
+    handleClick(tab) {
+      this.activeName = tab.name;
+    },
     toDetails(id) {
-      let routeData = this.$router.resolve({path:`./edificeDetails?id=${id}`});
-      window.open(routeData.href, '_blank');
+      let routeData = this.$router.resolve({
+        path: `./edificeDetails?id=${id}`,
+      });
+      window.open(routeData.href, "_blank");
     },
     changeMold(index) {
       //选择最新最热
@@ -303,9 +280,9 @@ export default {
       }
       this.getBuilding();
     },
-    searchKey(key) {
+    searchKey() {
       //搜索
-      this.searchMap.bname = key;
+      this.searchMap.bname = this.searchKeyVal;
       this.regionIndex = 0;
       this.areaIndex = 0;
       this.page = 1;
@@ -314,7 +291,7 @@ export default {
         (this.searchMap.start = ""), //开始面积
         this.getBuilding();
     },
-    clickBuildZX(index){
+    clickBuildZX(index) {
       // 点击装修
       this.zxIndex = index;
       this.page = 1; //恢复页码
@@ -375,15 +352,15 @@ export default {
     },
     getBuilding() {
       getBuilding(this.searchMap, { page: this.page, size: this.size }).then(
-        res => {
+        (res) => {
           if (res.code == 20000) {
             this.dataList = res.data.rows;
             this.allNum = res.data.total;
           }
         }
       );
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -398,81 +375,98 @@ export default {
   width: 100%;
   background: #fff;
 }
-#search-box {
+#search-nav-right {
   width: 1200px;
-  background: #fff;
-  border: solid 1px #ddd;
-  margin: 30px auto;
-  padding: 5px 10px;
-  .search-item {
-    display: flex;
-    align-items: center;
-    // height: 28px;
-    line-height: 35px;
-    border-bottom: dashed 1px #aaa;
-    padding: 10px 5px;
-    &:last-child {
-      border-bottom: none;
-    }
-    .search-item-type {
+  margin: 50px auto;
+  height: 45px;
+  /deep/ .el-input__inner {
+    width: 500px;
+    height: 50px;
+    border: none;
+    background: #eee;
+  }
+  /deep/ .el-input {
+    width: 500px;
+    height: 45px;
+    font-size: 16px;
+  }
+  /deep/ .el-button {
+    color: #888;
+    font-size: 20px;
+    width: 80px;
+    height: 48px;
+    color: #fff;
+    font-weight: bold;
+    background: #17A1E6;
+  }
+}
+/deep/ .el-radio{
+  margin-right: 40px;
+}
+#search-box {
+  background-color: #f5f5f5;
+  padding-top: 24px;
+  width: 100%;
+  overflow: hidden;
+  #search-box-content {
+    width: 1200px;
+    margin: 0 auto;
+    .item-title {
+      width: 70px;
       font-size: 14px;
-      color: #999;
-      flex: none;
+      color: #333;
     }
-    .search-item-data {
-      display: flex;
-      align-items: center;
-      padding-left: 20px;
-      flex-wrap: wrap;
-      /deep/ .el-checkbox-group {
+    /deep/ .el-radio__label{
+      color: #000;
+    }
+    .activityData-i {
+      color: #17A1E6;
+    }
+    #search-item-wz {
+      margin-bottom: 20px;
+      border-bottom: solid 1px #ddd;
+      #wz-title {
         display: flex;
         align-items: center;
-      }
-      .search-item-data-i {
-        font-size: 13px;
+        font-size: 14px;
         color: #333;
-        cursor: pointer;
-        margin-right: 15px;
-        &:hover {
-          color: #cc2929;
+        /deep/ .el-tabs__header {
+          margin: 0;
         }
       }
-      .activityData-i {
-        color: #cc2929;
-      }
-      .search-item-input-box {
-        font-size: 12px;
-        span {
-          color: #888;
-          margin: 0 5px;
-        }
-        input {
-          display: inline-block;
-          border: 1px solid #cccccc;
-          border-radius: 3px;
-          height: 16px;
-          line-height: 16px;
-          padding: 0 3px;
-          text-align: center;
-          margin: -4px 0px 0px 0px;
-          margin-top: 0px;
-          width: 25px;
-          font-size: 12px;
-          outline: none;
-          text-align: center;
-        }
-        button {
-          width: 40px;
-          height: 22px;
-          margin-left: 3px;
-          color: #333333;
+      #wx-content1 {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 10px 0 10px 70px;
+
+        .wz-region-item {
+          font-size: 14px;
           cursor: pointer;
-          border: 1px solid #cccccc;
-          background-color: #f6f6f6;
-          font-size: 12px;
-          margin-left: 15px;
+          margin: 5px 40px 10px 0;
         }
       }
+      #wx-content2 {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 10px 0 10px 70px;
+
+        .wz-region-item {
+          font-size: 14px;
+          cursor: pointer;
+          margin: 5px 40px 10px 0;
+        }
+      }
+    }
+    #search-item-zx {
+      display: flex;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    #search-item-lx {
+      display: flex;
+      margin-bottom: 15px;
     }
   }
 }
@@ -573,8 +567,8 @@ export default {
         display: flex;
         align-items: center;
         margin: 0 0 20px 0;
-        padding: 10px ;
-        &:hover{
+        padding: 10px;
+        &:hover {
           background: #eee;
         }
         img {

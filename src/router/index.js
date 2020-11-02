@@ -9,7 +9,7 @@ const routes = [
     name: "index",
     component: () => import('../views/index.vue'),
     meta:{
-      title: '首页'
+      title: '巧租'
     }
   },
   {
@@ -17,7 +17,7 @@ const routes = [
     name: 'building',
     component: () => import('../views/building.vue'),
     meta:{
-      title: '楼宇'
+      title: '巧租'
     }
   },
   {
@@ -25,7 +25,7 @@ const routes = [
     name: 'resource',
     component: () => import('../views/resource.vue'),
     meta:{
-      title: '房源'
+      title: '巧租'
     }
   },
   {
@@ -33,7 +33,7 @@ const routes = [
     name: 'entrust',
     component: () => import('../views/entrust.vue'),
     meta:{
-      title: '委托找房'
+      title: '巧租'
     }
   },
   {
@@ -41,7 +41,7 @@ const routes = [
     name: 'houseDetails',
     component: () => import('../views/houseDetails.vue'),
     meta:{
-      title: '房子详情'
+      title: '巧租'
     }
   },
   {
@@ -49,7 +49,7 @@ const routes = [
     name: 'edificeDetails',
     component: () => import('../views/edificeDetails.vue'),
     meta:{
-      title: '大厦详情'
+      title: '巧租'
     }
   },
   {
@@ -57,7 +57,7 @@ const routes = [
     name: 'throwIn',
     component: () => import('../views/throwIn.vue'),
     meta:{
-      title: '投放房源'
+      title: '巧租'
     }
   },
   {
@@ -65,7 +65,7 @@ const routes = [
     name: 'gift',
     component: () => import('../views/gift.vue'),
     meta:{
-      title: '企业礼包'
+      title: '巧租'
     }
   },
   {
@@ -73,7 +73,7 @@ const routes = [
     name: 'mapLookup',
     component: () => import('../views/mapLookup.vue'),
     meta:{
-      title: '地图找房'
+      title: '巧租'
     }
   },
   { path: '*', redirect: '/index' }   /*默认跳转路由*/

@@ -7,7 +7,7 @@
       />
     </div>
     <div id="house-center-box">
-      <h3 @click="toDetails">{{ data.county }}-{{ data.bname }} <span v-show="data.type">（{{data.type==1?"写字楼":data.type==2?"公寓":data.type==3?"商铺":data.type==4?"厂房":"园区"}}）</span> </h3>
+      <h3 @click="toDetails(data.id)">{{ data.county }}-{{ data.bname }} <span v-show="data.type">（{{data.type==1?"写字楼":data.type==2?"公寓":data.type==3?"商铺":data.type==4?"厂房":"园区"}}）</span> </h3>
       <div class="house-info" v-show="data.renovation">
         <i class="el-icon-info"></i>
         <span>装修程度：{{ data.renovation }}</span>
@@ -33,7 +33,7 @@
         暂无报价
       </div>
       <!-- <div id="house-m2">{{data.bproperty}}元/m²/天</div> -->
-      <div id="house-info-btn" @click="toDetails(data.id)">查看详情</div>
+      <!-- <div id="house-info-btn" @click="toDetails(data.id)">查看详情</div> -->
     </div>
   </div>
 </template>
@@ -50,8 +50,8 @@ export default {
       window.open(routeData.href, '_blank');
     },
     showImg(data){
-      if(data.image.length>0){
-        return data.image[0]
+      if(data.main_pic){
+        return data.main_pic
       }else{
         return require('../assets/image/none-img.png')
       }

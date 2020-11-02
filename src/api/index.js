@@ -6,7 +6,7 @@ import request from './request'
 //获取楼宇数据
 export function getBuilding(data,number){
   return request({
-    url: `/rent/building/search/${number.page}/${number.size}`,
+    url: `/rent/building/searchForUser/${number.page}/${number.size}`,
     method: 'post',
     data
   })
@@ -15,7 +15,7 @@ export function getBuilding(data,number){
 //获取房源
 export function getResource(data,number){
   return request({
-    url: `/rent/resource/search/${number.page}/${number.size}`,
+    url: `/rent/resource/searchForUser/${number.page}/${number.size}`,
     method: 'post',
     data
   })

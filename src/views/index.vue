@@ -30,15 +30,11 @@
       <div id="swiper-inside-house">
         <div id="inside-house-search">
           <el-input
-            placeholder="请输入内容"
+            placeholder="请输入房源"
             v-model="searchKey"
             class="input-with-select"
           >
-            <el-select v-model="selectType" slot="prepend" placeholder="请选择">
-              <el-option label="楼宇" value="1"></el-option>
-              <el-option label="房源" value="2"></el-option>
-            </el-select>
-            <el-button slot="append" icon="el-icon-search">搜索</el-button>
+            <el-button @click="toSearch" slot="append" icon="el-icon-search">搜索</el-button>
           </el-input>
         </div>
         <div id="inside-house-box">
@@ -49,7 +45,7 @@
             v-for="(item, index) in newHouseData"
             :key="index"
           >
-            <img :src="item.image[0]" alt="" />
+            <img :src="item.main_pic" alt="" />
             <div class="house-item-info">
               <p class="info-p1">{{ item.house_title }}</p>
               <p class="info-p2">{{ item.bailor_time }}</p>
@@ -57,35 +53,6 @@
           </div>
         </div>
       </div>
-      <!-- <div id="select-search-box">
-        <div id="search-box">
-          <div class="search-div">
-            <h3>选择区域</h3>
-            <ul id="region-ul">
-              <li
-                v-for="(item, index) in regionList"
-                :key="index"
-                @click="goLookup(item, 1)"
-              >
-                {{ item.name }}
-              </li>
-            </ul>
-          </div>
-          <div class="search-div2">
-            <h3>选择面积</h3>
-            <ul id="area-ul">
-              <li
-                v-for="(item, index) in areaList"
-                :key="index"
-                @click="goLookup(item, 2)"
-              >
-                {{ item.name }}
-              </li>
-            </ul>
-          </div>
-          <div id="looking-btn">马上找房</div>
-        </div>
-      </div> -->
     </div>
     <div class="our-nice">
       <div class="our-nice-box">
@@ -94,32 +61,19 @@
           v-for="(item, index) in trustList"
           :key="index"
         >
+        <img :src="item.icon" alt="">
+        <div>
           <div class="our-nice-num">{{ item.num }}</div>
           <div class="our-nice-title">{{ item.title }}</div>
+        </div>
+          
           <div v-show="index != trustList.length - 1" class="line"></div>
         </div>
       </div>
-
-      <!-- <ul>
-        <li class="fangyuan">
-          真实房源
-          <div class="line"></div>
-        </li>
-
-        <li class="yongjin">
-          全程免佣
-          <div class="line"></div>
-        </li>
-        <li class="kanfang">
-          VR看房
-          <div class="line"></div>
-        </li>
-        <li class="fuwu" style="float:left">1对1贴心服务</li>
-      </ul> -->
     </div>
     <div id="hot-area">
       <div id="hot-area-title">
-        热门楼宇 进驻城市中心
+        热门楼宇，进驻城市中心
       </div>
       <div id="hot-build-box">
         <div
@@ -128,17 +82,20 @@
           v-for="(item, index) in hotBuildData.slice(0, 9)"
           :key="index"
         >
-          <img :src="item.image[0]" alt="" />
+          <img :src="item.main_pic" alt="" />
           <div class="build-info-bot">
-            <div>
-              <i class="el-icon-location"></i>
-              <div class="build-info-addr">
-                {{ item.address || "暂无数据" }}
+            <h3>{{ item.bname }}</h3>
+            <div class="build-info-bot-m">
+              <div class="info-addr">
+                <i class="el-icon-location"></i>
+                <div class="build-info-addr">
+                  {{ item.county || "暂无数据" }}
+                </div>
               </div>
-            </div>
-            <div class="build-info-price" v-show="item.price">
-              <span>{{ item.price | priceF }}</span
-              >元/㎡/月
+              <div class="build-info-price" v-show="item.price">
+                <span>{{ item.price | priceF }}</span
+                >元/㎡/月
+              </div>
             </div>
           </div>
           <div class="build-info-tag" v-show="item.label.length > 0">
@@ -157,7 +114,7 @@
       <div id="recommend-area-title">巧租推荐，精选优质房源</div>
       <div id="recommend-area-content">
         <div id="recommend-house1" @click="toHouseDetails(hotHouseData[0].id)">
-          <img :src="hotHouseData[0].image[0]" alt="" />
+          <img :src="hotHouseData[0].main_pic" alt="" />
           <div class="recommend-house1-info">
             <div class="recommend-house1-title">
               {{ hotHouseData[0].house_title }}
@@ -171,7 +128,7 @@
             v-for="(item, index) in hotHouseData.slice(1, 5)"
             :key="index"
           >
-            <img :src="item.image[0]" alt="" />
+            <img :src="item.main_pic" alt="" />
             <div class="recommend-house-item-info">
               <div class="recommend-house-item-title">
                 {{ item.house_title }}
@@ -192,7 +149,7 @@
           :key="index"
         >
           <div class="recommend-city-img">
-            <img :src="item.image[0]" alt="" />
+            <img :src="item.main_pic" alt="" />
           </div>
           <div class="recommend-city-info">
             <div class="recommend-city-title">{{ item.house_title }}</div>
@@ -255,7 +212,7 @@ export default {
       swipers: [
         { src: require("../assets/image/swiper1.jpg") },
         { src: require("../assets/image/swiper2.jpg") },
-        { src: require("../assets/image/swiper3.jpg") }
+        { src: require("../assets/image/swiper3.jpg") },
       ],
       searchMap: {
         county: "全部", //区域搜索
@@ -265,7 +222,7 @@ export default {
         type: null,
         hot: 1, //最热
         newest: null, //最新
-        recommend: null //推荐
+        recommend: null, //推荐
       },
       hotBuildData: [], //热门楼宇
       hotHouseData: [],
@@ -275,27 +232,27 @@ export default {
         {
           title: "全系列房源",
           body:
-            "覆盖14个区县优质房源，精准匹配客户需求，巧租为您提供全系列房源信息。"
+            "覆盖14个区县优质房源，精准匹配客户需求，巧租为您提供全系列房源信息。",
         },
         {
           title: "真实房源保证",
-          body: "真实价格，真实房源，诚意满满在巧租可以了解到最放心的房源信息。"
+          body:
+            "真实价格，真实房源，诚意满满在巧租可以了解到最放心的房源信息。",
         },
         {
           title: "贴心经纪人服务",
-          body: "快速响应客户需求，提供周到的看房服务租房，巧租来陪您。"
-        }
+          body: "快速响应客户需求，提供周到的看房服务租房，巧租来陪您。",
+        },
       ],
       userPhone: "",
       textarea: "",
       trustList: [
-        { num: "10000+", title: "房源" },
-        { num: "2000+", title: "楼宇" },
-        { num: "800+", title: "用户认可" },
-        { num: "1", title: "1对1服务" }
+        { num: "10000+", title: "房源",icon:require("../assets/image/BannerItem1.png") },
+        { num: "2000+", title: "楼宇" ,icon:require("../assets/image/BannerItem2.png")},
+        { num: "800+", title: "用户认可" ,icon:require("../assets/image/BannerItem3.png")},
+        { num: "1", title: "1对1服务" ,icon:require("../assets/image/BannerItem4.png")},
       ],
       searchKey: "",
-      selectType:""
     };
   },
   computed: {
@@ -304,16 +261,16 @@ export default {
     },
     areaList() {
       return this.$store.state.areaList;
-    }
+    },
   },
   created() {
-    getBuilding(this.searchMap, { page: 1, size: 4 }).then(res => {
+    getBuilding(this.searchMap, { page: 1, size: 4 }).then((res) => {
       if (res.code == 20000) {
         this.hotBuildData = res.data.rows;
         localStorage.setItem("hotBuildData", JSON.stringify(res.data.rows));
       }
     });
-    getResource(this.searchMap, { page: 1, size: 11 }).then(res => {
+    getResource(this.searchMap, { page: 1, size: 11 }).then((res) => {
       if (res.code == 20000) {
         this.hotHouseData = res.data.rows;
         localStorage.setItem("hotHouseData", JSON.stringify(res.data.rows));
@@ -322,10 +279,10 @@ export default {
     getResource(
       {
         county: "全部", //区域搜索
-        newest: 1 //最新
+        newest: 1, //最新
       },
       { page: 1, size: 11 }
-    ).then(res => {
+    ).then((res) => {
       if (res.code == 20000) {
         this.newHouseData = res.data.rows.slice(0, 5);
         localStorage.setItem("newHouseData", JSON.stringify(res.data.rows));
@@ -333,13 +290,25 @@ export default {
     });
   },
   methods: {
+    toSearch(){
+      if(this.searchKey){
+        this.$router.push({ name: `resource`,params:{searchKey:this.searchKey} });
+      }else{
+        this.$notify({
+            title: "警告",
+            message: "请输入内容",
+            type: "warning",
+          });
+      }
+      
+    },
     userSend() {
       let phoneReg = /(^1\d{10}$)|(^[0-9]\d{7}$)/;
       if (!phoneReg.test(this.userPhone)) {
         this.$notify({
           title: "警告",
           message: "请正确填写手机号",
-          type: "warning"
+          type: "warning",
         });
         return;
       }
@@ -347,18 +316,18 @@ export default {
         this.$notify({
           title: "警告",
           message: "请填写需求内容",
-          type: "warning"
+          type: "warning",
         });
         return;
       }
       this.$notify({
         title: "成功",
         message: "请等待管理员给您致电",
-        type: "success"
+        type: "success",
       });
     },
     toHouseDetails(id) {
-      let routeData = this.$router.resolve({ path: `./houseDetails?id=${id}` });
+      let routeData = this.$router.resolve({ path: `/houseDetails?id=${id}` });
       window.open(routeData.href, "_blank");
     },
     resourceMore() {
@@ -368,16 +337,16 @@ export default {
       //index 1:区域搜索 2：面积搜素
       this.$router.push({
         name: "building",
-        params: { type: index, code: item.code }
+        params: { type: index, code: item.code },
       });
     },
     toDetails(id) {
       let routeData = this.$router.resolve({
-        path: `./edificeDetails?id=${id}`
+        path: `./edificeDetails?id=${id}`,
       });
       window.open(routeData.href, "_blank");
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -421,18 +390,31 @@ export default {
     justify-content: center;
     /deep/ .el-select .el-input {
       width: 90px;
-      font-size: 14px;
+      font-size: 16px;
     }
     /deep/ .input-with-select .el-input-group__prepend {
       background-color: #fff;
-      font-size: 14px;
+      font-size: 16px;
+      height: 55px;
     }
-    /deep/ .el-button{
-      font-size: 14px;
+    /deep/ .el-input__inner {
+      height: 55px;
     }
-    /deep/ .el-input-group{
+    /deep/ .el-button {
+      width: 120px;
+      background: #17A1E6;
+      color: #333;
+      height: 55px;
+      font-size: 20px;
+      font-weight: bold;
+      &:hover{
+        background: #3f88fb;
+      }
+    }
+    /deep/ .el-input-group {
       width: 600px;
       margin-left: 200px;
+      height: 55px;
     }
   }
   #inside-house-box {
@@ -646,7 +628,7 @@ export default {
   .our-nice-box {
     width: 1200px;
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 25px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -654,6 +636,14 @@ export default {
       text-align: center;
       position: relative;
       width: 25%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img{
+        width: 50px;
+        height: auto;
+        margin-right: 10px;
+      }
       .line {
         position: absolute;
         top: 50%;
@@ -746,13 +736,14 @@ export default {
       width: 274px;
       background-color: #fff;
       border-radius: 0 0 4px 4px;
-      -webkit-transition: all .3s ease-in-out;
-      transition: all .3s ease-in-out;
+      -webkit-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
       cursor: pointer;
+      position: relative;
       &:hover {
-       -webkit-transform: translateY(-5px);
-      transform: translateY(-5px);
-      box-shadow: 0 24px 40px -24px rgba(0,0,0,.1);
+        -webkit-transform: translateY(-5px);
+        transform: translateY(-5px);
+        box-shadow: 0 24px 40px -24px rgba(0, 0, 0, 0.1);
       }
       img {
         width: 100%;
@@ -764,35 +755,47 @@ export default {
         padding: 20px 17px;
         color: #333;
         width: 100%;
-        line-height: 40px;
-        padding: 0 10px;
         font-size: 14px;
-        display: flex;
-        justify-content: space-between;
-        overflow: hidden;
-        div {
-          font-size: 14px;
+        h3 {
+          flex: none;
+          font-size: 16px;
+          font-weight: 700;
+          width: 100%;
+          line-height: 30px;
+              .show-text-1;
+
+        }
+        .build-info-bot-m {
           display: flex;
+          justify-content: space-between;
           align-items: center;
-          .build-info-addr {
-            margin-left: 5px;
-            width: 180px;
-            height: 100%;
-            display: block;
-            .show-text-1;
+          .info-addr{
+            display: flex;
+            align-items: center;
+            i {
+              font-size: 20px;
+              color: #aaa;
+            }
+            .build-info-addr {
+            font-size: 14px;
+              width: 100px;
+              height: 100%;
+              display: block;
+              color: #aaa;
+              .show-text-1;
+            }
           }
           .build-info-price {
-            width: 80px;
-          }
-          i {
-            font-size: 20px;
-            color: #fff;
-          }
-          span {
-            font-size: 20px;
-            margin-right: 5px;
-            color: #d9001b;
-          }
+              // width: 80px;
+            font-size: 14px;
+
+            }
+            span {
+              font-size: 22px;
+              margin-right: 5px;
+              color: #000;
+              font-weight: bold;
+            }
         }
       }
       .build-info-tag {
@@ -834,13 +837,14 @@ export default {
 }
 #recommend-area {
   width: 1200px;
-  margin: 50px auto 0;
+  margin: 80px auto 0;
   padding: 0 30px;
   #recommend-area-title {
-    font-size: 30px;
+    font-size: 34px;
     color: #333;
     font-weight: bold;
     margin-bottom: 30px;
+    text-shadow: 1px 1px 0 #fff;
   }
   // #recommend-area-content {
   //   display: flex;
@@ -1044,8 +1048,10 @@ export default {
   width: 100%;
   margin: 50px auto;
   font-size: 0;
-  border-top: solid 1px #333;
-  border-bottom: solid 1px #333;
+  // border-top: solid 1px #333;
+  // border-bottom: solid 1px #333;
+  background: #fff;
+  padding: 30px 0;
   #business-info-in {
     width: 1200px;
     margin: 30px auto;

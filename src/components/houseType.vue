@@ -29,8 +29,8 @@ export default {
       window.open(routeData.href, "_blank");
     },
     showImg(data) {
-      if (data.image&&data.image.length > 0) {
-        return data.image[0];
+      if (data.main_pic) {
+        return data.main_pic
       } else {
         return require("../assets/image/none-img.png");
       }

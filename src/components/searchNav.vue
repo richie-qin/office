@@ -9,11 +9,11 @@
         <router-link to="./throwIn"  :class="{'activityNav':activityNav==5}">投放房源</router-link>
         <router-link to="./mapLookup"  :class="{'activityNav':activityNav==6}">地图找房</router-link>
       </div>
-      <div id="search-nav-right">
+      <!-- <div id="search-nav-right">
         <el-input placeholder="请输入大厦名称" v-model="input4" :clearable="true">
           <el-button slot="append" icon="el-icon-search" @click="toSearch"></el-button>
         </el-input>
-      </div>
+      </div> -->
     </div>
 </template>
 <script>
