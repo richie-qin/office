@@ -2,68 +2,64 @@
   <!-- 房子详情 -->
   <div id="houseDetails">
     <search-nav></search-nav>
-    <!-- <div id="title-money">
-      <div id="title">南苏55（720全景VR看房）</div>
-      <div id="money"><b>4~7.3</b>元/m²/天</div>
-    </div> -->
-    <!-- <div id="addr">
-      <i class="el-icon-location-outline"></i>
-      <span>浦东-陆家嘴 · 距离「2号线-东昌路站」约115米</span>
+    <div id="build-title">
+      {{ details.house_title }}
+      <span>在售</span>
+      <div>{{details.county}}</div>
     </div>
-    <div id="news">
-      <i class="el-icon-time"></i>
-      <span>2天前更新 · 近30天内共有13人关注</span>
-    </div> -->
     <div id="img-box">
       <div id="img-left">
         <el-carousel height="420px">
-          <el-carousel-item v-for="(item, index) in details.image" :key="index">
+          <el-carousel-item
+            v-for="(item, index) in swiperImg(details.image)"
+            :key="index"
+          >
             <img :src="item" alt="" />
           </el-carousel-item>
         </el-carousel>
       </div>
       <div id="img-right">
-        <div id="img-right-div1">
-          <b>{{ details.month_rent | priceF }}</b
-          >万元/月
-          <!-- <span>单价3.8元/㎡/天</span> -->
-        </div>
-        <div id="img-right-div2">
-          <div class="div2-item">
-            <div class="div2-item-top">{{ details.square }}㎡</div>
-            <div class="div2-item-bot">建筑面积</div>
-          </div>
-          <div class="div2-item">
-            <div class="div2-item-top">{{ details.floor }}</div>
-            <div class="div2-item-bot">房源楼层</div>
-          </div>
-          <div class="div2-item">
-            <div class="div2-item-top">{{ details.renovation }}</div>
-            <div class="div2-item-bot">装修程度</div>
+        <div id="buildInfo-price">
+          <div id="price-title">参考均价</div>
+          <div id="price-number">{{ details.month_rent | priceF }}</div>
+          <div id="price-unit">
+            {{ details.month_rent ? "元/月" : "暂无数据" }}
           </div>
         </div>
-        <div id="img-right-div3">
-          <div v-show="details.land_use">
-            <span>用地性质：</span>{{ details.land_use }}
+        <div id="build-right-msg">
+          <div class="build-right-info">
+            <span class="info-span1">类型</span>
+            <span class="info-span2">{{
+              natureMsg(details.nature)
+            }}</span>
           </div>
-          <div v-show="details.house_title">
-            <span>房源名称：</span>{{ details.house_title }}
+          <div class="build-right-info">
+            <span class="info-span1">年限</span>
+            <span class="info-span2">{{ details.years || "暂无数据" }}</span>
           </div>
-          <div v-show="details.address">
-            <span>房源位置：</span>{{ details.address }}
+          <div class="build-right-info">
+            <span class="info-span1">所在楼层</span>
+            <span class="info-span2">{{ details.floor || "暂无数据" }}</span>
           </div>
-          <div v-show="details.rent_status">
-            <span>房屋状态：</span>{{ details.rent_status }}
+          <div class="build-right-info">
+            <span class="info-span1">装修程度</span>
+            <span class="info-span2">{{ details.renovation || "暂无数据" }}</span>
+          </div>
+          <div class="build-right-info">
+            <span class="info-span1">详细地址</span>
+            <span class="info-span2">{{ details.address || "暂无数据" }}</span>
           </div>
         </div>
-        <!-- <div id="img-right-div4" >
-
-          <div id="user-btn">
-            <el-button type="primary" icon="el-icon-phone-outline"
-              >{{ details.name }}：{{ details.phone }}</el-button
-            >
+        <div id="build-agent">
+          <div id="agent-msg">
+            <img src="../assets/image/BannerItem4.png" alt="" />
+            <div>
+              <p>{{details.name}}</p>
+              <p>{{details.relation}}</p>
+            </div>
           </div>
-        </div> -->
+          <div id="agent-phone">{{details.phone}}</div>
+        </div>
       </div>
     </div>
     <div id="information">
@@ -125,7 +121,7 @@
               </div>
               <div class="base-info-item">
                 <div class="base-info-title">性质</div>
-                <div class="base-info-content">{{details.natures || "暂无数据"}}</div>
+                <div class="base-info-content">{{natureMsg(details.nature)}}</div>
               </div>
             </div>
             <div>
@@ -153,7 +149,7 @@
               <div class="base-info-item">
                 <div class="base-info-title">月租费用</div>
                 <div class="base-info-content">
-                  {{ details.month_rent ? details.month_rent + "元/㎡" : "暂无数据" }}
+                  {{ details.month_rent ? details.month_rent + "元/月" : "暂无数据" }}
                 </div>
               </div>
               <div class="base-info-item">
@@ -203,6 +199,51 @@
             </div>
           </div>
         </div>
+        <div id="baiduMap-box">
+          <h3 class="info-title"><i></i>十分钟步行圈</h3>
+          <div id="mapTypeSearch">
+            <div
+              @click="choicePer(item, index)"
+              :class="{ activityDiv: actMapIndex == index }"
+              v-for="(item, index) in keywordList"
+              :key="index"
+            >
+              {{ item }}
+            </div>
+          </div>
+          <baidu-map
+            @ready="map_handler"
+            :center="item.center"
+            :zoom="11"
+            class="bm-view"
+          >
+            <bm-local-search
+              :keyword="keyword"
+              :nearby="item"
+              :auto-viewport="true"
+              :panel="false"
+            ></bm-local-search>
+            <bm-circle :center="item.center" :radius="item.radius"></bm-circle>
+            <!-- 缩放 -->
+            <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+            <!-- 定位 -->
+            <bm-geolocation
+              anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+              :showAddressBar="true"
+              :autoLocation="true"
+            ></bm-geolocation>
+            <!-- 点 -->
+            <bm-marker
+              :position="{ lng: item.center.lng, lat: item.center.lat }"
+              :dragging="false"
+              animation="BMAP_ANIMATION_BOUNCE"
+            >
+              <bm-info-window :show="true" @open="showPeriphery = true">{{
+                peripheryVal
+              }}</bm-info-window>
+            </bm-marker>
+          </baidu-map>
+        </div>
       </div>
       <div id="right-info-box">
         <div id="ljyy">
@@ -238,6 +279,16 @@ export default {
       ],
       input10: "",
       details: {},
+      item: {
+        center: { lng: 117.233725, lat: 31.827 },
+        radius: 1000
+      },
+      BMap: null,
+      map: null,
+      actMapIndex: 0,
+      peripheryVal: "合肥市政府",
+      keyword: "景点",
+      keywordList: ["景点", "公交车", "地铁", "学校", "医院", "酒店", "餐饮"]
     };
   },
   created() {
@@ -245,10 +296,45 @@ export default {
     getResourceDetails(this.$route.query.id).then((res) => {
       if (res.code == 20000) {
         this.details = res.data;
+        this.peripheryVal = res.data.house_title;
+        this.item.lng = res.data.longitude;
+        this.item.lat = res.data.latitude;
       }
     });
   },
   methods: {
+    choicePer(item, index) {
+      this.keyword = item;
+      this.actMapIndex = index;
+    },
+    map_handler({ BMap, map }) {
+      this.BMap = BMap;
+      this.map = map;
+    },
+    natureMsg(val){
+      if(val==1){
+        return "写字楼"
+      }else if(val==2){
+        return "公寓"
+      }else if(val==3){
+        return "商铺"
+      }else if(val==4){
+        return "厂房"
+      }else if(val==5){
+        return "园区"
+      }else if(val==5){
+        return "联合办公"
+      }else{
+        return "暂无数据"
+      }
+    },
+    swiperImg(arr) {
+      if (arr && arr.length > 0) {
+        return arr;
+      } else {
+        return [require("../assets/image/none-img.png")];
+      }
+    },
     subscribe(val){
       let phoneReg = /(^1\d{10}$)|(^[0-9]\d{7}$)/;
       if(!phoneReg.test(val)){
@@ -285,7 +371,6 @@ export default {
 <style lang="less" scoped>
 #houseDetails {
   width: 100%;
-  background: #f7f7f7;
   overflow: hidden;
   #title-money {
     padding: 0 calc(50% - 600px);
@@ -340,110 +425,150 @@ export default {
       display: inline-block;
     }
   }
+  #build-title {
+    width: 1200px;
+    margin: 50px auto 30px auto;
+    font-size: 26px;
+    color: #101d37;
+    font-weight: 600;
+    height: 35px;
+    line-height: 35px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    span {
+      line-height: 23px;
+      height: 23px;
+      padding: 0 5px;
+      vertical-align: middle;
+      font-size: 14px;
+      display: inline-block;
+      margin-left: 7px;
+      color: #fff;
+      background-image: linear-gradient(-135deg, #6b99f6, #3072f6);
+    }
+    div{
+      font-size: 14px;
+      color: #888;
+      flex: none;
+      width: 100%;
+    }
+  }
   #img-box {
     // height: 420px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: #fff;
-    // margin: 0 calc(50% - 600px);
     width: 100%;
     padding: 25px calc(50% - 600px);
     border-radius: 5px;
     overflow: hidden;
-    background: #3d5a73;
     color: #fff;
     #img-left {
-      width: 820px;
+      width: 700px;
       height: 100%;
       overflow: hidden;
       border-radius: 5px;
       .el-carousel__item img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        // object-fit: cover;
       }
     }
     #img-right {
-      width: 370px;
+      width: 480px;
       height: 420px;
       overflow: hidden;
       border-radius: 5px;
-      padding-left: 20px;
-      padding-right: 30px;
-      #img-right-div1 {
-        height: 88px;
-        margin-top: 6px;
-        border-bottom: solid 1px #ebebeb;
-        line-height: 88px;
-        font-size: 12px;
-        font-weight: 500;
-
-        b {
-          font-size: 48px;
-          font-weight: 500;
-        }
-        span {
-          margin-left: 25px;
-        }
-      }
-      #img-right-div2 {
-        border-bottom: solid 1px #ebebeb;
-
-        height: 88px;
+      margin-left: 20px;
+      position: relative;
+      padding: 20px 30px;
+      box-sizing: border-box;
+      background: #fff;
+      box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.06);
+      -webkit-box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.06);
+      #buildInfo-price {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        .div2-item {
-          .div2-item-top {
-            height: 33px;
-            line-height: 33px;
-            font-size: 24px;
-            font-weight: 500;
-          }
+        align-items: baseline;
+        border-bottom: 1px solid #e4e6f0;
+        padding-bottom: 15px;
+        #price-title {
+          width: 81px;
+          font-family: PingFangSC-Regular;
+          font-size: 14px;
+          color: #9399a5;
         }
-        .div2-item-bot {
-          height: 17px;
-          line-height: 17px;
-          font-size: 12px;
+        #price-number {
+          color: #fe615a;
+          font-family: Tahoma-Bold;
+          font-size: 30px;
+          font-weight: bold;
         }
-      }
-      #img-right-div3 {
-        padding: 20px 0;
-        border-bottom: solid 1px #ebebeb;
-        height: 150px;
-        div {
-          margin-bottom: 10px;
-          height: 17px;
-          font-size: 12px;
-          span {
-            font-size: 12px;
-            height: 17px;
-          }
+        #price-unit {
+          font-family: HiraginoSansGB-W6;
+          font-size: 16px;
+          color: #fe615a;
         }
       }
-      #img-right-div4 {
+      #build-right-msg {
         padding: 20px 0;
-        border-bottom: solid 1px #ebebeb;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        #img-right-div4-user {
-          margin-left: 10px;
-
-          #div-user-title {
+        border-bottom: 1px solid #e4e6f0;
+        height: 195px;
+        overflow: hidden;
+        .build-right-info {
+          margin-bottom: 15px;
+          word-break: break-all;
+          .info-span1 {
+            width: 81px;
+            font-family: PingFangSC-Regular;
             font-size: 14px;
-            font-weight: 600;
+            color: #9399a5;
+            display: inline-block;
+          }
+          .info-span2 {
+            font-family: PingFangSC-Regular;
+            font-size: 14px;
+            color: #333;
+            display: inline-block;
+            font-weight: bold;
+            display: inline;
             line-height: 20px;
           }
-          p {
-            line-height: 17px;
-            font-size: 12px;
-          }
         }
-        #user-btn {
-          font-size: 12px;
-          margin: 0 auto;
+      }
+      #build-agent {
+        height: 130px;
+        overflow: hidden;
+        #agent-phone {
+          font-size: 25px;
+          font-weight: bold;
+          color: crimson;
+        }
+        #agent-msg {
+          display: flex;
+          align-items: center;
+          margin: 15px 0;
+          img {
+            width: 70px;
+            height: 70px;
+            margin-right: 15px;
+            object-fit: cover;
+          }
+          div {
+            p {
+              font-size: 16px;
+              &:first-child {
+                color: #333;
+                font-weight: bold;
+                margin-bottom: 15px;
+              }
+              &:last-child {
+                color: #9399a5;
+                margin-top: 15px;
+              }
+            }
+          }
         }
       }
     }
@@ -605,6 +730,45 @@ export default {
           }
         }
       }
+    }
+  }
+}
+#baiduMap-box {
+  width: 100%;
+  height: 420px;
+  margin: 50px 0;
+  #mapTypeSearch {
+    display: flex;
+    align-items: center;
+    div {
+      font-size: 14px;
+      color: #333;
+      height: 40px;
+      line-height: 40px;
+      padding: 0 15px;
+      cursor: pointer;
+      &:hover {
+        color: #17a1e6;
+      }
+    }
+    .activityDiv {
+      color: #fff;
+      font-weight: bold;
+      background: #17a1e6;
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+  .bm-view {
+    width: 100%;
+    height: 100%;
+  }
+  /deep/ .BMap_bubble_content {
+    div {
+      font-size: 16px;
+      color: #333;
+      font-weight: bold;
     }
   }
 }
