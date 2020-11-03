@@ -85,6 +85,7 @@ const store = new Vuex.Store({
             {value:3,label:"商铺"},
             {value:4,label:"厂房"},
             {value:5,label:"园区"},
+            {value:6,label:"联合办公"},
         ]
 
     },

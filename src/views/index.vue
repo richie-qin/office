@@ -34,7 +34,9 @@
             v-model="searchKey"
             class="input-with-select"
           >
-            <el-button @click="toSearch" slot="append" icon="el-icon-search">搜索</el-button>
+            <el-button @click="toSearch" slot="append" icon="el-icon-search"
+              >搜索</el-button
+            >
           </el-input>
         </div>
         <div id="inside-house-box">
@@ -61,13 +63,148 @@
           v-for="(item, index) in trustList"
           :key="index"
         >
-        <img :src="item.icon" alt="">
-        <div>
-          <div class="our-nice-num">{{ item.num }}</div>
-          <div class="our-nice-title">{{ item.title }}</div>
-        </div>
-          
+          <img :src="item.icon" alt="" />
+          <div>
+            <div class="our-nice-num">{{ item.num }}</div>
+            <div class="our-nice-title">{{ item.title }}</div>
+          </div>
+
           <div v-show="index != trustList.length - 1" class="line"></div>
+        </div>
+      </div>
+    </div>
+    <div id="hot-area">
+      <div id="hot-area-title">
+        优质写字楼
+      </div>
+      <div id="hot-build-box">
+        <div
+          class="build-city"
+          @click="toDetails(item.id)"
+          v-for="(item, index) in buildData1.slice(0, 9)"
+          :key="index"
+        >
+          <img :src="item.main_pic" alt="" />
+          <div class="build-info-bot">
+            <h3>{{ item.bname }}</h3>
+            <div class="build-info-bot-m">
+              <div class="info-addr">
+                <i class="el-icon-location"></i>
+                <div class="build-info-addr">
+                  {{ item.county || "暂无数据" }}
+                </div>
+              </div>
+              <div class="build-info-price" v-show="item.price">
+                <span>{{ item.price | priceF }}</span
+                >元/㎡/月
+              </div>
+            </div>
+          </div>
+          <div class="build-info-tag" v-show="item.label.length > 0">
+            <div
+              class="build-tag-item"
+              v-for="(item2, index2) in item.label"
+              :key="index2"
+            >
+              {{ item2 }}
+            </div>
+          </div>
+        </div>
+        <div class="more-city">
+          <div class="more-city-info">
+            <div>更多优质写字楼<br>任你挑</div>
+            <button @click="toBuildList(1)">查看更多</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="hot-area">
+      <div id="hot-area-title">
+        优质园区
+      </div>
+      <div id="hot-build-box">
+        <div
+          class="build-city"
+          @click="toDetails(item.id)"
+          v-for="(item, index) in buildData2.slice(0, 9)"
+          :key="index"
+        >
+          <img :src="item.main_pic" alt="" />
+          <div class="build-info-bot">
+            <h3>{{ item.bname }}</h3>
+            <div class="build-info-bot-m">
+              <div class="info-addr">
+                <i class="el-icon-location"></i>
+                <div class="build-info-addr">
+                  {{ item.county || "暂无数据" }}
+                </div>
+              </div>
+              <div class="build-info-price" v-show="item.price">
+                <span>{{ item.price | priceF }}</span
+                >元/㎡/月
+              </div>
+            </div>
+          </div>
+          <div class="build-info-tag" v-show="item.label.length > 0">
+            <div
+              class="build-tag-item"
+              v-for="(item2, index2) in item.label"
+              :key="index2"
+            >
+              {{ item2 }}
+            </div>
+          </div>
+        </div>
+        <div class="more-city">
+          <div class="more-city-info">
+            <div>更多优质园区<br>任你挑</div>
+            <button @click="toBuildList(2)">查看更多</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="hot-area">
+      <div id="hot-area-title">
+        优质联合办公
+      </div>
+      <div id="hot-build-box">
+        <div
+          class="build-city"
+          @click="toDetails(item.id)"
+          v-for="(item, index) in buildData3.slice(0, 9)"
+          :key="index"
+        >
+          <img :src="item.main_pic" alt="" />
+          <div class="build-info-bot">
+            <h3>{{ item.bname }}</h3>
+            <div class="build-info-bot-m">
+              <div class="info-addr">
+                <i class="el-icon-location"></i>
+                <div class="build-info-addr">
+                  {{ item.county || "暂无数据" }}
+                </div>
+              </div>
+              <div class="build-info-price" v-show="item.price">
+                <span>{{ item.price | priceF }}</span
+                >元/㎡/月
+              </div>
+            </div>
+          </div>
+          <div class="build-info-tag" v-show="item.label.length > 0">
+            <div
+              class="build-tag-item"
+              v-for="(item2, index2) in item.label"
+              :key="index2"
+            >
+              {{ item2 }}
+            </div>
+          </div>
+        </div>
+        <div class="more-city">
+          <div class="more-city-info">
+            <div>更多优质联合办公<br>任你挑</div>
+            <button @click="toBuildList(3)">查看更多</button>
+          </div>
         </div>
       </div>
     </div>
@@ -108,15 +245,21 @@
             </div>
           </div>
         </div>
+        <div class="more-city">
+          <div class="more-city-info">
+            <div>更多热门楼宇<br>任你挑</div>
+            <button @click="toBuildList(4)">查看更多</button>
+          </div>
+        </div>
       </div>
     </div>
     <div id="recommend-area">
       <div id="recommend-area-title">巧租推荐，精选优质房源</div>
       <div id="recommend-area-content">
         <div id="recommend-house1" @click="toHouseDetails(hotHouseData[0].id)">
-          <img :src="hotHouseData[0].main_pic" alt="" />
+          <img v-if="hotHouseData[0]&&hotHouseData[0].main_pic" :src="hotHouseData[0].main_pic" alt="" />
           <div class="recommend-house1-info">
-            <div class="recommend-house1-title">
+            <div class="recommend-house1-title" v-if="hotHouseData[0]&&hotHouseData[0].house_title">
               {{ hotHouseData[0].house_title }}
             </div>
             <div class="recommend-house1-lookUp">查看详情</div>
@@ -247,12 +390,31 @@ export default {
       userPhone: "",
       textarea: "",
       trustList: [
-        { num: "10000+", title: "房源",icon:require("../assets/image/BannerItem1.png") },
-        { num: "2000+", title: "楼宇" ,icon:require("../assets/image/BannerItem2.png")},
-        { num: "800+", title: "用户认可" ,icon:require("../assets/image/BannerItem3.png")},
-        { num: "1", title: "1对1服务" ,icon:require("../assets/image/BannerItem4.png")},
+        {
+          num: "10000+",
+          title: "房源",
+          icon: require("../assets/image/BannerItem1.png"),
+        },
+        {
+          num: "2000+",
+          title: "楼宇",
+          icon: require("../assets/image/BannerItem2.png"),
+        },
+        {
+          num: "800+",
+          title: "用户认可",
+          icon: require("../assets/image/BannerItem3.png"),
+        },
+        {
+          num: "1",
+          title: "1对1服务",
+          icon: require("../assets/image/BannerItem4.png"),
+        },
       ],
       searchKey: "",
+      buildData1: [],
+      buildData2: [],
+      buildData3: [],
     };
   },
   computed: {
@@ -264,13 +426,45 @@ export default {
     },
   },
   created() {
-    getBuilding(this.searchMap, { page: 1, size: 4 }).then((res) => {
+    getBuilding({ nature: 1, recommend: 1 }, { page: 1, size: 7 }).then(
+      (res) => {
+        //优质写字楼
+        if (res.code == 20000) {
+          this.buildData1 = res.data.rows;
+          localStorage.setItem("hotBuildData", JSON.stringify(res.data.rows));
+        }
+      }
+    );
+
+    getBuilding({ nature: 5, recommend: 1 }, { page: 1, size: 7 }).then(
+      (res) => {
+        //优质园区
+        if (res.code == 20000) {
+          this.buildData2 = res.data.rows;
+          localStorage.setItem("hotBuildData", JSON.stringify(res.data.rows));
+        }
+      }
+    );
+
+    getBuilding({ nature: 6, recommend: 1 }, { page: 1, size: 7 }).then(
+      (res) => {
+        //优质联合办公
+        if (res.code == 20000) {
+          this.buildData3 = res.data.rows;
+          localStorage.setItem("hotBuildData", JSON.stringify(res.data.rows));
+        }
+      }
+    );
+
+    getBuilding({ hot: 1 }, { page: 1, size: 7 }).then((res) => {
+      //热门楼宇
       if (res.code == 20000) {
         this.hotBuildData = res.data.rows;
         localStorage.setItem("hotBuildData", JSON.stringify(res.data.rows));
       }
     });
-    getResource(this.searchMap, { page: 1, size: 11 }).then((res) => {
+
+    getResource({ hot: 1 }, { page: 1, size: 5 }).then((res) => {
       if (res.code == 20000) {
         this.hotHouseData = res.data.rows;
         localStorage.setItem("hotHouseData", JSON.stringify(res.data.rows));
@@ -278,7 +472,6 @@ export default {
     });
     getResource(
       {
-        county: "全部", //区域搜索
         newest: 1, //最新
       },
       { page: 1, size: 11 }
@@ -290,17 +483,22 @@ export default {
     });
   },
   methods: {
-    toSearch(){
-      if(this.searchKey){
-        this.$router.push({ name: `resource`,params:{searchKey:this.searchKey} });
-      }else{
+    toBuildList(item){
+      this.$router.push({name:"building",params:{searchType:item}})
+    },
+    toSearch() {
+      if (this.searchKey) {
+        this.$router.push({
+          name: `resource`,
+          params: { searchKey: this.searchKey },
+        });
+      } else {
         this.$notify({
-            title: "警告",
-            message: "请输入内容",
-            type: "warning",
-          });
+          title: "警告",
+          message: "请输入内容",
+          type: "warning",
+        });
       }
-      
     },
     userSend() {
       let phoneReg = /(^1\d{10}$)|(^[0-9]\d{7}$)/;
@@ -402,12 +600,12 @@ export default {
     }
     /deep/ .el-button {
       width: 120px;
-      background: #17A1E6;
+      background: #17a1e6;
       color: #333;
       height: 55px;
       font-size: 20px;
       font-weight: bold;
-      &:hover{
+      &:hover {
         background: #3f88fb;
       }
     }
@@ -639,7 +837,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      img{
+      img {
         width: 50px;
         height: auto;
         margin-right: 10px;
@@ -730,8 +928,8 @@ export default {
   #hot-build-box {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     flex-wrap: wrap;
+    justify-content: space-between;
     .build-city {
       width: 274px;
       background-color: #fff;
@@ -740,6 +938,9 @@ export default {
       transition: all 0.3s ease-in-out;
       cursor: pointer;
       position: relative;
+      height: 364px;
+      overflow: hidden;
+      margin-bottom: 15px;
       &:hover {
         -webkit-transform: translateY(-5px);
         transform: translateY(-5px);
@@ -762,14 +963,13 @@ export default {
           font-weight: 700;
           width: 100%;
           line-height: 30px;
-              .show-text-1;
-
+          .show-text-1;
         }
         .build-info-bot-m {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          .info-addr{
+          .info-addr {
             display: flex;
             align-items: center;
             i {
@@ -777,7 +977,7 @@ export default {
               color: #aaa;
             }
             .build-info-addr {
-            font-size: 14px;
+              font-size: 14px;
               width: 100px;
               height: 100%;
               display: block;
@@ -786,16 +986,15 @@ export default {
             }
           }
           .build-info-price {
-              // width: 80px;
+            // width: 80px;
             font-size: 14px;
-
-            }
-            span {
-              font-size: 22px;
-              margin-right: 5px;
-              color: #000;
-              font-weight: bold;
-            }
+          }
+          span {
+            font-size: 22px;
+            margin-right: 5px;
+            color: #000;
+            font-weight: bold;
+          }
         }
       }
       .build-info-tag {
@@ -830,6 +1029,56 @@ export default {
           &:nth-child(6) {
             background: #02a7f0;
           }
+        }
+      }
+    }
+    .more-city{
+      width: 274px;
+      border-radius: 0 0 4px 4px;
+      -webkit-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+      height: 364px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      background: #17a1e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        // -webkit-transform: translateY(-5px);
+        // transform: translateY(-5px);
+        // box-shadow: 0 24px 40px -24px rgba(0, 0, 0, 0.1);
+        .more-city-info{
+          button{
+            color: #17a1e6;
+            background: #fff;
+          }
+        }
+      }
+      .more-city-info{
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        div{
+          text-align: center;
+          font-size: 20px;
+          line-height: 30px;
+          color: #fff;
+          margin-bottom: 20px;
+        }
+        button{
+          display: block;
+          margin: 0 auto;
+          width: 130px;
+          height: 40px;
+          border: 1px solid #fff;
+          color: #fff;
+          border-radius: 5px;
+          background: #17a1e6;
+          transition: background .2s linear;
+          cursor: pointer;
+          font-size: 14px;
         }
       }
     }

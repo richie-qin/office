@@ -173,7 +173,6 @@
 <script>
 import build from "../components/build";
 import { getBuilding } from "../api/index";
-import { getResource } from "../api/index";
 
 export default {
   components: { buildItem: build },
@@ -230,26 +229,27 @@ export default {
   },
   created() {
     this.$store.commit("actNav", 2);
-    if (this.$route.params.type == 1) {
-      //1:区域搜索
-      this.regionList.forEach((item, index) => {
-        if (item.code == this.$route.params.code) {
-          this.searchMap.county = item.name;
-          this.regionIndex = index;
-          return;
-        }
-      });
-    } else if (this.$route.params.type == 2) {
-      //2：面积搜索
-      this.areaList.forEach((item, index) => {
-        if (item.code == this.$route.params.code) {
-          this.searchMap.start = item.start;
-          this.searchMap.end = item.end;
-          this.areaIndex = index;
-          return;
-        }
-      });
+    let searchType = this.$route.params.searchType;
+    if(searchType==1){//优质写字楼
+    this.searchMap.type = "写字楼"
+    this.searchMap.recommend = 1;
+    this.typeIndex = 1;
+    this.moldIndex = 1;
+    }else if(searchType==2){//优质园区
+    this.searchMap.type = "园区"
+    this.searchMap.recommend = 1;
+    this.typeIndex = 5;
+    this.moldIndex = 1;
+    }else if(searchType==3){//优质联合办公
+    this.searchMap.type = "联合办公"
+    this.searchMap.recommend = 1;
+    this.typeIndex = 6;
+    this.moldIndex = 1;
+    }else if(searchType==4){//热门楼宇
+      this.searchMap.hot = 1;
+      this.moldIndex = 3;
     }
+    
     if (localStorage.getItem("hotBuildData")) {
       this.hotBuildData = JSON.parse(localStorage.getItem("hotBuildData"));
     }
