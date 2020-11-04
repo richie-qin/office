@@ -39,7 +39,7 @@
             >
           </el-input>
         </div>
-        <div id="inside-house-box">
+        <div id="inside-house-box" v-show="newHouseData.length>0">
           <h3>新上房源</h3>
           <div
             class="inside-house-item"
@@ -73,7 +73,7 @@
         </div>
       </div>
     </div>
-    <div id="hot-area">
+    <div id="hot-area" v-show="buildData1.length>0">
       <div id="hot-area-title">
         优质写字楼
       </div>
@@ -81,7 +81,7 @@
         <div
           class="build-city"
           @click="toDetails(item.id)"
-          v-for="(item, index) in buildData1.slice(0, 9)"
+          v-for="(item, index) in buildData1"
           :key="index"
         >
           <img :src="item.main_pic" alt="" />
@@ -118,7 +118,7 @@
         </div>
       </div>
     </div>
-    <div id="hot-area">
+    <div id="hot-area" v-show="buildData2.length>0">
       <div id="hot-area-title">
         优质园区
       </div>
@@ -126,7 +126,7 @@
         <div
           class="build-city"
           @click="toDetails(item.id)"
-          v-for="(item, index) in buildData2.slice(0, 9)"
+          v-for="(item, index) in buildData2"
           :key="index"
         >
           <img :src="item.main_pic" alt="" />
@@ -163,7 +163,7 @@
         </div>
       </div>
     </div>
-    <div id="hot-area">
+    <div id="hot-area" v-show="buildData3.length>0">
       <div id="hot-area-title">
         优质联合办公
       </div>
@@ -171,7 +171,7 @@
         <div
           class="build-city"
           @click="toDetails(item.id)"
-          v-for="(item, index) in buildData3.slice(0, 9)"
+          v-for="(item, index) in buildData3"
           :key="index"
         >
           <img :src="item.main_pic" alt="" />
@@ -208,7 +208,7 @@
         </div>
       </div>
     </div>
-    <div id="hot-area">
+    <div id="hot-area" v-show="hotBuildData.length>0">
       <div id="hot-area-title">
         热门楼宇，进驻城市中心
       </div>
@@ -216,7 +216,7 @@
         <div
           class="build-city"
           @click="toDetails(item.id)"
-          v-for="(item, index) in hotBuildData.slice(0, 9)"
+          v-for="(item, index) in hotBuildData"
           :key="index"
         >
           <img :src="item.main_pic" alt="" />
@@ -253,7 +253,7 @@
         </div>
       </div>
     </div>
-    <div id="recommend-area">
+    <div id="recommend-area" v-show="hotHouseData.length>0">
       <div id="recommend-area-title">巧租推荐，精选优质房源</div>
       <div id="recommend-area-content">
         <div id="recommend-house1" @click="toHouseDetails(hotHouseData[0].id)">
@@ -431,7 +431,6 @@ export default {
         //优质写字楼
         if (res.code == 20000) {
           this.buildData1 = res.data.rows;
-          localStorage.setItem("hotBuildData", JSON.stringify(res.data.rows));
         }
       }
     );
@@ -441,7 +440,6 @@ export default {
         //优质园区
         if (res.code == 20000) {
           this.buildData2 = res.data.rows;
-          localStorage.setItem("hotBuildData", JSON.stringify(res.data.rows));
         }
       }
     );
@@ -451,13 +449,13 @@ export default {
         //优质联合办公
         if (res.code == 20000) {
           this.buildData3 = res.data.rows;
-          localStorage.setItem("hotBuildData", JSON.stringify(res.data.rows));
         }
       }
     );
 
     getBuilding({ hot: 1 }, { page: 1, size: 7 }).then((res) => {
       //热门楼宇
+      localStorage.removeItem("hotBuildData");
       if (res.code == 20000) {
         this.hotBuildData = res.data.rows;
         localStorage.setItem("hotBuildData", JSON.stringify(res.data.rows));
@@ -465,6 +463,7 @@ export default {
     });
 
     getResource({ hot: 1 }, { page: 1, size: 5 }).then((res) => {
+      localStorage.removeItem("hotHouseData");
       if (res.code == 20000) {
         this.hotHouseData = res.data.rows;
         localStorage.setItem("hotHouseData", JSON.stringify(res.data.rows));
@@ -476,6 +475,7 @@ export default {
       },
       { page: 1, size: 11 }
     ).then((res) => {
+      localStorage.removeItem("newHouseData");
       if (res.code == 20000) {
         this.newHouseData = res.data.rows.slice(0, 5);
         localStorage.setItem("newHouseData", JSON.stringify(res.data.rows));

@@ -4,7 +4,7 @@
     <search-nav @searchKey="searchKey"></search-nav>
     <div id="search-nav-right">
       <el-input
-        placeholder="请输入大厦名称"
+        placeholder="请输入房源名称"
         v-model="searchMap.house_title"
         :clearable="true"
       >
@@ -90,7 +90,7 @@
             :class="{ 'act-type-item': moldIndex == 0 }"
             @click="changeMold(0)"
           >
-            全部房源
+            全部
           </div>
           <div
             class="data-list-type-item"
@@ -423,6 +423,7 @@ export default {
   padding-top: 24px;
   width: 100%;
   overflow: hidden;
+  margin-bottom: 35px;
   #search-box-content {
     width: 1200px;
     margin: 0 auto;

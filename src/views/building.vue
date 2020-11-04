@@ -90,7 +90,7 @@
             :class="{ 'act-type-item': moldIndex == 0 }"
             @click="changeMold(0)"
           >
-            全部房源
+            全部
           </div>
           <div
             class="data-list-type-item"
@@ -408,6 +408,7 @@ export default {
   padding-top: 24px;
   width: 100%;
   overflow: hidden;
+  margin-bottom: 35px;
   #search-box-content {
     width: 1200px;
     margin: 0 auto;
