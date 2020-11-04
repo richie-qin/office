@@ -54,7 +54,7 @@
           <div id="agent-msg">
             <img src="../assets/image/BannerItem4.png" alt="" />
             <div>
-              <p>{{details.name}}</p>
+              <p>{{details.receiver}}</p>
               <p>{{details.relation}}</p>
             </div>
           </div>

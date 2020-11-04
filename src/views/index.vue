@@ -992,7 +992,7 @@ export default {
           span {
             font-size: 22px;
             margin-right: 5px;
-            color: #000;
+            color: red;
             font-weight: bold;
           }
         }
