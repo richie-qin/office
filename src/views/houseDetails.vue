@@ -9,14 +9,37 @@
     </div>
     <div id="img-box">
       <div id="img-left">
-        <el-carousel height="420px">
-          <el-carousel-item
-            v-for="(item, index) in swiperImg(details.image)"
-            :key="index"
+        <swiper
+            :options="swiperOptionTop"
+            class="gallery-top"
+            ref="swiperTop"
           >
-            <img :src="item" alt="" />
-          </el-carousel-item>
-        </el-carousel>
+            <swiper-slide
+              v-for="(item, index) in swiperImg(details.image)"
+              :key="index"
+              ><img :src="item" alt=""
+            /></swiper-slide>
+            <div
+              class="swiper-button-next swiper-button-white"
+              slot="button-next"
+            ></div>
+            <div
+              class="swiper-button-prev swiper-button-white"
+              slot="button-prev"
+            ></div>
+          </swiper>
+          <!-- swiper2 Thumbs -->
+          <swiper
+            :options="swiperOptionThumbs"
+            class="gallery-thumbs"
+            ref="swiperThumbs"
+          >
+            <swiper-slide
+              v-for="(item, index) in swiperImg(details.image)"
+              :key="index"
+              ><img :src="item" alt=""
+            /></swiper-slide>
+          </swiper>
       </div>
       <div id="img-right">
         <div id="buildInfo-price">
@@ -256,10 +279,11 @@
           <p>巧租承诺仅将你的联系方式用于找房服务</p>
         </div>
         <div id="tjfy">
-          <h3><i></i>推荐房源</h3>
+          <h3><i></i>热点房源</h3>
           <div id="tjfy-content">
-            <div v-for="item in 4" :key="item">
-              <p>某某大厦</p>
+            <div @click="toDetails(item.id)" v-for="(item,index) in hotHouseData.slice(0,4)" :key="index">
+              <img :src="item.main_pic" alt />
+              <p>{{item.house_title}}</p>
             </div>
           </div>
         </div>
@@ -269,14 +293,30 @@
 </template>
 <script>
 import { getResourceDetails,getSubscribe } from "../api/index";
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+
 export default {
+  components: {  Swiper, SwiperSlide },
   data() {
     return {
-      swipers: [
-        { src: require("../assets/image/swiper1.jpg") },
-        { src: require("../assets/image/swiper2.jpg") },
-        { src: require("../assets/image/swiper3.jpg") },
-      ],
+      swiperOptionTop: {
+        loop: true,
+        loopedSlides: 5, // looped slides should be the same
+        spaceBetween: 10,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      },
+      swiperOptionThumbs: {
+        loop: true,
+        loopedSlides: 5, // looped slides should be the same
+        spaceBetween: 10,
+        centeredSlides: true,
+        slidesPerView: "auto",
+        touchRatio: 0.2,
+        slideToClickedSlide: true,
+      },
       input10: "",
       details: {},
       item: {
@@ -288,14 +328,18 @@ export default {
       actMapIndex: 0,
       peripheryVal: "合肥市政府",
       keyword: "景点",
-      keywordList: ["景点", "公交车", "地铁", "学校", "医院", "酒店", "餐饮"]
+      keywordList: ["景点", "公交车", "地铁", "学校", "医院", "酒店", "餐饮"],
+      hotHouseData: [],
     };
   },
   created() {
     this.$store.commit("actNav", 3);
+    if (localStorage.getItem("hotHouseData")) {
+      this.hotHouseData = JSON.parse(localStorage.getItem("hotHouseData"));
+    }
     getResourceDetails(this.$route.query.id).then((res) => {
       if (res.code == 20000) {
-        this.details = res.data;
+        this.details = Object.freeze(res.data);
         this.peripheryVal = res.data.house_title;
         this.item.lng = res.data.longitude;
         this.item.lat = res.data.latitude;
@@ -303,6 +347,10 @@ export default {
     });
   },
   methods: {
+    toDetails(id) {
+      let routeData = this.$router.resolve({ path: `./houseDetails?id=${id}` });
+      window.open(routeData.href, "_blank");
+    },
     choicePer(item, index) {
       this.keyword = item;
       this.actMapIndex = index;
@@ -467,7 +515,7 @@ export default {
     color: #fff;
     #img-left {
       width: 700px;
-      height: 100%;
+      height: 420px;
       overflow: hidden;
       border-radius: 5px;
       .el-carousel__item img {
@@ -637,7 +685,6 @@ export default {
         padding-bottom: 30px;
         #jzxx-content {
           display: flex;
-          align-items: center;
           justify-content: space-between;
         }
       }
@@ -713,19 +760,21 @@ export default {
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            img{
+              width: 100%;
+              height: 125px;
+            }
             p {
               box-sizing: border-box;
-              position: absolute;
-              bottom: 0;
-              left: 0;
               display: block;
               width: 160px;
-              height: 25px;
-              line-height: 25px;
+              height: 35px;
+              line-height:35px;
               padding: 0 10px;
               font-size: 14px;
-              color: #fff;
-              background: rgba(0, 0, 0, 0.5);
+              color: #333;
+              background: #fff;
             }
           }
         }
@@ -770,6 +819,45 @@ export default {
       color: #333;
       font-weight: bold;
     }
+  }
+}
+/deep/ .gallery-top {
+  height: 75% !important;
+  width: 100%;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+/deep/ .gallery-thumbs {
+  height: 25% !important;
+  box-sizing: border-box;
+  padding: 10px 0;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+/deep/ .gallery-thumbs .swiper-slide {
+  width: 25%;
+  height: 100%;
+  opacity: 0.4;
+}
+/deep/ .gallery-thumbs .swiper-slide-active {
+  opacity: 1;
+}
+/deep/ .el-carousel__arrow {
+  display: none;
+}
+/deep/ .swiper-button-white{
+  background: rgba(0, 0, 0, 0.3);
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 40px;
+  font-size: 12px;
+  &:after{
+    font-size: 14px;
   }
 }
 </style>

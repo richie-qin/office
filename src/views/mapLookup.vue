@@ -213,7 +213,7 @@ export default {
         size: this.size,
       }).then((res) => {
         if (res.code == 20000) {
-          this.dataList = res.data.rows;
+          this.dataList = Object.freeze(res.data.rows);
           this.dataTotal = res.data.total;
         }
       });
@@ -224,7 +224,7 @@ export default {
         size: this.size,
       }).then((res) => {
         if (res.code == 20000) {
-          this.dataList = res.data.rows;
+          this.dataList = Object.freeze(res.data.rows);
           this.dataTotal = res.data.total;
         }
       });

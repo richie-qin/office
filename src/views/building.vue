@@ -148,7 +148,7 @@
           <div
             id="hot-house-item"
             @click="toDetails(item.id)"
-            v-for="(item, index) in hotBuildData"
+            v-for="(item, index) in hotBuildData.slice(0,4)"
             :key="index"
           >
             <img :src="item.main_pic" alt />
@@ -354,7 +354,7 @@ export default {
       getBuilding(this.searchMap, { page: this.page, size: this.size }).then(
         (res) => {
           if (res.code == 20000) {
-            this.dataList = res.data.rows;
+            this.dataList = Object.freeze(res.data.rows);
             this.allNum = res.data.total;
           }
         }

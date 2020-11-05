@@ -430,7 +430,7 @@ export default {
       (res) => {
         //优质写字楼
         if (res.code == 20000) {
-          this.buildData1 = res.data.rows;
+          this.buildData1 = Object.freeze(res.data.rows);
         }
       }
     );
@@ -439,7 +439,7 @@ export default {
       (res) => {
         //优质园区
         if (res.code == 20000) {
-          this.buildData2 = res.data.rows;
+          this.buildData2 = Object.freeze(res.data.rows);
         }
       }
     );
@@ -448,7 +448,7 @@ export default {
       (res) => {
         //优质联合办公
         if (res.code == 20000) {
-          this.buildData3 = res.data.rows;
+          this.buildData3 = Object.freeze(res.data.rows);
         }
       }
     );
@@ -457,7 +457,7 @@ export default {
       //热门楼宇
       localStorage.removeItem("hotBuildData");
       if (res.code == 20000) {
-        this.hotBuildData = res.data.rows;
+        this.hotBuildData = Object.freeze(res.data.rows);
         localStorage.setItem("hotBuildData", JSON.stringify(res.data.rows));
       }
     });
@@ -465,7 +465,7 @@ export default {
     getResource({ hot: 1 }, { page: 1, size: 5 }).then((res) => {
       localStorage.removeItem("hotHouseData");
       if (res.code == 20000) {
-        this.hotHouseData = res.data.rows;
+        this.hotHouseData = Object.freeze(res.data.rows);
         localStorage.setItem("hotHouseData", JSON.stringify(res.data.rows));
       }
     });
@@ -473,11 +473,11 @@ export default {
       {
         newest: 1, //最新
       },
-      { page: 1, size: 11 }
+      { page: 1, size: 5 }
     ).then((res) => {
       localStorage.removeItem("newHouseData");
       if (res.code == 20000) {
-        this.newHouseData = res.data.rows.slice(0, 5);
+        this.newHouseData = res.data.rows;
         localStorage.setItem("newHouseData", JSON.stringify(res.data.rows));
       }
     });
