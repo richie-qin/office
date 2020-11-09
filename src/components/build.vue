@@ -98,6 +98,10 @@ export default {
       font-size: 18px;
       font-weight: 600;
       cursor: pointer;
+      white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
       &:hover {
         color: #17a1e6;
       }
@@ -161,6 +165,7 @@ export default {
   }
   #house-right-box {
     text-align: right;
+    width: 150px;
     #house-m1 {
       color: #cc2929;
       font-size: 12px;

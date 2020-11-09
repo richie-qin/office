@@ -1,7 +1,7 @@
 <template>
 <div id="search-nav">
       <div id="search-nav-left">
-        <img @click="$router.push('/')" src="../assets/image/nav_logo2.png" alt />
+        <img @click="$router.push('/')" src="../assets/image/qz-logo1.png" alt />
         <router-link to="./"  :class="{'activityNav':activityNav==1}">首页</router-link>
         <router-link to="./building"  :class="{'activityNav':activityNav==2}">写字楼</router-link>
         <router-link to="./resource"  :class="{'activityNav':activityNav==3}">优选好房</router-link>

@@ -4,42 +4,39 @@
     <search-nav></search-nav>
     <div id="build-title">
       {{ details.bname }}
-      <span>在售</span>
+      <!-- <span>在售</span> -->
       <div>{{ details.county }}</div>
     </div>
     <div id="img-box">
       <div id="img-left">
-          <swiper
-            :options="swiperOptionTop"
-            class="gallery-top"
-            ref="swiperTop"
-          >
-            <swiper-slide
-              v-for="(item, index) in swiperImg(details.image)"
-              :key="index"
-              ><img :src="item" alt=""
-            /></swiper-slide>
-            <div
-              class="swiper-button-next swiper-button-white"
-              slot="button-next"
-            ></div>
-            <div
-              class="swiper-button-prev swiper-button-white"
-              slot="button-prev"
-            ></div>
-          </swiper>
-          <!-- swiper2 Thumbs -->
-          <swiper
-            :options="swiperOptionThumbs"
-            class="gallery-thumbs"
-            ref="swiperThumbs"
-          >
-            <swiper-slide
-              v-for="(item, index) in swiperImg(details.image)"
-              :key="index"
-              ><img :src="item" alt=""
-            /></swiper-slide>
-          </swiper>
+        <swiper  :options="swiperOptionTop" class="gallery-top" ref="swiperTop">
+          <swiper-slide
+            v-for="(item, index) in swiperImg(details.image)"
+            :key="index"
+            
+            ><img :src="item" alt=""
+          /></swiper-slide>
+          <div
+            class="swiper-button-next swiper-button-white"
+            slot="button-next"
+          ></div>
+          <div
+            class="swiper-button-prev swiper-button-white"
+            slot="button-prev"
+          ></div>
+        </swiper>
+        <!-- swiper2 Thumbs -->
+        <swiper
+          :options="swiperOptionThumbs"
+          class="gallery-thumbs"
+          ref="swiperThumbs"
+        >
+          <swiper-slide
+            v-for="(item, index) in swiperImg(details.image)"
+            :key="index"
+            ><img :src="item" alt=""
+          /></swiper-slide>
+        </swiper>
       </div>
       <div id="img-right">
         <div id="buildInfo-price">
@@ -86,8 +83,9 @@
       </div>
     </div>
     <div id="information">
-      <div id="left-info-box">
-        <!-- <div id="jbxx">
+      <div id="information-content">
+        <div id="left-info-box">
+          <!-- <div id="jbxx">
           <h3 class="info-title"><i></i>基本信息</h3>
           <h4>  </h4>
           <div class="base-info-item" v-for="item in 8" :key="item">
@@ -95,244 +93,291 @@
             <div class="base-info-content">3213123123</div>
           </div>
         </div> -->
-        <div id="jzxx">
-          <h3 class="info-title"><i></i>基本信息</h3>
-          <div id="jzxx-content">
-            <div class="content-div">
-              <div class="base-info-item">
-                <div class="base-info-title">楼宇：</div>
-                <div class="base-info-content">
-                  {{ details.county }}-{{ details.bname }}
+          <div id="jzxx">
+            <h3 class="info-title"><i></i>基本信息</h3>
+            <div id="jzxx-content">
+              <div class="content-div">
+                <div class="base-info-item">
+                  <div class="base-info-title">楼宇：</div>
+                  <div class="base-info-content">
+                    {{ details.county }}-{{ details.bname }}
+                  </div>
                 </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">类型：</div>
-                <div class="base-info-content">后台没返回</div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">单价：</div>
-                <div class="base-info-content">
-                  {{ details.price ? details.price + "元/m²/天" : "暂无数据" }}
+                <div class="base-info-item">
+                  <div class="base-info-title">类型：</div>
+                  <div class="base-info-content">后台没返回</div>
                 </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">楼层高度：</div>
-                <div class="base-info-content">
-                  {{ details.floor_height || "暂无数据" }}
+                <div class="base-info-item">
+                  <div class="base-info-title">单价：</div>
+                  <div class="base-info-content">
+                    {{
+                      details.price ? details.price + "元/m²/天" : "暂无数据"
+                    }}
+                  </div>
                 </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">物业：</div>
-                <div class="base-info-content">
-                  {{ details.boffice || "暂无数据" }}
+                <div class="base-info-item">
+                  <div class="base-info-title">楼层高度：</div>
+                  <div class="base-info-content">
+                    {{ details.floor_height || "暂无数据" }}
+                  </div>
                 </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">车位数量：</div>
-                <div class="base-info-content">
-                  {{ details.car_number || "暂无数据" }}
+                <div class="base-info-item">
+                  <div class="base-info-title">物业：</div>
+                  <div class="base-info-content">
+                    {{ details.boffice || "暂无数据" }}
+                  </div>
                 </div>
-              </div>
+                <div class="base-info-item">
+                  <div class="base-info-title">车位数量：</div>
+                  <div class="base-info-content">
+                    {{ details.car_number || "暂无数据" }}
+                  </div>
+                </div>
 
-              <div class="base-info-item">
-                <div class="base-info-title">空调：</div>
-                <div class="base-info-content">
-                  {{ details.air || "暂无数据" }}
+                <div class="base-info-item">
+                  <div class="base-info-title">空调：</div>
+                  <div class="base-info-content">
+                    {{ details.air || "暂无数据" }}
+                  </div>
+                </div>
+                <div class="base-info-item">
+                  <div class="base-info-title">空调费：</div>
+                  <div class="base-info-content">
+                    {{ details.air_pay || "暂无数据" }}
+                  </div>
+                </div>
+                <div class="base-info-item">
+                  <div class="base-info-title">网络：</div>
+                  <div class="base-info-content">
+                    {{ details.internet || "暂无数据" }}
+                  </div>
+                </div>
+                <div class="base-info-item">
+                  <div class="base-info-title">楼盘标签：</div>
+                  <div
+                    v-show="details.label && details.label.length > 0"
+                    class="base-info-content"
+                    v-for="(item, index) in details.label"
+                    :key="index"
+                  >
+                    {{ item }}
+                  </div>
+                  <div
+                    class="base-info-content"
+                    v-show="!details.label || details.label.length == 0"
+                  >
+                    暂无数据
+                  </div>
+                  &nbsp;
                 </div>
               </div>
-              <div class="base-info-item">
-                <div class="base-info-title">空调费：</div>
-                <div class="base-info-content">
-                  {{ details.air_pay || "暂无数据" }}
+              <div class="content-div">
+                <div class="base-info-item">
+                  <div class="base-info-title">详细地址：</div>
+                  <div class="base-info-content">
+                    {{ details.address || "暂无数据" }}
+                  </div>
                 </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">网络：</div>
-                <div class="base-info-content">
-                  {{ details.internet || "暂无数据" }}
+                <div class="base-info-item">
+                  <div class="base-info-title">装修程度：</div>
+                  <div class="base-info-content">
+                    {{ details.renovation || "暂无数据" }}
+                  </div>
                 </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">楼盘标签：</div>
-                <div
-                  v-show="details.label && details.label.length > 0"
-                  class="base-info-content"
-                  v-for="(item, index) in details.label"
-                  :key="index"
-                >
-                  {{ item }}
+                <div class="base-info-item">
+                  <div class="base-info-title">入住企业：</div>
+                  <div class="base-info-content">
+                    {{ details.enter || "暂无数据" }}
+                  </div>
                 </div>
-                <div
-                  class="base-info-content"
-                  v-show="!details.label || details.label.length == 0"
-                >
-                  暂无数据
+                <div class="base-info-item">
+                  <div class="base-info-title">楼层数量：</div>
+                  <div class="base-info-content">
+                    {{ details.floor_number || "暂无数据" }}
+                  </div>
                 </div>
-                &nbsp;
+                <div class="base-info-item">
+                  <div class="base-info-title">物业费：</div>
+                  <div class="base-info-content">
+                    {{
+                      details.bproperty
+                        ? details.bproperty + "元/㎡/月"
+                        : "暂无数据"
+                    }}
+                  </div>
+                </div>
+                <div class="base-info-item">
+                  <div class="base-info-title">车位月租：</div>
+                  <div class="base-info-content">
+                    {{ details.car_month || "暂无数据" }}
+                  </div>
+                </div>
+                <div class="base-info-item">
+                  <div class="base-info-title">状态：</div>
+                  <div class="base-info-content">
+                    {{ details.bstatus || "暂无数据" }}
+                  </div>
+                </div>
+                <div class="base-info-item">
+                  <div class="base-info-title">空调开放时间：</div>
+                  <div class="base-info-content">
+                    {{ details.air_open || "暂无数据" }}
+                  </div>
+                </div>
+                <div class="base-info-item">
+                  <div class="base-info-title">电梯：</div>
+                  <div class="base-info-content">
+                    {{ details.elevator || "暂无数据" }}
+                  </div>
+                </div>
+                <div class="base-info-item">
+                  <div class="base-info-title">描述：</div>
+                  <div class="base-info-content">
+                    {{ details.bdesc || "暂无数据" }}
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="content-div">
-              <div class="base-info-item">
-                <div class="base-info-title">详细地址：</div>
-                <div class="base-info-content">
-                  {{ details.address || "暂无数据" }}
-                </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">装修程度：</div>
-                <div class="base-info-content">
-                  {{ details.renovation || "暂无数据" }}
-                </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">入住企业：</div>
-                <div class="base-info-content">
-                  {{ details.enter || "暂无数据" }}
-                </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">楼层数量：</div>
-                <div class="base-info-content">
-                  {{ details.floor_number || "暂无数据" }}
-                </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">物业费：</div>
-                <div class="base-info-content">
-                  {{
-                    details.bproperty
-                      ? details.bproperty + "元/㎡/月"
-                      : "暂无数据"
-                  }}
-                </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">车位月租：</div>
-                <div class="base-info-content">
-                  {{ details.car_month || "暂无数据" }}
-                </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">状态：</div>
-                <div class="base-info-content">
-                  {{ details.bstatus || "暂无数据" }}
-                </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">空调开放时间：</div>
-                <div class="base-info-content">
-                  {{ details.air_open || "暂无数据" }}
-                </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">电梯：</div>
-                <div class="base-info-content">
-                  {{ details.elevator || "暂无数据" }}
-                </div>
-              </div>
-              <div class="base-info-item">
-                <div class="base-info-title">描述：</div>
-                <div class="base-info-content">
-                  {{ details.bdesc || "暂无数据" }}
-                </div>
+          </div>
+          <div id="zzhx">
+            <h3 class="info-title"><i></i>在租户型</h3>
+            <div id="zzhx-search">
+              <div
+                @click="clickArea(item, index)"
+                class="zzhx-search-item"
+                v-for="(item, index) in areaList"
+                :key="index"
+                :class="{ 'act-zzhx-index': areaIndex == index }"
+              >
+                {{ item.name }}
               </div>
             </div>
-          </div>
-        </div>
-        <div id="zzhx" v-show="zzhxList.length > 0">
-          <h3 class="info-title"><i></i>在租户型</h3>
-          <div id="houseTypeTitle">
-            <div>照片</div>
-            <div>面积</div>
-            <div>装修程度</div>
-            <div>单价</div>
-            <div>更新时间</div>
-          </div>
-          <div>
-            <houseType
-              v-for="(item, index) in zzhxList"
-              :key="index"
-              :data="item"
-            ></houseType>
-          </div>
-          <div
-            id="lookMore"
-            @click="getResource"
-            v-show="zzhxList.length < zzhxAll"
-          >
-            查看更多户型
-          </div>
-        </div>
-        <div id="baiduMap-box">
-          <h3 class="info-title"><i></i>十分钟步行圈</h3>
-          <div id="mapTypeSearch">
+            <div id="houseTypeTitle">
+              <div>照片</div>
+              <div>面积</div>
+              <div>装修程度</div>
+              <div>单价</div>
+              <div>更新时间</div>
+            </div>
+            <div v-show="zzhxList.length > 0">
+              <houseType
+                v-for="(item, index) in zzhxList"
+                :key="index"
+                :data="item"
+              ></houseType>
+            </div>
             <div
-              @click="choicePer(item, index)"
-              :class="{ activityDiv: actMapIndex == index }"
-              v-for="(item, index) in keywordList"
-              :key="index"
+              style="font-size: 20px;
+    color: #888;
+    text-align: center;
+    margin: 50px 0;
+    font-weight: bold;"
+              v-show="zzhxList.length == 0"
             >
-              {{ item }}
+              暂无数据
+            </div>
+            <div
+              id="lookMore"
+              @click="getResource"
+              v-show="zzhxList.length > 0 && zzhxList.length < zzhxAll"
+            >
+              查看更多户型
             </div>
           </div>
-          <baidu-map
-            @ready="map_handler"
-            :center="item.center"
-            :zoom="11"
-            class="bm-view"
-          >
-            <bm-local-search
-              :keyword="keyword"
-              :nearby="item"
-              :auto-viewport="true"
-              :panel="false"
-            ></bm-local-search>
-            <bm-circle :center="item.center" :radius="item.radius"></bm-circle>
-            <!-- 缩放 -->
-            <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
-            <!-- 定位 -->
-            <bm-geolocation
-              anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
-              :showAddressBar="true"
-              :autoLocation="true"
-            ></bm-geolocation>
-            <!-- 点 -->
-            <bm-marker
-              :position="{ lng: item.center.lng, lat: item.center.lat }"
-              :dragging="false"
-              animation="BMAP_ANIMATION_BOUNCE"
+          <div id="baiduMap-box">
+            <h3 class="info-title"><i></i>十分钟步行圈</h3>
+            <div id="mapTypeSearch">
+              <div
+                @click="choicePer(item, index)"
+                :class="{ activityDiv: actMapIndex == index }"
+                v-for="(item, index) in keywordList"
+                :key="index"
+              >
+                {{ item }}
+              </div>
+            </div>
+            <baidu-map
+              @ready="map_handler"
+              :center="item.center"
+              :zoom="11"
+              class="bm-view"
             >
-              <bm-info-window :show="true" @open="showPeriphery = true">{{
-                peripheryVal
-              }}</bm-info-window>
-            </bm-marker>
-          </baidu-map>
+              <bm-local-search
+                :keyword="keyword"
+                :nearby="item"
+                :auto-viewport="true"
+                :panel="false"
+              ></bm-local-search>
+              <bm-circle
+                :center="item.center"
+                :radius="item.radius"
+              ></bm-circle>
+              <!-- 缩放 -->
+              <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+              <!-- 定位 -->
+              <bm-geolocation
+                anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+                :showAddressBar="true"
+                :autoLocation="true"
+              ></bm-geolocation>
+              <!-- 点 -->
+              <bm-marker
+                :position="{ lng: item.center.lng, lat: item.center.lat }"
+                :dragging="false"
+                animation="BMAP_ANIMATION_BOUNCE"
+              >
+                <bm-info-window :show="true" @open="showPeriphery = true">{{
+                  peripheryVal
+                }}</bm-info-window>
+              </bm-marker>
+            </baidu-map>
+          </div>
         </div>
-      </div>
-      <div id="right-info-box">
-        <div id="ljyy">
-          <h3><i></i>预约看房</h3>
-          <el-input placeholder="请输入您的手机号" v-model="input10" clearable>
-          </el-input>
-          <el-button type="primary" @click="subscribe(input10)"
-            >立即预约</el-button
-          >
-          <p>巧租承诺仅将你的联系方式用于找房服务</p>
-        </div>
-        <div id="tjfy">
-          <h3><i></i>热点楼盘</h3>
-          <div id="tjfy-content">
-            <div @click="toDetails(item.id)" v-for="(item, index) in hotBuildData.slice(0,4)" :key="index">
-              <img :src="item.main_pic" alt />
-              <p>{{item.bname}}</p>
+        <div id="right-info-box">
+          <div id="ljyy">
+            <h3><i></i>预约看房</h3>
+            <el-input
+              placeholder="请输入您的手机号"
+              v-model="input10"
+              clearable
+            >
+            </el-input>
+            <el-button type="primary" @click="subscribe(input10)"
+              >立即预约</el-button
+            >
+            <p>巧租承诺仅将你的联系方式用于找房服务</p>
+          </div>
+          <div id="tjfy">
+            <h3><i></i>热点楼盘</h3>
+            <div id="tjfy-content">
+              <div
+                @click="toDetails(item.id)"
+                v-for="(item, index) in hotBuildData.slice(0, 4)"
+                :key="index"
+              >
+                <img :src="item.main_pic" alt />
+                <p>{{ item.bname }}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div id="big-swiper" v-show="showBigS">
+      <div id="big-swiper-content">
+        <el-carousel indicator-position="none" :interval="5000" arrow="always">
+          <el-carousel-item v-for="(item, index) in swiperImg(details.image)" :key="index">
+            <img :src="item" alt="" />
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+      <i @click="showBigS=false" class="el-icon-error close-icon"></i>
+    </div>
   </div>
 </template>
 <script>
+let that = null;
 import { getBuildingDetails, getResource, getSubscribe } from "../api/index";
 import houseType from "../components/houseType";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
@@ -341,6 +386,11 @@ export default {
   data() {
     return {
       swiperOptionTop: {
+        on:{
+          click: function(){
+            that.showBigS = true
+          }
+        },
         loop: true,
         loopedSlides: 5, // looped slides should be the same
         spaceBetween: 10,
@@ -375,7 +425,15 @@ export default {
       keyword: "景点",
       keywordList: ["景点", "公交车", "地铁", "学校", "医院", "酒店", "餐饮"],
       hotBuildData: [],
+      areaIndex: 0,
+      showBigS:false
     };
+  },
+  computed: {
+    areaList() {
+      //面积列表
+      return this.$store.state.areaList;
+    },
   },
   created() {
     this.$store.commit("actNav", 2);
@@ -398,9 +456,18 @@ export default {
       const swiperThumbs = this.$refs.swiperThumbs.$swiper;
       swiperTop.controller.control = swiperThumbs;
       swiperThumbs.controller.control = swiperTop;
+      that = this
     });
   },
   methods: {
+    clickArea(item, index) {
+      this.areaIndex = index;
+      let start = item.start || "";
+      let end = item.end || "";
+      this.page = 1;
+      this.zzhxList = [];
+      this.getResource(start, end);
+    },
     toDetails(id) {
       let routeData = this.$router.resolve({
         path: `./edificeDetails?id=${id}`,
@@ -445,9 +512,9 @@ export default {
         }
       });
     },
-    getResource() {
+    getResource(start = "", end = "") {
       getResource(
-        { building: this.details.bname },
+        { building: this.details.bname, start, end },
         { page: this.page, size: this.size }
       ).then((res) => {
         if (res.code == 20000) {
@@ -686,11 +753,15 @@ export default {
     }
   }
   #information {
-    width: 1200px;
-    margin: 30px auto 50px;
-    display: flex;
-    justify-content: space-between;
-
+    width: 100%;
+    background: #f5f5f5;
+    overflow: hidden;
+    #information-content {
+      width: 1200px;
+      margin: 30px auto 50px;
+      display: flex;
+      justify-content: space-between;
+    }
     #left-info-box {
       width: 820px;
       height: auto;
@@ -749,6 +820,27 @@ export default {
         margin-top: 40px;
         border-bottom: solid 1px #ebebeb;
         padding-bottom: 30px;
+
+        #zzhx-search {
+          width: 100%;
+          border-bottom: solid 1px #409eff;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .zzhx-search-item {
+            font-size: 14px;
+            color: #333;
+            width: 14%;
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+            cursor: pointer;
+          }
+          .act-zzhx-index {
+            background: #409eff;
+            color: #fff;
+          }
+        }
         #houseTypeTitle {
           display: flex;
           div {
@@ -860,7 +952,7 @@ export default {
             position: relative;
             overflow: hidden;
             cursor: pointer;
-            img{
+            img {
               width: 100%;
               height: 125px;
             }
@@ -883,8 +975,9 @@ export default {
 }
 #baiduMap-box {
   width: 100%;
-  height: 420px;
+  height: 520px;
   margin: 50px 0;
+  overflow: hidden;
   #mapTypeSearch {
     display: flex;
     align-items: center;
@@ -910,7 +1003,7 @@ export default {
   }
   .bm-view {
     width: 100%;
-    height: 100%;
+    height: 441px;
   }
   /deep/ .BMap_bubble_content {
     div {
@@ -926,6 +1019,7 @@ export default {
   img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
 }
 /deep/ .gallery-thumbs {
@@ -935,6 +1029,7 @@ export default {
   img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
 }
 /deep/ .gallery-thumbs .swiper-slide {
@@ -948,15 +1043,65 @@ export default {
 /deep/ .el-carousel__arrow {
   display: none;
 }
-/deep/ .swiper-button-white{
+/deep/ .swiper-button-white {
   background: rgba(0, 0, 0, 0.3);
   width: 40px;
   height: 40px;
   overflow: hidden;
   border-radius: 40px;
   font-size: 12px;
-  &:after{
+  &:after {
     font-size: 14px;
+  }
+}
+#big-swiper{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .close-icon{
+    position: absolute;
+    top: 5vh;
+    right: 15vh;
+    font-size: 40px;
+    color: #fff;
+    cursor: pointer;
+  }
+  #big-swiper-content{
+    width: 80vw;
+    height: 80vh;
+    /deep/ .el-carousel{
+      width: 100%;
+      height: 100%;
+      /deep/ .el-carousel__container{
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        /deep/ .el-carousel__item{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+    /deep/ .el-carousel__arrow{
+      display: block;
+      background: rgba(0, 0, 0, 0.9);
+    }
+    /deep/ img{
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      min-width: 50%;
+      max-height: 100%;
+      object-fit: cover;
+    }
   }
 }
 </style>

@@ -4,7 +4,7 @@
     <search-nav></search-nav>
     <div id="build-title">
       {{ details.house_title }}
-      <span>在售</span>
+      <span v-show="details.rent_status">{{details.rent_status}}</span>
       <div>{{details.county}}</div>
     </div>
     <div id="img-box">
@@ -75,18 +75,19 @@
         </div>
         <div id="build-agent">
           <div id="agent-msg">
-            <img src="../assets/image/BannerItem4.png" alt="" />
+            <img :src="agentData.avatar" alt="" />
             <div>
-              <p>{{details.receiver}}</p>
-              <p>{{details.relation}}</p>
+              <p>{{agentData.name}}</p>
+              <p>{{agentData.usertype}}</p>
             </div>
           </div>
-          <div id="agent-phone">{{details.phone}}</div>
+          <div id="agent-phone">{{agentData.mobile}}</div>
         </div>
       </div>
     </div>
     <div id="information">
-      <div id="left-info-box">
+      <div id="information-content">
+        <div id="left-info-box">
         <div id="jbxx">
           <h3 class="info-title"><i></i>基本信息</h3>
           <div class="base-info-item">
@@ -103,12 +104,12 @@
             <div class="base-info-title">房源楼层</div>
             <div class="base-info-content">{{ details.floor || "暂无数据" }}</div>
           </div>
-          <div class="base-info-item">
+          <!-- <div class="base-info-item">
             <div class="base-info-title">房源房号</div>
             <div class="base-info-content">
               {{ details.house_number || "暂无数据" }}
             </div>
-          </div>
+          </div> -->
         </div>
         <div id="jzxx">
           <h3 class="info-title"><i></i>建筑信息</h3>
@@ -288,11 +289,23 @@
           </div>
         </div>
       </div>
+      </div>
+    </div>
+    <div id="big-swiper" v-show="showBigS">
+      <div id="big-swiper-content">
+        <el-carousel indicator-position="none" :interval="5000" arrow="always">
+          <el-carousel-item v-for="(item, index) in swiperImg(details.image)" :key="index">
+            <img :src="item" alt="" />
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+      <i @click="showBigS=false" class="el-icon-error close-icon"></i>
     </div>
   </div>
 </template>
 <script>
-import { getResourceDetails,getSubscribe } from "../api/index";
+let that = null;
+import { getResourceDetails,getSubscribe,getUser } from "../api/index";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 export default {
@@ -300,6 +313,11 @@ export default {
   data() {
     return {
       swiperOptionTop: {
+        on:{
+          click: function(){
+            that.showBigS = true
+          }
+        },
         loop: true,
         loopedSlides: 5, // looped slides should be the same
         spaceBetween: 10,
@@ -330,6 +348,9 @@ export default {
       keyword: "景点",
       keywordList: ["景点", "公交车", "地铁", "学校", "医院", "酒店", "餐饮"],
       hotHouseData: [],
+      agentData:{},
+      showBigS:false
+
     };
   },
   created() {
@@ -343,7 +364,22 @@ export default {
         this.peripheryVal = res.data.house_title;
         this.item.lng = res.data.longitude;
         this.item.lat = res.data.latitude;
+        getUser({username:res.data.receiver,userType:"经纪人"}).then(res2=>{
+          
+          if(res2.code == 20000){
+            this.agentData = res2.data[0];
+          }
+        })
       }
+    });
+  },
+  mounted() {
+    this.$nextTick(() => {
+      const swiperTop = this.$refs.swiperTop.$swiper;
+      const swiperThumbs = this.$refs.swiperThumbs.$swiper;
+      swiperTop.controller.control = swiperThumbs;
+      swiperThumbs.controller.control = swiperTop;
+      that = this
     });
   },
   methods: {
@@ -622,10 +658,15 @@ export default {
     }
   }
   #information {
-    width: 1200px;
-    margin: 30px auto 50px;
-    display: flex;
-    justify-content: space-between;
+    width: 100%;
+    background: #f5f5f5;
+    overflow: hidden;
+    #information-content{
+      width: 1200px;
+      margin: 30px auto 50px;
+      display: flex;
+      justify-content: space-between;
+    }
 
     #left-info-box {
       width: 820px;
@@ -784,8 +825,10 @@ export default {
 }
 #baiduMap-box {
   width: 100%;
-  height: 420px;
+  height: 520px;
   margin: 50px 0;
+  overflow: hidden;
+
   #mapTypeSearch {
     display: flex;
     align-items: center;
@@ -811,7 +854,7 @@ export default {
   }
   .bm-view {
     width: 100%;
-    height: 100%;
+    height: 441px;
   }
   /deep/ .BMap_bubble_content {
     div {
@@ -827,6 +870,8 @@ export default {
   img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+
   }
 }
 /deep/ .gallery-thumbs {
@@ -836,6 +881,7 @@ export default {
   img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
 }
 /deep/ .gallery-thumbs .swiper-slide {
@@ -858,6 +904,56 @@ export default {
   font-size: 12px;
   &:after{
     font-size: 14px;
+  }
+}
+#big-swiper{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .close-icon{
+    position: absolute;
+    top: 5vh;
+    right: 15vh;
+    font-size: 40px;
+    color: #fff;
+    cursor: pointer;
+  }
+  #big-swiper-content{
+    width: 80vw;
+    height: 80vh;
+    /deep/ .el-carousel{
+      width: 100%;
+      height: 100%;
+      /deep/ .el-carousel__container{
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        /deep/ .el-carousel__item{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+    /deep/ .el-carousel__arrow{
+      display: block;
+      background: rgba(0, 0, 0, 0.9);
+    }
+    /deep/ img{
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      min-width: 50%;
+      max-height: 100%;
+      object-fit: cover;
+    }
   }
 }
 </style>

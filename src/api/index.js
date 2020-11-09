@@ -67,5 +67,14 @@ export function getSubscribe(data){
   })
 }
 
+// 获取经纪人
+export function getUser(data){
+  return request({
+    url: `/rent/user/search`,
+    method: 'post',
+    data
+  })
+}
+
 
 

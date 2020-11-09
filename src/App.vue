@@ -2,7 +2,7 @@
   <div id="app">
     <router-view />
     <footer-box></footer-box>
-    <div id="contact-box">
+    <!-- <div id="contact-box">
       <div id="contact-kf">
         <img src="./assets/image/kf.png" alt="">
         <div id="phone-icon"></div>
@@ -12,7 +12,7 @@
       <div id="contact-top" v-show="winScrollTop > 600" @click="backtop">
         ∧返回顶部
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -45,7 +45,7 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener("scroll", this.handleScroll, true);
+    // window.addEventListener("scroll", this.handleScroll, true);
   },
 };
 </script>

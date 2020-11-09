@@ -3,7 +3,7 @@
     <div id="header-con">
       <div id="header-content">
         <div id="nav-logo">
-          <img src="../assets/image/nav_logo2.png" alt />
+          <img src="../assets/image/qz-logo1.png" alt />
         </div>
         <div id="nav-data">
           <router-link to="./" class="nav-item" style="font-weight: bold;"
@@ -353,9 +353,11 @@ export default {
   data() {
     return {
       swipers: [
-        { src: require("../assets/image/swiper1.jpg") },
-        { src: require("../assets/image/swiper2.jpg") },
-        { src: require("../assets/image/swiper3.jpg") },
+        { src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片1.png" },
+        { src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片2.png" },
+        { src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片3.png" },
+        { src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片4.png" },
+        { src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片6.png" },
       ],
       searchMap: {
         county: "全部", //区域搜索
@@ -662,8 +664,8 @@ export default {
 }
 .el-carousel__item img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  min-height: 100%;
 }
 #header-con {
   height: 80px;
@@ -1358,4 +1360,14 @@ export default {
     object-fit: cover;
   }
 }
+/deep/ .el-input-group__append{
+  border: none;
+  border-radius: 0 5px 5px 0 ;
+  background: none;
+  overflow: hidden;
+  /deep/ .el-button{
+    border-radius: 0 5px 5px 0 ;
+  }
+}
+
 </style>

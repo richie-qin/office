@@ -292,7 +292,7 @@ export default {
         this.searchMap.end = this.money2;
         this.getResource();
       } else {
-        console.log("请正确输入信息");
+        // console.log("请正确输入信息");
       }
     },
     choiseArea() {
@@ -309,7 +309,7 @@ export default {
         this.searchMap.end = this.area2;
         this.getResource();
       } else {
-        console.log("请正确输入信息");
+        // console.log("请正确输入信息");
       }
     },
     searchKey() {

@@ -167,7 +167,6 @@ export default {
   methods: {
     handleCurrentChange(val) {
       this.page = val;
-      console.log(`当前页: ${val}`);
       if (this.select == 1) {
         this.getBuilding();
       } else if (this.select == 2) {
