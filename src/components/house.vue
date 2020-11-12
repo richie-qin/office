@@ -102,7 +102,7 @@ export default {
         overflow: hidden;
         word-break: break-all;
       &:hover {
-        color: #17a1e6;
+        color: #ffb200;
       }
     }
     .house-info {
@@ -188,7 +188,7 @@ export default {
   text-align: center;
   color: #fff;
   font-size: 14px;
-  background: #17a1e6;
+  background: #ffb200;
   border-radius: 4px;
   transition: all 0.2s;
   cursor: pointer;

@@ -49,11 +49,11 @@ export default {
             margin-right: 20px;
             cursor: pointer;
             &:hover{
-                color: #17a1e6;
+                color: #ffb200;
             }
         }
         .activityNav{
-            color: #17a1e6;
+            color: #ffb200;
         }
     }
     #nav-right{

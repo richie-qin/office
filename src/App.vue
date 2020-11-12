@@ -137,5 +137,10 @@ div {
     cursor: pointer;
   }
 }
-
+.BMap_cpyCtrl{
+  display: none;
+}
+.el-button--primary{
+  border: none !important;
+}
 </style>

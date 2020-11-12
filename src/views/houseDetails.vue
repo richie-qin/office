@@ -698,7 +698,7 @@ export default {
         margin-bottom: 20px;
         i {
           width: 3px;
-          background: #17a1e6;
+          background: #ffb200;
           height: 19px;
           margin-right: 5px;
           display: inline-block;
@@ -751,7 +751,7 @@ export default {
           text-align: left;
           i {
             width: 3px;
-            background: #17a1e6;
+            background: #ffb200;
             height: 19px;
             margin-right: 5px;
             display: inline-block;
@@ -782,7 +782,7 @@ export default {
           text-align: left;
           i {
             width: 3px;
-            background: #17a1e6;
+            background: #ffb200;
             height: 19px;
             margin-right: 5px;
             display: inline-block;
@@ -840,13 +840,13 @@ export default {
       padding: 0 15px;
       cursor: pointer;
       &:hover {
-        color: #17a1e6;
+        color: #ffb200;
       }
     }
     .activityDiv {
       color: #fff;
       font-weight: bold;
-      background: #17a1e6;
+      background: #ffb200;
       &:hover {
         color: #fff;
       }

@@ -397,7 +397,7 @@ export default {
     height: 48px;
     color: #fff;
     font-weight: bold;
-    background: #17A1E6;
+    background: #ffb200;
   }
 }
 /deep/ .el-radio{
@@ -421,7 +421,7 @@ export default {
       color: #000;
     }
     .activityData-i {
-      color: #17A1E6;
+      color: #ffb200;
     }
     #search-item-wz {
       margin-bottom: 20px;
@@ -481,7 +481,7 @@ export default {
     width: 860px;
     #data-list-type {
       height: 50px;
-      border-bottom: 2px solid #17a1e6;
+      border-bottom: 2px solid #ffb200;
       margin: 20px;
 
       .data-list-type-item {
@@ -491,11 +491,11 @@ export default {
         display: inline-block;
         cursor: pointer;
         // &:hover {
-        //   color: #17a1e6;
+        //   color: #ffb200;
         // }
       }
       .act-type-item {
-        background: #17a1e6;
+        background: #ffb200;
         color: #fff;
         font-weight: bold;
       }
@@ -635,7 +635,7 @@ export default {
         font-size: 14px;
         font-weight: 600;
         text-align: center;
-        background: #17a1e6;
+        background: #ffb200;
         border-radius: 4px;
         cursor: pointer;
       }

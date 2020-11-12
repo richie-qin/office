@@ -71,7 +71,7 @@ export default {
       margin-right: 30px;
     }
     .activityNav{
-      color: #17a1e6;
+      color: #ffb200;
     }
     a {
       line-height: 28px;
@@ -80,7 +80,7 @@ export default {
       font-size: 16px;
       cursor: pointer;
       &:hover{
-          color: #17a1e6;
+          color: #ffb200;
       }
     }
   }

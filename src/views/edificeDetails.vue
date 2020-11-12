@@ -791,7 +791,7 @@ export default {
         margin-bottom: 20px;
         i {
           width: 3px;
-          background: #17a1e6;
+          background: #ffb200;
           height: 19px;
           margin-right: 5px;
           display: inline-block;
@@ -823,7 +823,7 @@ export default {
 
         #zzhx-search {
           width: 100%;
-          border-bottom: solid 1px #409eff;
+          border-bottom: solid 1px #ffb200;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -837,7 +837,7 @@ export default {
             cursor: pointer;
           }
           .act-zzhx-index {
-            background: #409eff;
+            background: #ffb200;
             color: #fff;
           }
         }
@@ -901,7 +901,7 @@ export default {
           text-align: left;
           i {
             width: 3px;
-            background: #17a1e6;
+            background: #ffb200;
             height: 19px;
             margin-right: 5px;
             display: inline-block;
@@ -932,7 +932,7 @@ export default {
           text-align: left;
           i {
             width: 3px;
-            background: #17a1e6;
+            background: #ffb200;
             height: 19px;
             margin-right: 5px;
             display: inline-block;
@@ -989,13 +989,13 @@ export default {
       padding: 0 15px;
       cursor: pointer;
       &:hover {
-        color: #17a1e6;
+        color: #ffb200;
       }
     }
     .activityDiv {
       color: #fff;
       font-weight: bold;
-      background: #17a1e6;
+      background: #ffb200;
       &:hover {
         color: #fff;
       }

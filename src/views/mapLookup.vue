@@ -271,7 +271,7 @@ export default {
   max-height: calc(100% - 110px);
   /deep/ .el-input-group__append {
     font-size: 14px;
-    background: #17a1e6;
+    background: #ffb200;
     color: #fff;
   }
   /deep/ .el-select {

@@ -6,7 +6,7 @@
           <img src="../assets/image/qz-logo1.png" alt />
         </div>
         <div id="nav-data">
-          <router-link to="./" class="nav-item" style="font-weight: bold;"
+          <router-link to="./" class="nav-item" style="font-weight: bold;color:#ffb200"
             >首页</router-link
           >
           <router-link to="./building" class="nav-item">楼宇</router-link>
@@ -22,6 +22,51 @@
       </div>
     </div>
     <div id="header-box">
+      <baidu-map
+        @ready="map_handler"
+        :center="item.center"
+        :zoom="14"
+        class="bm-view"
+      >
+        <!-- 缩放 -->
+        <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+        <!-- 定位 -->
+        <bm-geolocation
+          anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+          :showAddressBar="true"
+          :autoLocation="true"
+        ></bm-geolocation>
+        <!-- 点 -->
+        <bm-marker
+        v-for="(item,index) in buildMapData" :key="index"
+          :position="{ lng: item.longitude, lat: item.latitude }"
+          :dragging="false"
+          :icon="{
+            url: require('../assets/image/map_icon.png'),
+            size: { width: 28, height: 36 },
+          }"
+          @mouseover="mouseover(index)"
+        >
+          <bm-info-window
+            :width="400"
+            :height="120"
+            :show="item.showInfo"
+            @close="item.showInfo = false"
+          >
+            <div class="markerInfo">
+              <img :src="item.main_pic" alt="" />
+              <div class="markerInfo-text">
+                <h3 @click="toDetails(item.id)">{{item.bname}}</h3>
+                <div>地址：{{item.address||"暂无数据"}}</div>
+                <div>装修程度：{{item.renovation||"暂无数据"}}</div>
+                <p>参考价格：{{item.price?item.price+"元/m²/天":"暂无报价"}}</p>
+              </div>
+            </div>
+          </bm-info-window>
+        </bm-marker>
+      </baidu-map>
+    </div>
+    <!-- <div id="header-box">
       <el-carousel height="680px">
         <el-carousel-item v-for="(item, index) in swipers" :key="index">
           <img :src="item.src" alt />
@@ -55,7 +100,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="our-nice">
       <div class="our-nice-box">
         <div
@@ -73,7 +118,7 @@
         </div>
       </div>
     </div>
-    <div id="hot-area" v-show="buildData1.length>0">
+    <div id="hot-area" v-show="buildData1.length > 0">
       <div id="hot-area-title">
         优质写字楼
       </div>
@@ -112,13 +157,13 @@
         </div>
         <div class="more-city">
           <div class="more-city-info">
-            <div>更多优质写字楼<br>任你挑</div>
+            <div>更多优质写字楼<br />任你挑</div>
             <button @click="toBuildList(1)">查看更多</button>
           </div>
         </div>
       </div>
     </div>
-    <div id="hot-area" v-show="buildData2.length>0">
+    <div id="hot-area" v-show="buildData2.length > 0">
       <div id="hot-area-title">
         优质园区
       </div>
@@ -157,13 +202,13 @@
         </div>
         <div class="more-city">
           <div class="more-city-info">
-            <div>更多优质园区<br>任你挑</div>
+            <div>更多优质园区<br />任你挑</div>
             <button @click="toBuildList(2)">查看更多</button>
           </div>
         </div>
       </div>
     </div>
-    <div id="hot-area" v-show="buildData3.length>0">
+    <div id="hot-area" v-show="buildData3.length > 0">
       <div id="hot-area-title">
         优质联合办公
       </div>
@@ -202,13 +247,13 @@
         </div>
         <div class="more-city">
           <div class="more-city-info">
-            <div>更多优质联合办公<br>任你挑</div>
+            <div>更多优质联合办公<br />任你挑</div>
             <button @click="toBuildList(3)">查看更多</button>
           </div>
         </div>
       </div>
     </div>
-    <div id="hot-area" v-show="hotBuildData.length>0">
+    <div id="hot-area" v-show="hotBuildData.length > 0">
       <div id="hot-area-title">
         热门楼宇，进驻城市中心
       </div>
@@ -247,19 +292,26 @@
         </div>
         <div class="more-city">
           <div class="more-city-info">
-            <div>更多热门楼宇<br>任你挑</div>
+            <div>更多热门楼宇<br />任你挑</div>
             <button @click="toBuildList(4)">查看更多</button>
           </div>
         </div>
       </div>
     </div>
-    <div id="recommend-area" v-show="hotHouseData.length>0">
+    <div id="recommend-area" v-show="hotHouseData.length > 0">
       <div id="recommend-area-title">巧租推荐，精选优质房源</div>
       <div id="recommend-area-content">
         <div id="recommend-house1" @click="toHouseDetails(hotHouseData[0].id)">
-          <img v-if="hotHouseData[0]&&hotHouseData[0].main_pic" :src="hotHouseData[0].main_pic" alt="" />
+          <img
+            v-if="hotHouseData[0] && hotHouseData[0].main_pic"
+            :src="hotHouseData[0].main_pic"
+            alt=""
+          />
           <div class="recommend-house1-info">
-            <div class="recommend-house1-title" v-if="hotHouseData[0]&&hotHouseData[0].house_title">
+            <div
+              class="recommend-house1-title"
+              v-if="hotHouseData[0] && hotHouseData[0].house_title"
+            >
               {{ hotHouseData[0].house_title }}
             </div>
             <div class="recommend-house1-lookUp">查看详情</div>
@@ -353,11 +405,21 @@ export default {
   data() {
     return {
       swipers: [
-        { src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片1.png" },
-        { src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片2.png" },
-        { src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片3.png" },
-        { src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片4.png" },
-        { src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片6.png" },
+        {
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片1.png",
+        },
+        {
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片2.png",
+        },
+        {
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片3.png",
+        },
+        {
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片4.png",
+        },
+        {
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片6.png",
+        },
       ],
       searchMap: {
         county: "全部", //区域搜索
@@ -414,9 +476,16 @@ export default {
         },
       ],
       searchKey: "",
+      buildMapData:[],
       buildData1: [],
       buildData2: [],
       buildData3: [],
+      BMap: null,
+      map: null,
+      item: {
+        center: { lng: 117.233725, lat: 31.827 },
+        radius: 1000,
+      },
     };
   },
   computed: {
@@ -428,6 +497,21 @@ export default {
     },
   },
   created() {
+
+    getBuilding({ county: "全部" }, { page: 1, size: 200 }).then(
+      (res) => {
+        //前两百写字楼
+        if (res.code == 20000) {
+          let setData = res.data.rows;
+          setData.forEach(item=>{
+            item.showInfo = false;
+          })
+          this.buildMapData = setData;
+
+        }
+      }
+    );
+
     getBuilding({ nature: 1, recommend: 1 }, { page: 1, size: 7 }).then(
       (res) => {
         //优质写字楼
@@ -485,8 +569,15 @@ export default {
     });
   },
   methods: {
-    toBuildList(item){
-      this.$router.push({name:"building",params:{searchType:item}})
+    mouseover(index) {
+      this.buildMapData[index].showInfo = true;
+    },
+    map_handler({ BMap, map }) {
+      this.BMap = BMap;
+      this.map = map;
+    },
+    toBuildList(item) {
+      this.$router.push({ name: "building", params: { searchType: item } });
     },
     toSearch() {
       if (this.searchKey) {
@@ -568,6 +659,10 @@ export default {
   width: 100%;
   height: 680px;
   position: relative;
+  .bm-view {
+    width: 100%;
+    height: 100%;
+  }
 }
 #swiper-inside-house {
   position: absolute;
@@ -602,13 +697,13 @@ export default {
     }
     /deep/ .el-button {
       width: 120px;
-      background: #17a1e6;
+      background: #ffb200;
       color: #333;
       height: 55px;
       font-size: 20px;
       font-weight: bold;
       &:hover {
-        background: #3f88fb;
+        background: #ffb200;
       }
     }
     /deep/ .el-input-group {
@@ -704,7 +799,7 @@ export default {
         color: #333;
         &:hover {
           color: #fff;
-          background-color: #3f88fb;
+          background-color: #ffb200;
         }
       }
     }
@@ -715,11 +810,11 @@ export default {
       i {
         margin-right: 8px;
         font-size: 22px;
-        color: #3f88fb;
+        color: #ffb200;
       }
       span {
         font-size: 16px;
-        color: #3f88fb;
+        color: #ffb200;
         font-weight: bold;
       }
     }
@@ -763,7 +858,7 @@ export default {
           margin-bottom: 10px;
           cursor: pointer;
           &:hover {
-            color: #17a1e6;
+            color: #ffb200;
           }
         }
       }
@@ -798,7 +893,7 @@ export default {
       margin: 15px 30px;
       font-size: 14px;
       font-weight: 600;
-      background: #17a1e6;
+      background: #ffb200;
       height: 48px;
       line-height: 48px;
       text-align: center;
@@ -855,7 +950,7 @@ export default {
         right: 0;
       }
       .our-nice-num {
-        color: #f59a23;
+        color: #ffb200;
         font-size: 30px;
         font-weight: 600;
       }
@@ -1014,7 +1109,7 @@ export default {
           margin-right: 10px;
           color: #fff;
           &:nth-child(1) {
-            background: #f59a23;
+            background: #ffb200;
           }
           &:nth-child(2) {
             background: #02a7f0;
@@ -1034,7 +1129,7 @@ export default {
         }
       }
     }
-    .more-city{
+    .more-city {
       width: 274px;
       border-radius: 0 0 4px 4px;
       -webkit-transition: all 0.3s ease-in-out;
@@ -1043,7 +1138,7 @@ export default {
       height: 364px;
       overflow: hidden;
       margin-bottom: 15px;
-      background: #17a1e6;
+      background: #ffb200;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1051,25 +1146,25 @@ export default {
         // -webkit-transform: translateY(-5px);
         // transform: translateY(-5px);
         // box-shadow: 0 24px 40px -24px rgba(0, 0, 0, 0.1);
-        .more-city-info{
-          button{
-            color: #17a1e6;
+        .more-city-info {
+          button {
+            color: #ffb200;
             background: #fff;
           }
         }
       }
-      .more-city-info{
+      .more-city-info {
         text-align: center;
         font-size: 14px;
         color: #fff;
-        div{
+        div {
           text-align: center;
           font-size: 20px;
           line-height: 30px;
           color: #fff;
           margin-bottom: 20px;
         }
-        button{
+        button {
           display: block;
           margin: 0 auto;
           width: 130px;
@@ -1077,8 +1172,8 @@ export default {
           border: 1px solid #fff;
           color: #fff;
           border-radius: 5px;
-          background: #17a1e6;
-          transition: background .2s linear;
+          background: #ffb200;
+          transition: background 0.2s linear;
           cursor: pointer;
           font-size: 14px;
         }
@@ -1144,7 +1239,7 @@ export default {
   //     }
   //   }
   //   .more-ciry {
-  //     background: #17a1e6;
+  //     background: #ffb200;
   //     text-align: center;
   //     &:hover {
   //       transform: scale(1);
@@ -1175,14 +1270,14 @@ export default {
   //       line-height: 39px;
   //       color: #fff;
   //       border-radius: 5px;
-  //       background: #17a1e6;
+  //       background: #ffb200;
   //       transition: background 0.2s linear;
   //       cursor: pointer;
   //       font-size: 14px;
   //       color: #fff;
   //       &:hover {
   //         background: #fff;
-  //         color: #17a1e6;
+  //         color: #ffb200;
   //       }
   //     }
   //   }
@@ -1360,14 +1455,56 @@ export default {
     object-fit: cover;
   }
 }
-/deep/ .el-input-group__append{
+/deep/ .el-input-group__append {
   border: none;
-  border-radius: 0 5px 5px 0 ;
+  border-radius: 0 5px 5px 0;
   background: none;
   overflow: hidden;
-  /deep/ .el-button{
-    border-radius: 0 5px 5px 0 ;
+  /deep/ .el-button {
+    border-radius: 0 5px 5px 0;
   }
 }
+.markerInfo {
+  width: 100%;
+  height: 120px;
+  img {
+    height: 100%;
+    width: 160px;
+    margin-right: 30px;
+    display: inline-block;
+    vertical-align: middle;
 
+  }
+  .markerInfo-text {
+    display: inline-block;
+    width: calc(100% - 190px);
+    vertical-align: middle;
+    h3 {
+      font-size: 16px;
+      line-height: 18px;
+      height: 18px;
+      font-weight: bold;
+      color: #000;
+      padding-right: 20px;
+      margin-bottom: 5px;
+      .show-text-1;
+      cursor: pointer;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+    div {
+      font-size: 14px;
+      color: #888;
+      .show-text-1;
+      margin-bottom: 5px;
+    }
+    p {
+      display: block;
+      font-size: 14px;
+      color: #fabe0f;
+      .show-text-1;
+    }
+  }
+}
 </style>

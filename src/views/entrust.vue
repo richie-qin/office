@@ -214,7 +214,7 @@ export default {
     margin-right: auto;
     height: 48px;
     border-radius: 4px;
-    background-color: #17a1e6;
+    background-color: #ffb200;
     font-size: 14px;
     font-weight: 600;
   }
@@ -231,7 +231,7 @@ export default {
     color: #777;
     span {
       font-size: 12px;
-      color: #17a1e6;
+      color: #ffb200;
     }
   }
 }
