@@ -679,7 +679,7 @@ export default {
           color: #9399a5;
         }
         #price-number {
-          color: #fe615a;
+          color: #ffb200;
           font-family: Tahoma-Bold;
           font-size: 30px;
           font-weight: bold;
@@ -687,7 +687,7 @@ export default {
         #price-unit {
           font-family: HiraginoSansGB-W6;
           font-size: 16px;
-          color: #fe615a;
+          color: #ffb200;
         }
       }
       #build-right-msg {
@@ -722,7 +722,7 @@ export default {
         #agent-phone {
           font-size: 25px;
           font-weight: bold;
-          color: crimson;
+          color: #ffb200;
         }
         #agent-msg {
           display: flex;
@@ -1103,5 +1103,8 @@ export default {
       object-fit: cover;
     }
   }
+}
+/deep/ .el-button--primary{
+  background: #ffb200;
 }
 </style>

@@ -6,7 +6,10 @@
           <img src="../assets/image/qz-logo1.png" alt />
         </div>
         <div id="nav-data">
-          <router-link to="./" class="nav-item" style="font-weight: bold;color:#ffb200"
+          <router-link
+            to="./"
+            class="nav-item"
+            style="font-weight: bold;color:#ffb200"
             >首页</router-link
           >
           <router-link to="./building" class="nav-item">楼宇</router-link>
@@ -30,20 +33,16 @@
       >
         <!-- 缩放 -->
         <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
-        <!-- 定位 -->
-        <bm-geolocation
-          anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
-          :showAddressBar="true"
-          :autoLocation="true"
-        ></bm-geolocation>
+
         <!-- 点 -->
         <bm-marker
-        v-for="(item,index) in buildMapData" :key="index"
+          v-for="(item, index) in buildMapData"
+          :key="index"
           :position="{ lng: item.longitude, lat: item.latitude }"
           :dragging="false"
           :icon="{
             url: require('../assets/image/map_icon.png'),
-            size: { width: 28, height: 36 },
+            size: { width: 28, height: 36 }
           }"
           @mouseover="mouseover(index)"
         >
@@ -56,15 +55,73 @@
             <div class="markerInfo">
               <img :src="item.main_pic" alt="" />
               <div class="markerInfo-text">
-                <h3 @click="toDetails(item.id)">{{item.bname}}</h3>
-                <div>地址：{{item.address||"暂无数据"}}</div>
-                <div>装修程度：{{item.renovation||"暂无数据"}}</div>
-                <p>参考价格：{{item.price?item.price+"元/m²/天":"暂无报价"}}</p>
+                <h3 @click="toDetails(item.id)">{{ item.bname }}</h3>
+                <div>地址：{{ item.address || "暂无数据" }}</div>
+                <div>装修程度：{{ item.renovation || "暂无数据" }}</div>
+                <p>
+                  参考价格：{{
+                    item.price ? item.price + "元/m²/天" : "暂无报价"
+                  }}
+                </p>
               </div>
             </div>
           </bm-info-window>
         </bm-marker>
       </baidu-map>
+      <div class="inside-search">
+        <div class="search-box">
+          <div class="srarch-tabs">楼宇</div>
+          <div class="search-line"></div>
+          <el-input class="search-input" placeholder="请输入内容" v-model="searchKey">
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+          </el-input>
+          <div class="search-btn" @click="toSearch">
+            立即搜索
+          </div>
+        </div>
+        <div class="search-sx">
+          <div class="sx-item">
+            <el-select @change="searchChange1" v-model="regionKey" placeholder="区域">
+              <el-option
+                v-for="(item,index) in regionList"
+                :key="index"
+                :label="item.name"
+                :value="index">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="sx-item">
+            <el-select @change="searchChange2" v-model="metroKey" placeholder="地铁(1号线)">
+              <el-option
+                v-for="(item,index) in metroList"
+                :key="index"
+                :label="item.name"
+                :value="index">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="sx-item">
+            <el-select @change="searchChange3" v-model="renovationKey" placeholder="装修">
+              <el-option
+                v-for="(item,index) in renovationList"
+                :key="index"
+                :label="item.label"
+                :value="index">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="sx-item">
+            <el-select @change="searchChange4" v-model="buildKey" placeholder="类型">
+              <el-option
+                v-for="(item,index) in buildList"
+                :key="index"
+                :label="item.label"
+                :value="index">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- <div id="header-box">
       <el-carousel height="680px">
@@ -308,13 +365,15 @@
             alt=""
           />
           <div class="recommend-house1-info">
-            <div
-              class="recommend-house1-title"
-              v-if="hotHouseData[0] && hotHouseData[0].house_title"
-            >
-              {{ hotHouseData[0].house_title }}
+            <div>
+              <div
+                class="recommend-house1-title"
+                v-if="hotHouseData[0] && hotHouseData[0].house_title"
+              >
+                {{ hotHouseData[0].house_title }}
+              </div>
+              <div class="recommend-house1-lookUp">查看详情</div>
             </div>
-            <div class="recommend-house1-lookUp">查看详情</div>
           </div>
         </div>
         <div id="recommend-house-r">
@@ -325,14 +384,16 @@
           >
             <img :src="item.main_pic" alt="" />
             <div class="recommend-house-item-info">
-              <div class="recommend-house-item-title">
-                {{ item.house_title }}
-              </div>
-              <div
-                class="recommend-house-item-lookUp"
-                @click="toHouseDetails(item.id)"
-              >
-                查看详情
+              <div>
+                <div class="recommend-house-item-title">
+                  {{ item.house_title }}
+                </div>
+                <div
+                  class="recommend-house-item-lookUp"
+                  @click="toHouseDetails(item.id)"
+                >
+                  查看详情
+                </div>
               </div>
             </div>
           </div>
@@ -406,20 +467,20 @@ export default {
     return {
       swipers: [
         {
-          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片1.png",
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片1.png"
         },
         {
-          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片2.png",
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片2.png"
         },
         {
-          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片3.png",
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片3.png"
         },
         {
-          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片4.png",
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片4.png"
         },
         {
-          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片6.png",
-        },
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片6.png"
+        }
       ],
       searchMap: {
         county: "全部", //区域搜索
@@ -429,27 +490,25 @@ export default {
         type: null,
         hot: 1, //最热
         newest: null, //最新
-        recommend: null, //推荐
+        recommend: null //推荐
       },
       hotBuildData: [], //热门楼宇
       hotHouseData: [],
       newHouseData: [],
-      input21: "",
       businessInfo: [
         {
           title: "全系列房源",
           body:
-            "覆盖14个区县优质房源，精准匹配客户需求，巧租为您提供全系列房源信息。",
+            "覆盖14个区县优质房源，精准匹配客户需求，巧租为您提供全系列房源信息。"
         },
         {
           title: "真实房源保证",
-          body:
-            "真实价格，真实房源，诚意满满在巧租可以了解到最放心的房源信息。",
+          body: "真实价格，真实房源，诚意满满在巧租可以了解到最放心的房源信息。"
         },
         {
           title: "贴心经纪人服务",
-          body: "快速响应客户需求，提供周到的看房服务租房，巧租来陪您。",
-        },
+          body: "快速响应客户需求，提供周到的看房服务租房，巧租来陪您。"
+        }
       ],
       userPhone: "",
       textarea: "",
@@ -457,26 +516,26 @@ export default {
         {
           num: "10000+",
           title: "房源",
-          icon: require("../assets/image/BannerItem1.png"),
+          icon: require("../assets/image/BannerItem1-c.png")
         },
         {
           num: "2000+",
           title: "楼宇",
-          icon: require("../assets/image/BannerItem2.png"),
+          icon: require("../assets/image/BannerItem2-c.png")
         },
         {
           num: "800+",
           title: "用户认可",
-          icon: require("../assets/image/BannerItem3.png"),
+          icon: require("../assets/image/BannerItem3-c.png")
         },
         {
           num: "1",
           title: "1对1服务",
-          icon: require("../assets/image/BannerItem4.png"),
-        },
+          icon: require("../assets/image/BannerItem4-c.png")
+        }
       ],
       searchKey: "",
-      buildMapData:[],
+      buildMapData: [],
       buildData1: [],
       buildData2: [],
       buildData3: [],
@@ -484,62 +543,64 @@ export default {
       map: null,
       item: {
         center: { lng: 117.233725, lat: 31.827 },
-        radius: 1000,
+        radius: 1000
       },
+      regionKey:"",//区域key
+      metroKey:"",
+      renovationKey:"",
+      buildKey:""
     };
   },
   computed: {
     regionList() {
       return this.$store.state.regionList;
     },
-    areaList() {
-      return this.$store.state.areaList;
+    metroList() {
+      return this.$store.state.metroList;
+    },
+    renovationList() {
+      //装修类型
+      return this.$store.state.renovationList;
+    },
+    buildList() {
+      //楼宇类型
+      return this.$store.state.buildList;
     },
   },
   created() {
-
-    getBuilding({ county: "全部" }, { page: 1, size: 200 }).then(
-      (res) => {
-        //前两百写字楼
-        if (res.code == 20000) {
-          let setData = res.data.rows;
-          setData.forEach(item=>{
-            item.showInfo = false;
-          })
-          this.buildMapData = setData;
-
-        }
+    getBuilding({ county: "全部" }, { page: 1, size: 200 }).then(res => {
+      //前两百写字楼
+      if (res.code == 20000) {
+        let setData = res.data.rows;
+        setData.forEach(item => {
+          item.showInfo = false;
+        });
+        this.buildMapData = setData;
       }
-    );
+    });
 
-    getBuilding({ nature: 1, recommend: 1 }, { page: 1, size: 7 }).then(
-      (res) => {
-        //优质写字楼
-        if (res.code == 20000) {
-          this.buildData1 = Object.freeze(res.data.rows);
-        }
+    getBuilding({ nature: 1, recommend: 1 }, { page: 1, size: 7 }).then(res => {
+      //优质写字楼
+      if (res.code == 20000) {
+        this.buildData1 = Object.freeze(res.data.rows);
       }
-    );
+    });
 
-    getBuilding({ nature: 5, recommend: 1 }, { page: 1, size: 7 }).then(
-      (res) => {
-        //优质园区
-        if (res.code == 20000) {
-          this.buildData2 = Object.freeze(res.data.rows);
-        }
+    getBuilding({ nature: 5, recommend: 1 }, { page: 1, size: 7 }).then(res => {
+      //优质园区
+      if (res.code == 20000) {
+        this.buildData2 = Object.freeze(res.data.rows);
       }
-    );
+    });
 
-    getBuilding({ nature: 6, recommend: 1 }, { page: 1, size: 7 }).then(
-      (res) => {
-        //优质联合办公
-        if (res.code == 20000) {
-          this.buildData3 = Object.freeze(res.data.rows);
-        }
+    getBuilding({ nature: 6, recommend: 1 }, { page: 1, size: 7 }).then(res => {
+      //优质联合办公
+      if (res.code == 20000) {
+        this.buildData3 = Object.freeze(res.data.rows);
       }
-    );
+    });
 
-    getBuilding({ hot: 1 }, { page: 1, size: 7 }).then((res) => {
+    getBuilding({ hot: 1 }, { page: 1, size: 7 }).then(res => {
       //热门楼宇
       localStorage.removeItem("hotBuildData");
       if (res.code == 20000) {
@@ -548,7 +609,7 @@ export default {
       }
     });
 
-    getResource({ hot: 1 }, { page: 1, size: 5 }).then((res) => {
+    getResource({ hot: 1 }, { page: 1, size: 5 }).then(res => {
       localStorage.removeItem("hotHouseData");
       if (res.code == 20000) {
         this.hotHouseData = Object.freeze(res.data.rows);
@@ -557,10 +618,10 @@ export default {
     });
     getResource(
       {
-        newest: 1, //最新
+        newest: 1 //最新
       },
       { page: 1, size: 5 }
-    ).then((res) => {
+    ).then(res => {
       localStorage.removeItem("newHouseData");
       if (res.code == 20000) {
         this.newHouseData = res.data.rows;
@@ -569,6 +630,20 @@ export default {
     });
   },
   methods: {
+    searchChange1(index){
+      this.$router.push({name:"building",params:{activeName:"area",regionIndex:index}})
+    },
+    searchChange2(index){
+      this.$router.push({name:"building",params:{activeName:"metro",metroIndex:index}})
+    },
+    searchChange3(index){
+      this.$router.push({name:"building",params:{zxIndex:index}})
+
+    },
+    searchChange4(index){
+      this.$router.push({name:"building",params:{typeIndex:index}})
+
+    },
     mouseover(index) {
       this.buildMapData[index].showInfo = true;
     },
@@ -581,15 +656,12 @@ export default {
     },
     toSearch() {
       if (this.searchKey) {
-        this.$router.push({
-          name: `resource`,
-          params: { searchKey: this.searchKey },
-        });
+        this.$router.push({ name: "building", params: { searchKeyVal: this.searchKey } });
       } else {
         this.$notify({
           title: "警告",
           message: "请输入内容",
-          type: "warning",
+          type: "warning"
         });
       }
     },
@@ -599,7 +671,7 @@ export default {
         this.$notify({
           title: "警告",
           message: "请正确填写手机号",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
@@ -607,14 +679,14 @@ export default {
         this.$notify({
           title: "警告",
           message: "请填写需求内容",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
       this.$notify({
         title: "成功",
         message: "请等待管理员给您致电",
-        type: "success",
+        type: "success"
       });
     },
     toHouseDetails(id) {
@@ -628,16 +700,16 @@ export default {
       //index 1:区域搜索 2：面积搜素
       this.$router.push({
         name: "building",
-        params: { type: index, code: item.code },
+        params: { type: index, code: item.code }
       });
     },
     toDetails(id) {
       let routeData = this.$router.resolve({
-        path: `./edificeDetails?id=${id}`,
+        path: `./edificeDetails?id=${id}`
       });
       window.open(routeData.href, "_blank");
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -657,7 +729,7 @@ export default {
 }
 #header-box {
   width: 100%;
-  height: 680px;
+  height: calc(100vh - 80px);
   position: relative;
   .bm-view {
     width: 100%;
@@ -919,7 +991,8 @@ export default {
 }
 .our-nice {
   width: 100%;
-  background: #fff;
+  // background: #fff;
+      background: #2e4c6a;
   .our-nice-box {
     width: 1200px;
     margin: 0 auto;
@@ -955,7 +1028,8 @@ export default {
         font-weight: 600;
       }
       .our-nice-title {
-        color: #333;
+        // color: #333;
+        color: #fff;
         font-size: 25px;
         font-weight: 600;
         margin-top: 5px;
@@ -1304,14 +1378,14 @@ export default {
         top: 15px;
         display: flex;
         align-items: center;
-        flex-wrap: wrap;
+        justify-content: center;
         border-radius: 5px;
         .recommend-house1-title {
           width: 100%;
           font-size: 20px;
           color: #fff;
           text-align: center;
-          margin-top: 20px;
+          margin-bottom: 20px;
         }
         .recommend-house1-lookUp {
           border-radius: 10px;
@@ -1325,8 +1399,8 @@ export default {
           line-height: 45px;
           cursor: pointer;
           &:hover {
-            background: #fff;
-            color: #333;
+            background: #ffb200;
+            color: #fff;
           }
         }
       }
@@ -1360,14 +1434,14 @@ export default {
           top: 15px;
           display: flex;
           align-items: center;
-          flex-wrap: wrap;
+          justify-content: center;
           border-radius: 5px;
           .recommend-house-item-title {
             width: 100%;
             font-size: 20px;
             color: #fff;
             text-align: center;
-            margin-top: 20px;
+            margin-bottom: 20px;
           }
           .recommend-house-item-lookUp {
             border-radius: 10px;
@@ -1425,7 +1499,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #2b2a48;
+  background: #2e4c6a;
   padding: 30px;
   #contact-me-input {
     width: 500px;
@@ -1446,6 +1520,8 @@ export default {
       /deep/ button {
         width: 250px;
         height: 50px;
+        background-color: #ffb200;
+        font-size: 16px;
       }
     }
   }
@@ -1473,7 +1549,6 @@ export default {
     margin-right: 30px;
     display: inline-block;
     vertical-align: middle;
-
   }
   .markerInfo-text {
     display: inline-block;
@@ -1489,7 +1564,7 @@ export default {
       margin-bottom: 5px;
       .show-text-1;
       cursor: pointer;
-      &:hover{
+      &:hover {
         text-decoration: underline;
       }
     }
@@ -1507,4 +1582,87 @@ export default {
     }
   }
 }
+.inside-search {
+  position: absolute;
+  width: 1125px;
+  height: 100px;
+  bottom: 100px;
+  left: -50%;
+  right: -50%;
+  margin: 0 auto;
+  z-index: 999;
+  .search-box {
+    background: #fff;
+    height: 60px;
+    border-radius: 30px;
+    border: 1px solid #ffb200;
+    box-shadow: 10px 10px 20px 0px rgba(17, 17, 17, 0.3);
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    .srarch-tabs {
+      width: 120px;
+      height: 100%;
+      border-radius: 24px 0 0 24px;
+      background-color: #ffb200;
+      color: #fff;
+      font-size: 16px;
+      line-height: 48px;
+      text-align: center;
+    }
+    .search-line {
+      width: 2px;
+      height: 31px;
+      background-color: #c1c5c8;
+      margin-left: 18px;
+    }
+    /deep/ .search-input{
+      width: 700px;
+        margin-left: 5px;
+        overflow: hidden;
+      i{
+        font-size: 20px;
+      }
+      input{
+        border: none;
+        margin-left: 10px;
+        font-size: 16px;
+        color: #888;
+        
+      }
+    }
+    .search-btn{
+      margin-left: 5px;
+      width: 260px;
+      height: 100%;
+      border-radius: 24px;
+      background-color: #ffb200;
+      border: none;
+      text-align: center;
+      font-size: 18px;
+      line-height: 48px;
+      color: #fff;
+      cursor: pointer;
+    }
+  }
+  .search-sx{
+    margin-top: 16px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    .sx-item{
+      /deep/ input{
+        border: none;
+        background-color: #000;
+            border-radius: 21px;
+    font-size: 14px;
+    padding-left: 25px;
+    color: #fff;
+      }
+      
+    }
+  }
+}
+
 </style>

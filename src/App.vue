@@ -143,4 +143,11 @@ div {
 .el-button--primary{
   border: none !important;
 }
+.el-select__caret{
+  color: #fff !important;
+}
+.el-input-group__append, .el-input-group__prepend{
+  border: none !important;
+}
+
 </style>

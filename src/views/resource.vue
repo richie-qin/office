@@ -143,7 +143,7 @@
             <p>合肥写字楼</p>
           </div>
         </div>
-        <div id="poster-hot-house">
+        <div id="poster-hot-house" v-show="hotHouseData.length>0">
           <h3>热点房源</h3>
           <div
             id="hot-house-item"
@@ -658,5 +658,25 @@ export default {
       }
     }
   }
+}
+/deep/ .el-tabs__item.is-active{
+  color: #ffb200;
+}
+/deep/ .el-tabs__item:hover{
+  color: #ffb200;
+}
+/deep/ .el-tabs__active-bar{
+  background-color: #ffb200;
+
+}
+/deep/ .el-radio__input.is-checked .el-radio__inner{
+  border-color: #ffb200;
+    background: #ffb200;
+}
+/deep/ .el-pagination.is-background .el-pager li:not(.disabled).active{
+  background-color:#ffb200;
+}
+/deep/ .el-pagination.is-background .el-pager li:not(.disabled):hover{
+  color: #ffb200;
 }
 </style>

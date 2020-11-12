@@ -31,9 +31,6 @@
         v-model="agent"
         placeholder="经纪人名称（选填）"
       ></el-input>
-      <!-- <el-input class="input2" placeholder="验证码" v-model="yzm">
-        <template slot="append">获取验证码</template>
-      </el-input> -->
       <el-button type="primary" class="ljwt-btn" @click="ljwtBtn"
         >立即委托</el-button
       >

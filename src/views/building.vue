@@ -46,7 +46,7 @@
               v-for="(item, index) in metroList"
               :key="index"
               @click="clickRegion(index)"
-              :class="{ 'activityData-i': regionIndex == index }"
+              :class="{ 'activityData-i': metroIndex == index }"
             >
               {{ item.name }}
             </div>
@@ -143,12 +143,12 @@
             <p>合肥写字楼</p>
           </div>
         </div>
-        <div id="poster-hot-house">
+        <div id="poster-hot-house" v-show="hotBuildData.length > 0">
           <h3>热点楼盘</h3>
           <div
             id="hot-house-item"
             @click="toDetails(item.id)"
-            v-for="(item, index) in hotBuildData.slice(0,4)"
+            v-for="(item, index) in hotBuildData.slice(0, 4)"
             :key="index"
           >
             <img :src="item.main_pic" alt />
@@ -179,6 +179,7 @@ export default {
   data() {
     return {
       regionIndex: 0, //选择区域index
+      metroIndex: 0, //地铁
       areaIndex: 0, //选择面积index
       zxIndex: 0, //选择装修
       typeIndex: 0, //选择类型
@@ -195,7 +196,7 @@ export default {
         type: null,
         hot: null, //最热
         newest: null, //最新
-        recommend: null, //推荐
+        recommend: null //推荐
       },
       dataList: [],
       allNum: 0,
@@ -203,7 +204,7 @@ export default {
       size: 8,
       hotBuildData: [],
       searchKeyVal: "",
-      activeName: "area", //area  metro
+      activeName: "area" //area  metro
     };
   },
   computed: {
@@ -225,31 +226,57 @@ export default {
     buildList() {
       //楼宇类型
       return this.$store.state.buildList;
-    },
+    }
   },
   created() {
     this.$store.commit("actNav", 2);
+    this.activeName = this.$route.params.activeName||"area";
+    if(this.$route.params.regionIndex!=undefined){//区域
+      this.regionIndex = this.$route.params.regionIndex;
+      this.clickRegion(this.regionIndex);
+    }
+    if(this.$route.params.metroIndex!=undefined){//地铁
+      this.metroIndex = this.$route.params.metroIndex;
+      //地铁没写方法
+    }
+    if(this.$route.params.zxIndex!=undefined){//装修
+      this.zxIndex = this.$route.params.zxIndex;
+      this.clickBuildZX(this.zxIndex);
+    }
+    if(this.$route.params.typeIndex!=undefined){//类型
+      this.typeIndex = this.$route.params.typeIndex;
+      this.clickBuildType(this.typeIndex);
+    }
+    if(this.$route.params.searchKeyVal!=undefined){//搜索
+      this.searchKeyVal = this.$route.params.searchKeyVal;
+      this.searchKey();
+    }
+    
     let searchType = this.$route.params.searchType;
-    if(searchType==1){//优质写字楼
-    this.searchMap.type = "写字楼"
-    this.searchMap.recommend = 1;
-    this.typeIndex = 1;
-    this.moldIndex = 1;
-    }else if(searchType==2){//优质园区
-    this.searchMap.type = "园区"
-    this.searchMap.recommend = 1;
-    this.typeIndex = 5;
-    this.moldIndex = 1;
-    }else if(searchType==3){//优质联合办公
-    this.searchMap.type = "联合办公"
-    this.searchMap.recommend = 1;
-    this.typeIndex = 6;
-    this.moldIndex = 1;
-    }else if(searchType==4){//热门楼宇
+    if (searchType == 1) {
+      //优质写字楼
+      this.searchMap.type = "写字楼";
+      this.searchMap.recommend = 1;
+      this.typeIndex = 1;
+      this.moldIndex = 1;
+    } else if (searchType == 2) {
+      //优质园区
+      this.searchMap.type = "园区";
+      this.searchMap.recommend = 1;
+      this.typeIndex = 5;
+      this.moldIndex = 1;
+    } else if (searchType == 3) {
+      //优质联合办公
+      this.searchMap.type = "联合办公";
+      this.searchMap.recommend = 1;
+      this.typeIndex = 6;
+      this.moldIndex = 1;
+    } else if (searchType == 4) {
+      //热门楼宇
       this.searchMap.hot = 1;
       this.moldIndex = 3;
     }
-    
+
     if (localStorage.getItem("hotBuildData")) {
       this.hotBuildData = JSON.parse(localStorage.getItem("hotBuildData"));
     }
@@ -261,7 +288,7 @@ export default {
     },
     toDetails(id) {
       let routeData = this.$router.resolve({
-        path: `./edificeDetails?id=${id}`,
+        path: `./edificeDetails?id=${id}`
       });
       window.open(routeData.href, "_blank");
     },
@@ -352,15 +379,15 @@ export default {
     },
     getBuilding() {
       getBuilding(this.searchMap, { page: this.page, size: this.size }).then(
-        (res) => {
+        res => {
           if (res.code == 20000) {
             this.dataList = Object.freeze(res.data.rows);
             this.allNum = res.data.total;
           }
         }
       );
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -400,7 +427,7 @@ export default {
     background: #ffb200;
   }
 }
-/deep/ .el-radio{
+/deep/ .el-radio {
   margin-right: 40px;
 }
 #search-box {
@@ -417,7 +444,7 @@ export default {
       font-size: 14px;
       color: #333;
     }
-    /deep/ .el-radio__label{
+    /deep/ .el-radio__label {
       color: #000;
     }
     .activityData-i {
@@ -641,5 +668,25 @@ export default {
       }
     }
   }
+}
+/deep/ .el-tabs__item.is-active{
+  color: #ffb200;
+}
+/deep/ .el-tabs__item:hover{
+  color: #ffb200;
+}
+/deep/ .el-tabs__active-bar{
+  background-color: #ffb200;
+
+}
+/deep/ .el-radio__input.is-checked .el-radio__inner{
+  border-color: #ffb200;
+    background: #ffb200;
+}
+/deep/ .el-pagination.is-background .el-pager li:not(.disabled).active{
+  background-color:#ffb200;
+}
+/deep/ .el-pagination.is-background .el-pager li:not(.disabled):hover{
+  color: #ffb200;
 }
 </style>
