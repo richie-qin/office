@@ -42,20 +42,21 @@
           :dragging="false"
           :icon="{
             url: require('../assets/image/map_icon.png'),
-            size: { width: 28, height: 36 }
+            size: { width: 28, height: 36 },
           }"
           @mouseover="mouseover(index)"
         >
           <bm-info-window
             :width="400"
             :height="120"
+            :autoPan="true"
             :show="item.showInfo"
             @close="item.showInfo = false"
           >
-            <div class="markerInfo">
+            <div class="markerInfo" @click="toDetails(item.id)">
               <img :src="item.main_pic" alt="" />
               <div class="markerInfo-text">
-                <h3 @click="toDetails(item.id)">{{ item.bname }}</h3>
+                <h3>{{ item.bname }}</h3>
                 <div>地址：{{ item.address || "暂无数据" }}</div>
                 <div>装修程度：{{ item.renovation || "暂无数据" }}</div>
                 <p>
@@ -72,7 +73,11 @@
         <div class="search-box">
           <div class="srarch-tabs">楼宇</div>
           <div class="search-line"></div>
-          <el-input class="search-input" placeholder="请输入内容" v-model="searchKey">
+          <el-input
+            class="search-input"
+            placeholder="请输入内容"
+            v-model="searchKey"
+          >
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
           <div class="search-btn" @click="toSearch">
@@ -81,42 +86,62 @@
         </div>
         <div class="search-sx">
           <div class="sx-item">
-            <el-select @change="searchChange1" v-model="regionKey" placeholder="区域">
+            <el-select
+              @change="searchChange1"
+              v-model="regionKey"
+              placeholder="区域"
+            >
               <el-option
-                v-for="(item,index) in regionList"
+                v-for="(item, index) in regionList"
                 :key="index"
                 :label="item.name"
-                :value="index">
+                :value="index"
+              >
               </el-option>
             </el-select>
           </div>
           <div class="sx-item">
-            <el-select @change="searchChange2" v-model="metroKey" placeholder="地铁(1号线)">
+            <el-select
+              @change="searchChange2"
+              v-model="metroKey"
+              placeholder="地铁(1号线)"
+            >
               <el-option
-                v-for="(item,index) in metroList"
+                v-for="(item, index) in metroList"
                 :key="index"
                 :label="item.name"
-                :value="index">
+                :value="index"
+              >
               </el-option>
             </el-select>
           </div>
           <div class="sx-item">
-            <el-select @change="searchChange3" v-model="renovationKey" placeholder="装修">
+            <el-select
+              @change="searchChange3"
+              v-model="renovationKey"
+              placeholder="装修"
+            >
               <el-option
-                v-for="(item,index) in renovationList"
+                v-for="(item, index) in renovationList"
                 :key="index"
                 :label="item.label"
-                :value="index">
+                :value="index"
+              >
               </el-option>
             </el-select>
           </div>
           <div class="sx-item">
-            <el-select @change="searchChange4" v-model="buildKey" placeholder="类型">
+            <el-select
+              @change="searchChange4"
+              v-model="buildKey"
+              placeholder="类型"
+            >
               <el-option
-                v-for="(item,index) in buildList"
+                v-for="(item, index) in buildList"
                 :key="index"
                 :label="item.label"
-                :value="index">
+                :value="index"
+              >
               </el-option>
             </el-select>
           </div>
@@ -174,6 +199,20 @@
           <div v-show="index != trustList.length - 1" class="line"></div>
         </div>
       </div>
+    </div>
+    <div id="hot-work-area">
+      <div id="hot-work-title">
+        <h3>热门办公区域</h3>
+        <p>合肥核心商圈 优质写字楼集群</p>
+      </div>
+      <div id="hot-work-box">
+        <div class="hot-work-item" @click="searchChange1(item.index)"  v-for="(item,index) in hotWorkList" :key="index">
+        <img :src="item.img" alt="">
+        <div class="work-item-name">{{item.area}}</div>
+        <div class="work-item-info">{{item.msg}}</div>
+      </div>
+      </div>
+      
     </div>
     <div id="hot-area" v-show="buildData1.length > 0">
       <div id="hot-area-title">
@@ -455,7 +494,7 @@
           <el-button type="primary" @click="userSend">点击提交</el-button>
         </div>
       </div>
-      <img id="contact-me-img" src="../assets/image/swiper1.jpg" alt="" />
+      <img id="contact-me-img" src="../assets/image/home-img1.jpg" alt="" />
     </div>
   </div>
 </template>
@@ -467,20 +506,20 @@ export default {
     return {
       swipers: [
         {
-          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片1.png"
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片1.png",
         },
         {
-          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片2.png"
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片2.png",
         },
         {
-          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片3.png"
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片3.png",
         },
         {
-          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片4.png"
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片4.png",
         },
         {
-          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片6.png"
-        }
+          src: "https://house123.oss-cn-beijing.aliyuncs.com/banner/图片6.png",
+        },
       ],
       searchMap: {
         county: "全部", //区域搜索
@@ -490,7 +529,7 @@ export default {
         type: null,
         hot: 1, //最热
         newest: null, //最新
-        recommend: null //推荐
+        recommend: null, //推荐
       },
       hotBuildData: [], //热门楼宇
       hotHouseData: [],
@@ -499,16 +538,17 @@ export default {
         {
           title: "全系列房源",
           body:
-            "覆盖14个区县优质房源，精准匹配客户需求，巧租为您提供全系列房源信息。"
+            "覆盖14个区县优质房源，精准匹配客户需求，巧租为您提供全系列房源信息。",
         },
         {
           title: "真实房源保证",
-          body: "真实价格，真实房源，诚意满满在巧租可以了解到最放心的房源信息。"
+          body:
+            "真实价格，真实房源，诚意满满在巧租可以了解到最放心的房源信息。",
         },
         {
           title: "贴心经纪人服务",
-          body: "快速响应客户需求，提供周到的看房服务租房，巧租来陪您。"
-        }
+          body: "快速响应客户需求，提供周到的看房服务租房，巧租来陪您。",
+        },
       ],
       userPhone: "",
       textarea: "",
@@ -516,23 +556,23 @@ export default {
         {
           num: "10000+",
           title: "房源",
-          icon: require("../assets/image/BannerItem1-c.png")
+          icon: require("../assets/image/BannerItem1-c.png"),
         },
         {
           num: "2000+",
           title: "楼宇",
-          icon: require("../assets/image/BannerItem2-c.png")
+          icon: require("../assets/image/BannerItem2-c.png"),
         },
         {
           num: "800+",
           title: "用户认可",
-          icon: require("../assets/image/BannerItem3-c.png")
+          icon: require("../assets/image/BannerItem3-c.png"),
         },
         {
-          num: "1",
-          title: "1对1服务",
-          icon: require("../assets/image/BannerItem4-c.png")
-        }
+          num: "50",
+          title: "精品服务人员",
+          icon: require("../assets/image/BannerItem4-c.png"),
+        },
       ],
       searchKey: "",
       buildMapData: [],
@@ -543,12 +583,20 @@ export default {
       map: null,
       item: {
         center: { lng: 117.233725, lat: 31.827 },
-        radius: 1000
+        radius: 1000,
       },
-      regionKey:"",//区域key
-      metroKey:"",
-      renovationKey:"",
-      buildKey:""
+      regionKey: "", //区域key
+      metroKey: "",
+      renovationKey: "",
+      buildKey: "",
+      hotWorkList:[
+        {index:7,area:"包河区",img:"http://www.91kdz.com/upload/image/20200106/20200106112005_85684.jpg",msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
+        {index:1,area:"蜀山区",img:"http://www.91kdz.com/upload/image/20200106/20200106112005_85684.jpg",msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
+        {index:6,area:"庐阳区",img:"http://www.91kdz.com/upload/image/20200106/20200106112005_85684.jpg",msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
+        {index:3,area:"政务区",img:"http://www.91kdz.com/upload/image/20200106/20200106112005_85684.jpg",msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
+        {index:2,area:"滨湖新区",img:"http://www.91kdz.com/upload/image/20200106/20200106112005_85684.jpg",msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
+        {index:13,area:"经开区",img:"http://www.91kdz.com/upload/image/20200106/20200106112005_85684.jpg",msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
+      ]
     };
   },
   computed: {
@@ -568,39 +616,39 @@ export default {
     },
   },
   created() {
-    getBuilding({ county: "全部" }, { page: 1, size: 200 }).then(res => {
+    getBuilding({ county: "全部" }, { page: 1, size: 200 }).then((res) => {
       //前两百写字楼
       if (res.code == 20000) {
         let setData = res.data.rows;
-        setData.forEach(item => {
+        setData.forEach((item) => {
           item.showInfo = false;
         });
         this.buildMapData = setData;
       }
     });
 
-    getBuilding({ nature: 1, recommend: 1 }, { page: 1, size: 7 }).then(res => {
+    getBuilding({ type: 1, recommend: 1 }, { page: 1, size: 7 }).then((res) => {
       //优质写字楼
       if (res.code == 20000) {
         this.buildData1 = Object.freeze(res.data.rows);
       }
     });
 
-    getBuilding({ nature: 5, recommend: 1 }, { page: 1, size: 7 }).then(res => {
+    getBuilding({ type: 5, recommend: 1 }, { page: 1, size: 7 }).then((res) => {
       //优质园区
       if (res.code == 20000) {
         this.buildData2 = Object.freeze(res.data.rows);
       }
     });
 
-    getBuilding({ nature: 6, recommend: 1 }, { page: 1, size: 7 }).then(res => {
+    getBuilding({ type: 6, recommend: 1 }, { page: 1, size: 7 }).then((res) => {
       //优质联合办公
       if (res.code == 20000) {
         this.buildData3 = Object.freeze(res.data.rows);
       }
     });
 
-    getBuilding({ hot: 1 }, { page: 1, size: 7 }).then(res => {
+    getBuilding({ hot: 1 }, { page: 1, size: 7 }).then((res) => {
       //热门楼宇
       localStorage.removeItem("hotBuildData");
       if (res.code == 20000) {
@@ -609,7 +657,7 @@ export default {
       }
     });
 
-    getResource({ hot: 1 }, { page: 1, size: 5 }).then(res => {
+    getResource({ hot: 1 }, { page: 1, size: 5 }).then((res) => {
       localStorage.removeItem("hotHouseData");
       if (res.code == 20000) {
         this.hotHouseData = Object.freeze(res.data.rows);
@@ -618,10 +666,10 @@ export default {
     });
     getResource(
       {
-        newest: 1 //最新
+        newest: 1, //最新
       },
       { page: 1, size: 5 }
-    ).then(res => {
+    ).then((res) => {
       localStorage.removeItem("newHouseData");
       if (res.code == 20000) {
         this.newHouseData = res.data.rows;
@@ -630,19 +678,23 @@ export default {
     });
   },
   methods: {
-    searchChange1(index){
-      this.$router.push({name:"building",params:{activeName:"area",regionIndex:index}})
+    searchChange1(index) {
+      this.$router.push({
+        name: "building",
+        params: { activeName: "area", regionIndex: index },
+      });
     },
-    searchChange2(index){
-      this.$router.push({name:"building",params:{activeName:"metro",metroIndex:index}})
+    searchChange2(index) {
+      this.$router.push({
+        name: "building",
+        params: { activeName: "metro", metroIndex: index },
+      });
     },
-    searchChange3(index){
-      this.$router.push({name:"building",params:{zxIndex:index}})
-
+    searchChange3(index) {
+      this.$router.push({ name: "building", params: { zxIndex: index } });
     },
-    searchChange4(index){
-      this.$router.push({name:"building",params:{typeIndex:index}})
-
+    searchChange4(index) {
+      this.$router.push({ name: "building", params: { typeIndex: index } });
     },
     mouseover(index) {
       this.buildMapData[index].showInfo = true;
@@ -655,15 +707,10 @@ export default {
       this.$router.push({ name: "building", params: { searchType: item } });
     },
     toSearch() {
-      if (this.searchKey) {
-        this.$router.push({ name: "building", params: { searchKeyVal: this.searchKey } });
-      } else {
-        this.$notify({
-          title: "警告",
-          message: "请输入内容",
-          type: "warning"
-        });
-      }
+      this.$router.push({
+        name: "building",
+        params: { searchKeyVal: this.searchKey },
+      });
     },
     userSend() {
       let phoneReg = /(^1\d{10}$)|(^[0-9]\d{7}$)/;
@@ -671,7 +718,7 @@ export default {
         this.$notify({
           title: "警告",
           message: "请正确填写手机号",
-          type: "warning"
+          type: "warning",
         });
         return;
       }
@@ -679,14 +726,14 @@ export default {
         this.$notify({
           title: "警告",
           message: "请填写需求内容",
-          type: "warning"
+          type: "warning",
         });
         return;
       }
       this.$notify({
         title: "成功",
         message: "请等待管理员给您致电",
-        type: "success"
+        type: "success",
       });
     },
     toHouseDetails(id) {
@@ -700,16 +747,16 @@ export default {
       //index 1:区域搜索 2：面积搜素
       this.$router.push({
         name: "building",
-        params: { type: index, code: item.code }
+        params: { type: index, code: item.code },
       });
     },
     toDetails(id) {
       let routeData = this.$router.resolve({
-        path: `./edificeDetails?id=${id}`
+        path: `./edificeDetails?id=${id}`,
       });
       window.open(routeData.href, "_blank");
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -992,7 +1039,7 @@ export default {
 .our-nice {
   width: 100%;
   // background: #fff;
-      background: #2e4c6a;
+  background: #000;
   .our-nice-box {
     width: 1200px;
     margin: 0 auto;
@@ -1086,6 +1133,74 @@ export default {
     }
   }
 }
+#hot-work-area{
+  width: 1200px;
+  margin: 80px auto 0;
+  #hot-work-title{
+    text-align: center;
+    h3{
+      font-size: 34px;
+      letter-spacing: 2px;
+      margin-bottom: 3px;
+      color: #333;
+      font-weight: bold;
+    }
+    p{
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  }
+  #hot-work-box{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 50px;
+    .hot-work-item{
+      width: 392px;
+      height: 260px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 12px;
+      cursor: pointer;
+      &:hover{
+          img{
+            transform:scale(1.1);
+            transition: all 0.4s;
+          }
+        }
+      img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+            transition: all 0.4s;
+      }
+      .work-item-name{
+        width: 100%;
+        text-align: center;
+        font-size: 26px;
+        color: #FFF;
+        position: absolute;
+        left:0;
+        top: 50%;
+        bottom: 50%;
+        margin: auto;
+        font-weight: bold;
+      }
+      .work-item-info{
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+        font-size: 14px;
+        color: #FFF;
+        line-height: 22px;
+        padding: 10px 20px;
+        background: rgba(0,0,0,.35);
+      }
+    }
+  }
+}
 #hot-area {
   width: 1200px;
   margin: 50px auto 0;
@@ -1116,6 +1231,30 @@ export default {
         -webkit-transform: translateY(-5px);
         transform: translateY(-5px);
         box-shadow: 0 24px 40px -24px rgba(0, 0, 0, 0.1);
+        .build-info-bot {
+          background: #ffb200;
+          transition: all 0.3s;
+          h3 {
+            color: #fff;
+            transition: all 0.3s;
+          }
+          .build-info-bot-m {
+            .info-addr {
+              i {
+                color: #fff;
+                transition: all 0.3s;
+              }
+              .build-info-addr {
+                color: #fff;
+                transition: all 0.3s;
+              }
+            }
+            .build-info-price {
+              color: #fff;
+              transition: all 0.3s;
+            }
+          }
+        }
       }
       img {
         width: 100%;
@@ -1124,10 +1263,11 @@ export default {
         display: block;
       }
       .build-info-bot {
-        padding: 20px 17px;
+        padding: 23px 17px;
         color: #333;
         width: 100%;
         font-size: 14px;
+        transition: all 0.3s;
         h3 {
           flex: none;
           font-size: 16px;
@@ -1409,16 +1549,18 @@ export default {
       width: 800px;
       height: 500px;
       display: flex;
-      align-items: center;
+      // align-items: center;
+      justify-content: space-between;
       flex-wrap: wrap;
-      padding: 7.5px;
+      padding-left: 20px;
       .recommend-house-item {
-        width: 357px;
-        height: 227px;
-        margin: 7.5px;
+        width: 360px;
+        height: 240px;
+        // margin: 7.5px;
         position: relative;
         border-radius: 5px;
         overflow: hidden;
+        margin-bottom: 20px;
         cursor: pointer;
         img {
           width: 100%;
@@ -1429,7 +1571,7 @@ export default {
           position: absolute;
           height: 197px;
           width: 327px;
-          background: rgba(0, 0, 0, 0.4);
+          background: rgba(0, 0, 0, 0.2);
           left: 15px;
           top: 15px;
           display: flex;
@@ -1455,8 +1597,8 @@ export default {
             line-height: 45px;
             cursor: pointer;
             &:hover {
-              background: #fff;
-              color: #333;
+              background: #ffb200;
+              color: #fff;
             }
           }
         }
@@ -1499,7 +1641,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #2e4c6a;
+  background: #000;
   padding: 30px;
   #contact-me-input {
     width: 500px;
@@ -1543,6 +1685,8 @@ export default {
 .markerInfo {
   width: 100%;
   height: 120px;
+  cursor: pointer;
+
   img {
     height: 100%;
     width: 160px;
@@ -1563,7 +1707,6 @@ export default {
       padding-right: 20px;
       margin-bottom: 5px;
       .show-text-1;
-      cursor: pointer;
       &:hover {
         text-decoration: underline;
       }
@@ -1616,22 +1759,21 @@ export default {
       background-color: #c1c5c8;
       margin-left: 18px;
     }
-    /deep/ .search-input{
+    /deep/ .search-input {
       width: 700px;
-        margin-left: 5px;
-        overflow: hidden;
-      i{
+      margin-left: 5px;
+      overflow: hidden;
+      i {
         font-size: 20px;
       }
-      input{
+      input {
         border: none;
         margin-left: 10px;
         font-size: 16px;
         color: #888;
-        
       }
     }
-    .search-btn{
+    .search-btn {
       margin-left: 5px;
       width: 260px;
       height: 100%;
@@ -1645,24 +1787,22 @@ export default {
       cursor: pointer;
     }
   }
-  .search-sx{
+  .search-sx {
     margin-top: 16px;
     display: flex;
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    .sx-item{
-      /deep/ input{
+    .sx-item {
+      /deep/ input {
         border: none;
         background-color: #000;
-            border-radius: 21px;
-    font-size: 14px;
-    padding-left: 25px;
-    color: #fff;
+        border-radius: 21px;
+        font-size: 14px;
+        padding-left: 25px;
+        color: #fff;
       }
-      
     }
   }
 }
-
 </style>

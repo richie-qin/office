@@ -347,7 +347,7 @@
             >
             <p>巧租承诺仅将你的联系方式用于找房服务</p>
           </div>
-          <div id="tjfy">
+          <div id="tjfy" v-show="hotBuildData.length>0">
             <h3><i></i>热点楼盘</h3>
             <div id="tjfy-content">
               <div

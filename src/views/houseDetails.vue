@@ -279,7 +279,7 @@
           >
           <p>巧租承诺仅将你的联系方式用于找房服务</p>
         </div>
-        <div id="tjfy">
+        <div id="tjfy" v-show="hotHouseData.length>0">
           <h3><i></i>热点房源</h3>
           <div id="tjfy-content">
             <div @click="toDetails(item.id)" v-for="(item,index) in hotHouseData.slice(0,4)" :key="index">
