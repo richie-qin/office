@@ -9,7 +9,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     //定义状态
     state: {
-        actNav: 1, //nav活动
+        actNav: 0, //nav活动
         regionList:[//区域数组
             {name:"全部",code:"01"},
             {name:"蜀山区",code:"02"},
@@ -65,11 +65,12 @@ const store = new Vuex.Store({
         areaList:[//面积数组
             {name:"不限",code:"01"},
             {name:"100㎡以下",start:"0",end:"100",code:"02"},
-            {name:"100㎡-200㎡",start:"100",end:"200",code:"03"},
-            {name:"200㎡-300㎡",start:"200",end:"300",code:"04"},
-            {name:"300㎡-500㎡",start:"300",end:"500",code:"05"},
-            {name:"500㎡-1000㎡",start:"500",end:"1000",code:"06"},
-            {name:"1000㎡以上",start:"1000",end:"",code:"07"},
+            {name:"100㎡-300㎡",start:"100",end:"300",code:"03"},
+            {name:"300㎡-500㎡",start:"300",end:"500",code:"04"},
+            {name:"500㎡-1000㎡",start:"500",end:"1000",code:"05"},
+            {name:"1000㎡-1500㎡",start:"1000",end:"1500",code:"06"},
+            {name:"1500㎡-2000㎡",start:"1500",end:"2000",code:"07"},
+            {name:"2000㎡以上",start:"2000",end:"",code:"08"},
         ],
         renovationList:[//装修类型
             {value:null,label:"全部"},

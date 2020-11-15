@@ -6,12 +6,7 @@
           <img src="../assets/image/qz-logo1.png" alt />
         </div>
         <div id="nav-data">
-          <router-link
-            to="./"
-            class="nav-item"
-            style="font-weight: bold;color:#ffb200"
-            >首页</router-link
-          >
+          <router-link to="./" class="nav-item">首页</router-link>
           <router-link to="./building" class="nav-item">楼宇</router-link>
           <router-link to="./resource" class="nav-item">办公室</router-link>
           <router-link to="./entrust" class="nav-item">委托我们</router-link>
@@ -80,9 +75,7 @@
           >
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
-          <div class="search-btn" @click="toSearch">
-            立即搜索
-          </div>
+          <div class="search-btn" @click="toSearch">立即搜索</div>
         </div>
         <div class="search-sx">
           <div class="sx-item">
@@ -104,10 +97,10 @@
             <el-select
               @change="searchChange2"
               v-model="metroKey"
-              placeholder="地铁(1号线)"
+              placeholder="面积"
             >
               <el-option
-                v-for="(item, index) in metroList"
+                v-for="(item, index) in areaList"
                 :key="index"
                 :label="item.name"
                 :value="index"
@@ -206,18 +199,20 @@
         <p>合肥核心商圈 优质写字楼集群</p>
       </div>
       <div id="hot-work-box">
-        <div class="hot-work-item" @click="searchChange1(item.index)"  v-for="(item,index) in hotWorkList" :key="index">
-        <img :src="item.img" alt="">
-        <div class="work-item-name">{{item.area}}</div>
-        <div class="work-item-info">{{item.msg}}</div>
+        <div
+          class="hot-work-item"
+          @click="searchChange1(item.index)"
+          v-for="(item, index) in hotWorkList"
+          :key="index"
+        >
+          <img :src="item.img" alt="" />
+          <div class="work-item-name">{{ item.area }}</div>
+          <div class="work-item-info">{{ item.msg }}</div>
+        </div>
       </div>
-      </div>
-      
     </div>
     <div id="hot-area" v-show="buildData1.length > 0">
-      <div id="hot-area-title">
-        优质写字楼
-      </div>
+      <div id="hot-area-title">优质写字楼</div>
       <div id="hot-build-box">
         <div
           class="build-city"
@@ -260,9 +255,7 @@
       </div>
     </div>
     <div id="hot-area" v-show="buildData2.length > 0">
-      <div id="hot-area-title">
-        优质园区
-      </div>
+      <div id="hot-area-title">优质园区</div>
       <div id="hot-build-box">
         <div
           class="build-city"
@@ -305,9 +298,7 @@
       </div>
     </div>
     <div id="hot-area" v-show="buildData3.length > 0">
-      <div id="hot-area-title">
-        优质联合办公
-      </div>
+      <div id="hot-area-title">优质联合办公</div>
       <div id="hot-build-box">
         <div
           class="build-city"
@@ -350,9 +341,7 @@
       </div>
     </div>
     <div id="hot-area" v-show="hotBuildData.length > 0">
-      <div id="hot-area-title">
-        热门楼宇，进驻城市中心
-      </div>
+      <div id="hot-area-title">热门楼宇，进驻城市中心</div>
       <div id="hot-build-box">
         <div
           class="build-city"
@@ -589,19 +578,64 @@ export default {
       metroKey: "",
       renovationKey: "",
       buildKey: "",
-      hotWorkList:[
-        {index:7,area:"包河区",img:"http://www.91kdz.com/upload/image/20200106/20200106112005_85684.jpg",msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
-        {index:1,area:"蜀山区",img:"http://www.91kdz.com/upload/image/20200106/20200106112005_85684.jpg",msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
-        {index:6,area:"庐阳区",img:"http://www.91kdz.com/upload/image/20200106/20200106112005_85684.jpg",msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
-        {index:3,area:"政务区",img:"http://www.91kdz.com/upload/image/20200106/20200106112005_85684.jpg",msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
-        {index:2,area:"滨湖新区",img:"http://www.91kdz.com/upload/image/20200106/20200106112005_85684.jpg",msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
-        {index:13,area:"经开区",img:"http://www.91kdz.com/upload/image/20200106/20200106112005_85684.jpg",msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
-      ]
+      hotWorkList: [
+        {
+          index: 12,
+          area: "高新区",
+          img: require("../assets/image/gaoxin.jpg"),
+          msg:
+            "新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等",
+        },
+        {
+          index: 7,
+          area: "包河区",
+          img: require("../assets/image/baohe.jpg"),
+          msg:
+            "新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等",
+        },
+        {
+          index: 1,
+          area: "蜀山区",
+          img: require("../assets/image/shushan.png"),
+          msg:
+            "新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等",
+        },
+        {
+          index: 6,
+          area: "庐阳区",
+          img: require("../assets/image/luyang.jpg"),
+          msg:
+            "新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等",
+        },
+        {
+          index: 3,
+          area: "政务区",
+          img: require("../assets/image/zhengwu.jpg"),
+          msg:
+            "新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等",
+        },
+        {
+          index: 2,
+          area: "滨湖新区",
+          img: require("../assets/image/binhu.jpg"),
+          msg:
+            "新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等",
+        },
+        // {index:13,area:"经开区",img:require("../assets/image/jingkai.jpg"),msg:"新华国际广场、华地金融中心、西湖国际广场、IFC、之心城环球中心、华润五彩城等"},
+      ],
+      regionIndex:"",
+      areaIndex:"",
+      zxIndex:"",
+      typeIndex:""
     };
   },
   computed: {
     regionList() {
       return this.$store.state.regionList;
+    },
+    areaList() {
+      //面积列表
+      return this.$store.state.areaList;
     },
     metroList() {
       return this.$store.state.metroList;
@@ -679,22 +713,18 @@ export default {
   },
   methods: {
     searchChange1(index) {
-      this.$router.push({
-        name: "building",
-        params: { activeName: "area", regionIndex: index },
-      });
+      this.regionIndex = index;
+   
     },
     searchChange2(index) {
-      this.$router.push({
-        name: "building",
-        params: { activeName: "metro", metroIndex: index },
-      });
+      this.areaIndex = index;
+
     },
     searchChange3(index) {
-      this.$router.push({ name: "building", params: { zxIndex: index } });
+      this.zxIndex = index;
     },
     searchChange4(index) {
-      this.$router.push({ name: "building", params: { typeIndex: index } });
+      this.typeIndex = index;
     },
     mouseover(index) {
       this.buildMapData[index].showInfo = true;
@@ -709,7 +739,7 @@ export default {
     toSearch() {
       this.$router.push({
         name: "building",
-        params: { searchKeyVal: this.searchKey },
+        params: { searchKeyVal: this.searchKey,regionIndex:this.regionIndex,areaIndex:this.areaIndex,zxIndex:this.zxIndex,typeIndex:this.typeIndex },
       });
     },
     userSend() {
@@ -919,6 +949,14 @@ export default {
         &:hover {
           color: #fff;
           background-color: #ffb200;
+        }
+        &:first-child {
+          font-weight: bold;
+          color: #ffb200;
+          &:hover {
+            color: #fff;
+            background-color: #ffb200;
+          }
         }
       }
     }
@@ -1133,61 +1171,61 @@ export default {
     }
   }
 }
-#hot-work-area{
+#hot-work-area {
   width: 1200px;
   margin: 80px auto 0;
-  #hot-work-title{
+  #hot-work-title {
     text-align: center;
-    h3{
+    h3 {
       font-size: 34px;
       letter-spacing: 2px;
       margin-bottom: 3px;
       color: #333;
       font-weight: bold;
     }
-    p{
+    p {
       font-size: 14px;
       margin-top: 10px;
     }
   }
-  #hot-work-box{
+  #hot-work-box {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     margin-top: 50px;
-    .hot-work-item{
+    .hot-work-item {
       width: 392px;
       height: 260px;
       position: relative;
       overflow: hidden;
       margin-bottom: 12px;
       cursor: pointer;
-      &:hover{
-          img{
-            transform:scale(1.1);
-            transition: all 0.4s;
-          }
+      &:hover {
+        img {
+          transform: scale(1.1);
+          transition: all 0.4s;
         }
-      img{
+      }
+      img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-            transition: all 0.4s;
+        transition: all 0.4s;
       }
-      .work-item-name{
+      .work-item-name {
         width: 100%;
         text-align: center;
         font-size: 26px;
         color: #FFF;
         position: absolute;
-        left:0;
+        left: 0;
         top: 50%;
         bottom: 50%;
         margin: auto;
         font-weight: bold;
       }
-      .work-item-info{
+      .work-item-info {
         position: absolute;
         width: 100%;
         left: 0;
@@ -1196,7 +1234,7 @@ export default {
         color: #FFF;
         line-height: 22px;
         padding: 10px 20px;
-        background: rgba(0,0,0,.35);
+        background: rgba(0, 0, 0, 0.35);
       }
     }
   }
@@ -1204,7 +1242,6 @@ export default {
 #hot-area {
   width: 1200px;
   margin: 50px auto 0;
-  padding: 0 30px;
   #hot-area-title {
     margin-bottom: 30px;
     font-size: 34px;
@@ -1215,9 +1252,11 @@ export default {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    justify-content: space-between;
+    // justify-content: space-between;
+    width: 1225px;
+    margin-left: -15px;
     .build-city {
-      width: 274px;
+      width: 290px;
       background-color: #fff;
       border-radius: 0 0 4px 4px;
       -webkit-transition: all 0.3s ease-in-out;
@@ -1227,6 +1266,7 @@ export default {
       height: 364px;
       overflow: hidden;
       margin-bottom: 15px;
+      margin-left: 15px;
       &:hover {
         -webkit-transform: translateY(-5px);
         transform: translateY(-5px);
@@ -1344,7 +1384,7 @@ export default {
       }
     }
     .more-city {
-      width: 274px;
+      width: 290px;
       border-radius: 0 0 4px 4px;
       -webkit-transition: all 0.3s ease-in-out;
       transition: all 0.3s ease-in-out;
@@ -1356,6 +1396,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-left: 15px;
       &:hover {
         // -webkit-transform: translateY(-5px);
         // transform: translateY(-5px);
@@ -1398,7 +1439,6 @@ export default {
 #recommend-area {
   width: 1200px;
   margin: 80px auto 0;
-  padding: 0 30px;
   #recommend-area-title {
     font-size: 34px;
     color: #333;
@@ -1512,7 +1552,7 @@ export default {
       .recommend-house1-info {
         position: absolute;
         height: 470px;
-        width: 350px;
+        width: 370px;
         background: rgba(0, 0, 0, 0.3);
         left: 15px;
         top: 15px;
@@ -1554,7 +1594,7 @@ export default {
       flex-wrap: wrap;
       padding-left: 20px;
       .recommend-house-item {
-        width: 360px;
+        width: 380px;
         height: 240px;
         // margin: 7.5px;
         position: relative;
@@ -1569,8 +1609,8 @@ export default {
         }
         .recommend-house-item-info {
           position: absolute;
-          height: 197px;
-          width: 327px;
+          height: 210px;
+          width: 350px;
           background: rgba(0, 0, 0, 0.2);
           left: 15px;
           top: 15px;
@@ -1641,7 +1681,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #000;
+  background: #51606a;
   padding: 30px;
   #contact-me-input {
     width: 500px;

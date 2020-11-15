@@ -80,6 +80,34 @@
             </el-radio-group>
           </div>
         </div>
+        <div id="search-item-zx">
+          <div class="item-title">装修</div>
+          <div>
+            <el-radio-group v-model="zxIndex" @change="clickBuildZX">
+              <el-radio
+                v-for="(item, index) in renovationList"
+                :key="index"
+                :class="{ 'activityData-i': zxIndex == index }"
+                :label="index"
+                >{{ item.label }}</el-radio
+              >
+            </el-radio-group>
+          </div>
+        </div>
+        <div id="search-item-lx">
+          <div class="item-title">类型</div>
+          <div>
+            <el-radio-group v-model="typeIndex" @change="clickBuildType">
+              <el-radio
+                v-for="(item, index) in buildList"
+                :key="index"
+                :class="{ 'activityData-i': typeIndex == index }"
+                :label="index"
+                >{{ item.label }}</el-radio
+              >
+            </el-radio-group>
+          </div>
+        </div>
       </div>
     </div>
     <div id="content-box">
@@ -182,6 +210,8 @@ export default {
     return {
       regionIndex: 0, //选择区域index
       areaIndex: 0, //选择面积index
+      typeIndex: 0, //选择类型
+      zxIndex: 0, //选择装修
       priceIndex: 0, //选择单价index
       moldIndex: 0, //选择最新或最热
       money1: "",
@@ -223,6 +253,14 @@ export default {
     priceList() {
       //面积列表
       return this.$store.state.priceList;
+    },
+    renovationList() {
+      //装修类型
+      return this.$store.state.renovationList;
+    },
+    buildList() {
+      //楼宇类型
+      return this.$store.state.buildList;
     },
   },
   created() {
@@ -368,6 +406,36 @@ export default {
       } else {
         this.searchMap.start = this.areaList[index].start;
         this.searchMap.end = this.areaList[index].end;
+      }
+      this.getResource();
+    },
+    clickBuildZX(index) {
+      // 点击装修
+      this.zxIndex = index;
+      this.page = 1; //恢复页码
+      this.moldIndex = 0;
+      this.searchMap.hot = null;
+      this.searchMap.newest = null;
+      this.searchMap.recommend = null;
+      if (index == 0) {
+        this.searchMap.renovation = null;
+      } else {
+        this.searchMap.renovation = this.renovationList[index].label;
+      }
+      this.getResource();
+    },
+    clickBuildType(index) {
+      // 点击类型
+      this.typeIndex = index;
+      this.page = 1; //恢复页码
+      this.moldIndex = 0;
+      this.searchMap.hot = null;
+      this.searchMap.newest = null;
+      this.searchMap.recommend = null;
+      if (index == 0) {
+        this.searchMap.type = null;
+      } else {
+        this.searchMap.type = this.buildList[index].value;
       }
       this.getResource();
     },

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // 根据环境不同引入不同api地址
 // create an axios instance
-var baseUrl = `http://47.94.5.59:9001`; //服务器地址
+var baseUrl = `http://47.97.76.30:9001`; //服务器地址
 if (location.hostname == "localhost") {
   baseUrl = "/api";
 }

@@ -9,6 +9,42 @@
       <h3>免费委托找房</h3>
       <p>一键提交需求，巧租帮您寻找最合适的办公室</p>
       <img src="../assets/image/business-require-icon.jpg" alt="" />
+      <el-select class="input1" v-model="countyValue" placeholder="区域位置">
+          <el-option
+            v-for="item in regionList"
+            :key="item.name"
+            :label="item.name"
+            :value="item.name"
+          >
+          </el-option>
+        </el-select>
+      <el-select class="input1" v-model="typeValue" placeholder="类型">
+          <el-option
+            v-for="item in buildList"
+            :key="item.label"
+            :label="item.label"
+            :value="item.label"
+          >
+          </el-option>
+        </el-select>
+      <el-select class="input1" v-model="areaValue" placeholder="面积">
+          <el-option
+            v-for="item in areaList"
+            :key="item.name"
+            :label="item.name"
+            :value="item.name"
+          >
+          </el-option>
+        </el-select>
+      <el-select class="input1" v-model="renovationValue" placeholder="装修">
+          <el-option
+            v-for="item in renovationList"
+            :key="item.label"
+            :label="item.label"
+            :value="item.label"
+          >
+          </el-option>
+        </el-select>
       <el-input
         type="textarea"
         :rows="3"
@@ -26,11 +62,6 @@
         v-model="userPhone"
         placeholder="手机号"
       ></el-input>
-      <el-input
-        class="input1"
-        v-model="agent"
-        placeholder="经纪人名称（选填）"
-      ></el-input>
       <el-button type="primary" class="ljwt-btn" @click="ljwtBtn"
         >立即委托</el-button
       >
@@ -46,12 +77,32 @@ import { entrustSeek } from "../api/index";
 export default {
   data() {
     return {
+      countyValue:"",
+      typeValue:"",
+      areaValue:"",
+      renovationValue:"",
       userName: "",
       textarea: "",
       userPhone: "",
       yzm: "",
-      agent: "",
     };
+  },
+  computed:{
+    regionList() {
+      return this.$store.state.regionList;
+    },
+    areaList() {
+      //面积列表
+      return this.$store.state.areaList;
+    },
+    renovationList() {
+      //装修类型
+      return this.$store.state.renovationList;
+    },
+    buildList() {
+      //楼宇类型
+      return this.$store.state.buildList;
+    },
   },
   created() {
     this.$store.commit("actNav", 4);
@@ -59,14 +110,6 @@ export default {
   methods: {
     ljwtBtn() {
       let phoneReg = /(^1\d{10}$)|(^[0-9]\d{7}$)/;
-      if(!this.textarea){
-        this.$notify({
-            title: "警告",
-            message: "请填写您的需求",
-            type: "warning",
-          });
-          return
-      }
       if(!phoneReg.test(this.userPhone)){
         this.$notify({
             title: "警告",
@@ -76,9 +119,12 @@ export default {
           return
       }
       entrustSeek({
+        area:this.areaValue,
+        type:this.typeValue,
+        renovation:this.renovationValue,
+        county:this.countyValue,
         cust_name: this.userName, //名字
         cust_phone: this.userPhone, //电话
-        agent: this.agent, //经纪人
         remark: this.textarea, //内容
       }).then((res) => {
         if (res.code == 20000) {
@@ -148,7 +194,7 @@ export default {
   /deep/ .el-textarea {
     display: block;
     width: 90%;
-    margin: 40px auto 0;
+    margin: 0 auto ;
 
     textarea {
       line-height: 20px;

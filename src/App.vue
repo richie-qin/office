@@ -2,17 +2,19 @@
   <div id="app">
     <router-view />
     <footer-box></footer-box>
-    <!-- <div id="contact-box">
-      <div id="contact-kf">
+    <div id="contact-box">
+      <!-- <div id="contact-kf">
         <img src="./assets/image/kf.png" alt="">
         <div id="phone-icon"></div>
         <div id="wx-icon"></div>
         <div></div>
-      </div>
+      </div> -->
+      <router-link to="/calculator" id="area-calculation" >面积测算器</router-link>
+      <router-link to="/entrust" id="area-calculation" >委托找房</router-link>
       <div id="contact-top" v-show="winScrollTop > 600" @click="backtop">
         ∧返回顶部
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -45,7 +47,7 @@ export default {
     },
   },
   mounted() {
-    // window.addEventListener("scroll", this.handleScroll, true);
+    window.addEventListener("scroll", this.handleScroll, true);
   },
 };
 </script>
@@ -81,9 +83,26 @@ div {
   position: fixed;
   right: 0px;
   bottom: 0px;
-  width: 235px;
   height: 85px;
   z-index: 999;
+  display: flex;
+  align-items: center;
+  width: 198px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  #area-calculation{
+    display: block;
+    height: 40px;
+    background: #ffb200;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    line-height: 40px;
+    padding: 0 15px;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 0 5px;
+  }
   #contact-kf{
     display: flex;
     align-items: center;
@@ -123,6 +142,7 @@ div {
     }
   }
   #contact-top {
+    flex: none;
     font-size: 12px;
     color: #fff;
     width: 86px;
@@ -133,7 +153,6 @@ div {
     background: #535353;
     border-radius: 5px 5px 0 0;
     text-align: center;
-    float: right;
     cursor: pointer;
   }
 }

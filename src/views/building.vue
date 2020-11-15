@@ -53,6 +53,20 @@
           </div>
         </div>
         <div id="search-item-zx">
+          <div class="item-title">面积</div>
+          <div>
+            <el-radio-group v-model="areaIndex" @change="clickArea">
+              <el-radio
+                v-for="(item, index) in areaList"
+                :key="index"
+                :class="{ 'activityData-i': areaIndex == index }"
+                :label="index"
+                >{{ item.name }}</el-radio
+              >
+            </el-radio-group>
+          </div>
+        </div>
+        <div id="search-item-zx">
           <div class="item-title">装修</div>
           <div>
             <el-radio-group v-model="zxIndex" @change="clickBuildZX">
@@ -122,9 +136,7 @@
             :data="item"
           ></buildItem>
         </div>
-        <div v-show="dataList.length == 0" id="noneList">
-          暂无数据~
-        </div>
+        <div v-show="dataList.length == 0" id="noneList">暂无数据~</div>
         <div id="data-pagination" v-show="allNum > size">
           <el-pagination
             background
@@ -196,7 +208,7 @@ export default {
         type: null,
         hot: null, //最热
         newest: null, //最新
-        recommend: null //推荐
+        recommend: null, //推荐
       },
       dataList: [],
       allNum: 0,
@@ -204,7 +216,7 @@ export default {
       size: 8,
       hotBuildData: [],
       searchKeyVal: "",
-      activeName: "area" //area  metro
+      activeName: "area", //area  metro
     };
   },
   computed: {
@@ -226,32 +238,55 @@ export default {
     buildList() {
       //楼宇类型
       return this.$store.state.buildList;
-    }
+    },
   },
   created() {
     this.$store.commit("actNav", 2);
-    this.activeName = this.$route.params.activeName||"area";
-    if(this.$route.params.regionIndex!=undefined){//区域
-      this.regionIndex = this.$route.params.regionIndex;
-      this.clickRegion(this.regionIndex);
-    }
-    if(this.$route.params.metroIndex!=undefined){//地铁
-      this.metroIndex = this.$route.params.metroIndex;
-      //地铁没写方法
-    }
-    if(this.$route.params.zxIndex!=undefined){//装修
-      this.zxIndex = this.$route.params.zxIndex;
-      this.clickBuildZX(this.zxIndex);
-    }
-    if(this.$route.params.typeIndex!=undefined){//类型
-      this.typeIndex = this.$route.params.typeIndex;
-      this.clickBuildType(this.typeIndex);
-    }
-    if(this.$route.params.searchKeyVal!=undefined){//搜索
-      this.searchKeyVal = this.$route.params.searchKeyVal;
-      this.searchKey();
+    if (this.$route.params.matching == 1) {
+      //匹配房源
+      this.regionIndex = this.$route.params.regionIndex; //区域
+      this.searchMap.county = this.regionList[this.regionIndex].name;
+
+      this.areaIndex = this.$route.params.areaIndex; //面积
+      if (this.areaIndex == 0) {
+        this.searchMap.start = "";
+        this.searchMap.end = "";
+      } else {
+        this.searchMap.start = this.areaList[this.areaIndex].start;
+        this.searchMap.end = this.areaList[this.areaIndex].end;
+      }
+
+      this.typeIndex = this.$route.params.typeIndex; //类型
+      if (this.typeIndex == 0) {
+        this.searchMap.type = null;
+      } else {
+        this.searchMap.type = this.buildList[this.typeIndex].value;
+      }
+
+      this.zxIndex = this.$route.params.zxIndex; //装修
+      if (this.zxIndex == 0) {
+        this.searchMap.renovation = null;
+      } else {
+        this.searchMap.renovation = this.renovationList[this.zxIndex].label;
+      }
+      this.moldIndex = 0;
+
+      this.page = 1; //恢复页码
+      this.searchMap.hot = null;
+      this.searchMap.newest = null;
+      this.searchMap.recommend = null;
+
     }
     
+      //搜索
+      this.searchKeyVal = this.$route.params.searchKeyVal||"";
+      this.searchMap.bname = this.searchKeyVal;
+      this.activeName = this.$route.params.activeName || "area";
+      this.regionIndex = this.$route.params.regionIndex;
+      this.areaIndex = this.$route.params.areaIndex;
+      this.zxIndex = this.$route.params.zxIndex;
+      this.typeIndex = this.$route.params.typeIndex;
+
     let searchType = this.$route.params.searchType;
     if (searchType == 1) {
       //优质写字楼
@@ -283,12 +318,35 @@ export default {
     this.getBuilding();
   },
   methods: {
+    homeSearch() {
+      this.activeName = this.$route.params.activeName || "area";
+      if (this.$route.params.regionIndex != undefined) {
+        //区域
+        this.regionIndex = this.$route.params.regionIndex;
+        this.clickRegion(this.regionIndex);
+      }
+      if (this.$route.params.areaIndex != undefined) {
+        //面积
+        this.areaIndex = this.$route.params.areaIndex;
+        this.clickArea(this.areaIndex);
+      }
+      if (this.$route.params.zxIndex != undefined) {
+        //装修
+        this.zxIndex = this.$route.params.zxIndex;
+        this.clickBuildZX(this.zxIndex);
+      }
+      if (this.$route.params.typeIndex != undefined) {
+        //类型
+        this.typeIndex = this.$route.params.typeIndex;
+        this.clickBuildType(this.typeIndex);
+      }
+    },
     handleClick(tab) {
       this.activeName = tab.name;
     },
     toDetails(id) {
       let routeData = this.$router.resolve({
-        path: `./edificeDetails?id=${id}`
+        path: `./edificeDetails?id=${id}`,
       });
       window.open(routeData.href, "_blank");
     },
@@ -379,15 +437,15 @@ export default {
     },
     getBuilding() {
       getBuilding(this.searchMap, { page: this.page, size: this.size }).then(
-        res => {
+        (res) => {
           if (res.code == 20000) {
             this.dataList = Object.freeze(res.data.rows);
             this.allNum = res.data.total;
           }
         }
       );
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -669,24 +727,23 @@ export default {
     }
   }
 }
-/deep/ .el-tabs__item.is-active{
+/deep/ .el-tabs__item.is-active {
   color: #ffb200;
 }
-/deep/ .el-tabs__item:hover{
+/deep/ .el-tabs__item:hover {
   color: #ffb200;
 }
-/deep/ .el-tabs__active-bar{
+/deep/ .el-tabs__active-bar {
   background-color: #ffb200;
-
 }
-/deep/ .el-radio__input.is-checked .el-radio__inner{
+/deep/ .el-radio__input.is-checked .el-radio__inner {
   border-color: #ffb200;
-    background: #ffb200;
+  background: #ffb200;
 }
-/deep/ .el-pagination.is-background .el-pager li:not(.disabled).active{
-  background-color:#ffb200;
+/deep/ .el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #ffb200;
 }
-/deep/ .el-pagination.is-background .el-pager li:not(.disabled):hover{
+/deep/ .el-pagination.is-background .el-pager li:not(.disabled):hover {
   color: #ffb200;
 }
 </style>

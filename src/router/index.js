@@ -76,6 +76,14 @@ const routes = [
       title: '巧租'
     }
   },
+  {
+    path: '/calculator',
+    name: 'calculator',
+    component: () => import('../views/calculator.vue'),
+    meta:{
+      title: '巧租'
+    }
+  },
   { path: '*', redirect: '/index' }   /*默认跳转路由*/
 ];
 
